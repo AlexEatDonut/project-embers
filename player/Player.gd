@@ -106,7 +106,7 @@ func _physics_process(delta):
 	#update_camera = false
 	var is_step: bool = false
 	
-	var input = Input.get_vector("move_left", "move_right", "move_forward", "move_backward")
+	var input = Input.get_vector("move_left", "move_right", "move_up", "move_down")
 	direction = (body.global_transform.basis * Vector3(input.x, 0, input.y)).normalized()
 
 	if is_on_floor():
@@ -124,7 +124,14 @@ func _physics_process(delta):
 		#is_jumping = true
 		#is_in_air = false
 		#gravity_direction = Vector3.UP * jump
-
+	
+#	beginning of theoretical sliding code 
+		#if Input.is_action_just_pressed("jump") and is_on_floor():
+		
+		# sliding will need to be done by getting the direction the character was moving to and then 
+		# give the player a burst of speed in that direction while preventing all movement keys 
+		# from fucking up with the slide.
+	
 	main_velocity = main_velocity.lerp(direction * speed, acceleration * delta)
 
 	var step_result : StepResult = StepResult.new()
