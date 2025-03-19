@@ -1,5 +1,5 @@
 {
-  "gameinfo_path": "res://",
+  "gameinfo_path": "D:/Steam/steamapps/sourcemods/GodotVMF",
 
   "import": {
     "scale": 0.02,
@@ -14,7 +14,7 @@
   "models": {
     "import": true,
     "lightmap_texel_size": 0.4,
-    "target_folder": "res://"
+    "target_folder": "res://godotvmfcontent/models"
   },
 
   "materials": {
@@ -25,7 +25,7 @@
       "TOOLS/TOOLSINVISIBLE"
     ],
     "fallback_material": null,
-    "default_texture_size": 512,
-    "target_folder": "res://materials"
+    "default_texture_size": 1024,
+    "target_folder": "res://godotvmfcontent/materials"
   }
 }
