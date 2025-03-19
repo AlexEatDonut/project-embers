@@ -1,13 +1,14 @@
-[gd_scene load_steps=12 format=4 uid="uid://7sn7h46ed61m"]
+[gd_scene load_steps=13 format=4 uid="uid://7sn7h46ed61m"]
 
 [ext_resource type="Script" uid="uid://clvri6xpl7374" path="res://addons/godotvmf/src/VMFNode.gd" id="1_64br5"]
 [ext_resource type="ArrayMesh" uid="uid://q2tld5lpspia" path="res://godotvmfcontent/geometry/embers-devroom_vmf_import.mesh" id="2_m6f2d"]
 [ext_resource type="Shape3D" uid="uid://chxk6e0k34al3" path="res://godotvmfcontent/geometry/embers-devroom_vmf_collision_surface_prop_default.res" id="3_x15jt"]
 [ext_resource type="PackedScene" uid="uid://cx3saydh4cxhk" path="res://godotvmfcontent/entities/func_brush.tscn" id="4_rcj48"]
 [ext_resource type="PackedScene" uid="uid://cwxttgf1xbejo" path="res://godotvmfcontent/entities/light_environment.tscn" id="6_eg8j8"]
+[ext_resource type="Material" uid="uid://71efdht7u8lb" path="res://godotvmfcontent/materials/devkenney/kenney-light-texture12.vmt" id="6_nwad0"]
 [ext_resource type="PackedScene" uid="uid://x3l0v6tbskoe" path="res://player/Player.tscn" id="8_uejvj"]
 
-[sub_resource type="ArrayMesh" id="ArrayMesh_5dcyu"]
+[sub_resource type="ArrayMesh" id="ArrayMesh_uejvj"]
 _surfaces = [{
 "aabb": AABB(-0.0799999, -1.92, -1.28, 0.16, 3.84, 2.56),
 "attribute_data": PackedByteArray("AAAA/wAAgUAAAGC+AAAA/wAAgUAAAJA+AAAA/wAAgkAAAJA+AAAA/wAAgUAAAGC+AAAA/wAAgkAAAJA+AAAA/wAAgkAAAGC+AAAA/wAAgUAAAEC/AAAA/wAAgUAAAAAAAAAA/wAAgEAAAAAAAAAA/wAAgEAAAEC/AAAA/wAAgEAAAEC/AAAA/wAAgEAAAAAAAAAA/wAAgUAAAAAAAAAA/wAAgUAAAEC/AAAA/wAAgEAAAIA+AAAA/wAAgEAAAIC+AAAA/wAAgUAAAIC+AAAA/wAAgEAAAIA+AAAA/wAAgUAAAIC+AAAA/wAAgUAAAIA+"),
@@ -24,6 +25,7 @@ _surfaces = [{
 "format": 34359742495,
 "index_count": 12,
 "index_data": PackedByteArray("AAABAAIAAAACAAMABAAFAAYABAAGAAcA"),
+"material": ExtResource("6_nwad0"),
 "primitive": 3,
 "uv_scale": Vector4(0, 0, 0, 0),
 "vertex_count": 8,
@@ -32,7 +34,7 @@ _surfaces = [{
 metadata/surface_material_0 = "TOOLS/TOOLSNODRAW"
 metadata/surface_material_1 = "DEVKENNEY/KENNEY-LIGHT-TEXTURE12"
 
-[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_hdbnb"]
+[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_5dcyu"]
 data = PackedVector3Array(-0.08, -1.92, -1.28, -0.08, -1.92, 1.28, 0.08, -1.92, 1.28, -0.08, -1.92, -1.28, 0.08, -1.92, 1.28, 0.08, -1.92, -1.28, 0.08, 1.92, 1.28, 0.08, -1.92, 1.28, -0.08, -1.92, 1.28, 0.08, 1.92, 1.28, -0.08, -1.92, 1.28, -0.08, 1.92, 1.28, -0.08, 1.92, -1.28, -0.08, -1.92, -1.28, 0.08, -1.92, -1.28, -0.08, 1.92, -1.28, 0.08, -1.92, -1.28, 0.08, 1.92, -1.28, -0.08, 1.92, 1.28, -0.08, 1.92, -1.28, 0.08, 1.92, -1.28, -0.08, 1.92, 1.28, 0.08, 1.92, -1.28, 0.08, 1.92, 1.28, -0.08, -1.92, 1.28, -0.08, -1.92, -1.28, -0.08, 1.92, -1.28, -0.08, -1.92, 1.28, -0.08, 1.92, -1.28, -0.08, 1.92, 1.28, 0.08, -1.92, -1.28, 0.08, -1.92, 1.28, 0.08, 1.92, 1.28, 0.08, -1.92, -1.28, 0.08, 1.92, 1.28, 0.08, 1.92, -1.28)
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_c45t8"]
@@ -67,7 +69,6 @@ shape = ExtResource("3_x15jt")
 
 [node name="func_brush_1328" parent="VMFNode/Entities/funcs" instance=ExtResource("4_rcj48")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20.8, 1.92, 0)
-visible = false
 entity = {
 "InputFilter": 0,
 "Solidity": 0,
@@ -273,15 +274,16 @@ entity = {
 flags = 2
 
 [node name="MeshInstance3D" parent="VMFNode/Entities/funcs/func_brush_1328" index="0"]
-mesh = SubResource("ArrayMesh_5dcyu")
+transform = Transform3D(0.365283, 0, 0.930897, 0, 1, 0, -0.930897, 0, 0.365283, 1.27929, 0, -0.739653)
+mesh = SubResource("ArrayMesh_uejvj")
 
 [node name="CollisionShape3D" parent="VMFNode/Entities/funcs/func_brush_1328/MeshInstance3D/StaticBody3D" index="0"]
-shape = SubResource("ConcavePolygonShape3D_hdbnb")
+shape = SubResource("ConcavePolygonShape3D_5dcyu")
 
 [node name="lights" type="Node3D" parent="VMFNode/Entities"]
 
 [node name="light_environment" parent="VMFNode/Entities/lights" instance=ExtResource("6_eg8j8")]
-transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0, 6.4, 0)
+transform = Transform3D(-0.0105577, -0.751118, 0.660084, 0.495134, 0.569587, 0.656059, -0.868752, 0.333756, 0.36589, 0, 6.4, 0)
 entity = {
 "SunSpreadAngle": 0,
 "_AmbientScaleHDR": 1,
@@ -290,7 +292,7 @@ entity = {
 "_light": Color(1, 1, 1, 0.784314),
 "_lightHDR": Color(-0.00392157, -0.00392157, -0.00392157, 0.00392157),
 "_lightscaleHDR": 1,
-"angles": Vector3(0, 0, 0),
+"angles": Vector3(-41, 151, 0),
 "classname": "light_environment",
 "editor": {
 "color": Vector3(220, 30, 220),
@@ -300,15 +302,15 @@ entity = {
 },
 "id": 1614,
 "origin": Vector3(0, 0, 320),
-"pitch": 0,
+"pitch": -41,
 &"vmf": "D:/SteamLibrary/steamapps/SourceMods/godotvmf/maps/embers-devroom.vmf"
 }
 
 [node name="DirectionalLight3D" parent="VMFNode/Entities/lights/light_environment" index="0"]
-transform = Transform3D(-0.652337, -0.549974, 0.521523, 3.17182e-08, 0.688089, 0.725627, -0.757929, 0.473353, -0.448865, 0, 0, 0)
 light_energy = 0.784314
 
 [node name="Player" parent="." instance=ExtResource("8_uejvj")]
+ACCELERATION_DEFAULT = 12.0
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_m6f2d")
