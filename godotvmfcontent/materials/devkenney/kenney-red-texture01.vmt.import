@@ -1,0 +1,14 @@
+[remap]
+
+importer="VMT"
+type="Material"
+uid="uid://dtwmnplaa6gi4"
+path="res://.godot/imported/kenney-red-texture01.vmt-13aadea288fa675af067133cca0fc304.vmt.tres"
+
+[deps]
+
+source_file="res://godotvmfcontent/materials/devkenney/kenney-red-texture01.vmt"
+dest_files=["res://.godot/imported/kenney-red-texture01.vmt-13aadea288fa675af067133cca0fc304.vmt.tres"]
+
+[params]
+

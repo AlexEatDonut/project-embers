@@ -1,0 +1,14 @@
+[remap]
+
+importer="VTF"
+type="Texture"
+uid="uid://coqggrn8le6tm"
+path="res://.godot/imported/kenney-red-texture01.vtf-507267313f433c6c34a61271196bdd18.vtf.tres"
+
+[deps]
+
+source_file="res://godotvmfcontent/materials/devkenney/kenney-red-texture01.vtf"
+dest_files=["res://.godot/imported/kenney-red-texture01.vtf-507267313f433c6c34a61271196bdd18.vtf.tres"]
+
+[params]
+

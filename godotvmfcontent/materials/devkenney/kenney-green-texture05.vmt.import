@@ -1,0 +1,14 @@
+[remap]
+
+importer="VMT"
+type="Material"
+uid="uid://67reoreiqwea"
+path="res://.godot/imported/kenney-green-texture05.vmt-b0f1abb42be52722c39c85fdacd20002.vmt.tres"
+
+[deps]
+
+source_file="res://godotvmfcontent/materials/devkenney/kenney-green-texture05.vmt"
+dest_files=["res://.godot/imported/kenney-green-texture05.vmt-b0f1abb42be52722c39c85fdacd20002.vmt.tres"]
+
+[params]
+

@@ -1,0 +1,14 @@
+[remap]
+
+importer="VTF"
+type="Texture"
+uid="uid://dysop5a7xcbcs"
+path="res://.godot/imported/kenney-dark-texture09.vtf-801437f6a088940a72e39689e0c46cf3.vtf.tres"
+
+[deps]
+
+source_file="res://godotvmfcontent/materials/devkenney/kenney-dark-texture09.vtf"
+dest_files=["res://.godot/imported/kenney-dark-texture09.vtf-801437f6a088940a72e39689e0c46cf3.vtf.tres"]
+
+[params]
+
