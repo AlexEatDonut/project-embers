@@ -54,15 +54,6 @@ use_external_file = true
 vmf = "D:/SteamLibrary/steamapps/SourceMods/godotvmf/maps/embers-devroom.vmf"
 metadata/_custom_type_script = "uid://clvri6xpl7374"
 
-[node name="Geometry" type="MeshInstance3D" parent="VMFNode"]
-mesh = ExtResource("2_m6f2d")
-
-[node name="surface_prop_default" type="StaticBody3D" parent="VMFNode/Geometry"]
-metadata/surface_prop = "default"
-
-[node name="collision" type="CollisionShape3D" parent="VMFNode/Geometry/surface_prop_default"]
-shape = ExtResource("3_x15jt")
-
 [node name="Entities" type="Node3D" parent="VMFNode"]
 
 [node name="funcs" type="Node3D" parent="VMFNode/Entities"]
@@ -308,6 +299,15 @@ entity = {
 
 [node name="DirectionalLight3D" parent="VMFNode/Entities/lights/light_environment" index="0"]
 light_energy = 0.784314
+
+[node name="Geometry" type="MeshInstance3D" parent="VMFNode"]
+mesh = ExtResource("2_m6f2d")
+
+[node name="surface_prop_default" type="StaticBody3D" parent="VMFNode/Geometry"]
+metadata/surface_prop = "default"
+
+[node name="collision" type="CollisionShape3D" parent="VMFNode/Geometry/surface_prop_default"]
+shape = ExtResource("3_x15jt")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_m6f2d")
