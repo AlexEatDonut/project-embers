@@ -49,6 +49,7 @@ sky = SubResource("Sky_titx5")
 [node name="Node3D" type="Node3D"]
 
 [node name="VMFNode" type="Node3D" parent="."]
+transform = Transform3D(0.707107, 0, -0.707107, 0, 1, 0, 0.707107, 0, 0.707107, 0, 0, 0)
 script = ExtResource("1_64br5")
 use_external_file = true
 vmf = "D:/SteamLibrary/steamapps/SourceMods/godotvmf/maps/embers-devroom.vmf"

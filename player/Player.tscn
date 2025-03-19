@@ -25,6 +25,7 @@ rings = 16
 ring_segments = 4
 
 [sub_resource type="TextMesh" id="TextMesh_3c3w1"]
+material = ExtResource("2_3c3w1")
 text = "😎"
 pixel_size = 0.028
 
@@ -79,7 +80,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 mesh = SubResource("CapsuleMesh_ulp21")
 
 [node name="CameraPivot" type="Node3D" parent="."]
-transform = Transform3D(0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 0, 1, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 
 [node name="CameraMarker3D" type="Marker3D" parent="CameraPivot"]
 transform = Transform3D(1, 0, 0, 0, 0.707107, 0.707107, 0, -0.707107, 0.707107, 0, 40, 40)
