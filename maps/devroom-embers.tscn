@@ -309,11 +309,10 @@ entity = {
 [node name="DirectionalLight3D" parent="VMFNode/Entities/lights/light_environment" index="0"]
 light_energy = 0.784314
 
-[node name="Player" parent="." instance=ExtResource("8_uejvj")]
-ACCELERATION_DEFAULT = 12.0
-
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_m6f2d")
+
+[node name="Player" parent="." instance=ExtResource("8_uejvj")]
 
 [editable path="VMFNode/Entities/funcs/func_brush_1328"]
 [editable path="VMFNode/Entities/lights/light_environment"]
