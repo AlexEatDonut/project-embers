@@ -48,6 +48,7 @@ disabled = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.7, 0)
 
 [node name="CameraMarker3D" type="Marker3D" parent="Body/Head"]
+process_mode = 4
 
 [node name="Camera3D" type="Camera3D" parent="Body/Head/CameraMarker3D"]
 cull_mask = 1048571
@@ -64,3 +65,14 @@ mesh = SubResource("BoxMesh_dhg0d")
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 mesh = SubResource("CapsuleMesh_ulp21")
+
+[node name="CameraPivot" type="Node3D" parent="."]
+transform = Transform3D(0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 0, 1, 0)
+
+[node name="CameraMarker3D" type="Marker3D" parent="CameraPivot"]
+transform = Transform3D(1, 0, 0, 0, 0.707107, 0.707107, 0, -0.707107, 0.707107, 0, 50, 50)
+
+[node name="Camera3D" type="Camera3D" parent="CameraPivot/CameraMarker3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+projection = 1
+size = 15.0

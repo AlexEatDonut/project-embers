@@ -2,22 +2,22 @@ extends CharacterBody3D
 
 @onready var body = $Body
 @onready var head = $Body/Head
-@onready var camera = $Body/Head/CameraMarker3D/Camera3D
-@onready var camera_target = $Body/Head/CameraMarker3D
+@onready var camera = $CameraPivot/CameraMarker3D/Camera3D
+@onready var camera_target = $CameraPivot/CameraMarker3D
 @onready var head_position: Vector3 = head.position
 
 var mouse_sensitivity: float = 0.1
 
-const ACCELERATION_DEFAULT: float = 7.0
-const ACCELERATION_AIR: float = 1.0
-const SPEED_DEFAULT: float = 7.0
-const SPEED_ON_STAIRS: float = 5.0
+@export var ACCELERATION_DEFAULT: float = 7.0
+@export var ACCELERATION_AIR: float = 1.0
+@export var SPEED_DEFAULT: float = 7.0
+@export var SPEED_ON_STAIRS: float = 5.0
 
 var acceleration: float = ACCELERATION_DEFAULT
 var speed: float = SPEED_DEFAULT
 
-var gravity: float = 9.8
-var jump: float = 5.0
+@export var gravity: float = 9.8
+@export var jump: float = 5.0
 var direction: Vector3 = Vector3.ZERO
 var main_velocity: Vector3 = Vector3.ZERO
 var gravity_direction: Vector3 = Vector3.ZERO
@@ -103,7 +103,7 @@ func _input(event):
 		head.rotation.x = clamp(head.rotation.x, deg_to_rad(-89), deg_to_rad(89))
 
 func _physics_process(delta):
-	update_camera = true
+	update_camera = false
 	var is_step: bool = false
 	
 	var input = Input.get_vector("move_left", "move_right", "move_forward", "move_backward")
@@ -119,10 +119,11 @@ func _physics_process(delta):
 		acceleration = ACCELERATION_AIR
 		gravity_direction += Vector3.DOWN * gravity * delta
 
-	if Input.is_action_just_pressed("jump") and is_on_floor():
-		is_jumping = true
-		is_in_air = false
-		gravity_direction = Vector3.UP * jump
+#	Disabling jumping code.
+	#if Input.is_action_just_pressed("jump") and is_on_floor():
+		#is_jumping = true
+		#is_in_air = false
+		#gravity_direction = Vector3.UP * jump
 
 	main_velocity = main_velocity.lerp(direction * speed, acceleration * delta)
 
