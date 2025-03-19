@@ -1,5 +1,6 @@
 {
-  "gameinfo_path": "D:/Steam/steamapps/sourcemods/GodotVMF",
+  "_comment": "switch path depending on computer",
+  "gameinfo_path": "D:/SteamLibrary/steamapps/sourcemods/GodotVMF",
 
   "import": {
     "scale": 0.02,
