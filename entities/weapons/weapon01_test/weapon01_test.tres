@@ -1,0 +1,26 @@
+[gd_resource type="Resource" script_class="WeaponResource" load_steps=3 format=3 uid="uid://bf0kek81jvd6u"]
+
+[ext_resource type="ArrayMesh" uid="uid://p3fyp22yx1vx" path="res://models/weapons/Pistol_02.obj" id="1_7l0w5"]
+[ext_resource type="Script" uid="uid://nwdqm4kti1ul" path="res://entities/weapons/weapon_resource.gd" id="2_cau67"]
+
+[resource]
+script = ExtResource("2_cau67")
+name = &"Developper Pistol"
+description = &"A pistol for developpement."
+weapon_type = &"Pistol"
+price = 0.0
+base_damage = 5.0
+accuracy_factor = 1.0
+first_shot_accuracy = 100.0
+fall_off_range = 0.0
+fire_rate = 0.18
+mag_size = 10.0
+reload_speed = 1.0
+weight = 0.0
+run_gun = 1.0
+dual_wield = true
+firing_mode = &""
+position = Vector3(0.3, -0.2, -0.2)
+rotation = Vector3(0, 0, 0)
+scale = Vector3(1, 1, 1)
+mesh = ExtResource("1_7l0w5")

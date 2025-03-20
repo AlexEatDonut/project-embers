@@ -1,0 +1,9 @@
+[gd_scene load_steps=3 format=3 uid="uid://cgulaqbea2hv"]
+
+[ext_resource type="PackedScene" uid="uid://cgwyoj2deqwpg" path="res://sounds/weapons/weapon_fire.tscn" id="1_pxcml"]
+[ext_resource type="AudioStream" uid="uid://2i57onrrisj0" path="res://sounds/weapons/385811__morganpurkis__single-pistol-gunshot-3.wav" id="2_t3ho6"]
+
+[node name="weapon01_test_snd" instance=ExtResource("1_pxcml")]
+stream = ExtResource("2_t3ho6")
+volume_db = -15.0
+autoplay = true

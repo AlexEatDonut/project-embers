@@ -1,0 +1,112 @@
+[gd_scene load_steps=12 format=3 uid="uid://datcydt1gx3u0"]
+
+[ext_resource type="Script" path="res://entities/npcs/npc_badguy.gd" id="1_ns7rk"]
+[ext_resource type="FontFile" uid="uid://xukm84lst3g5" path="res://ZTGatha/ZTGatha-SemiBold.otf" id="1_ram25"]
+[ext_resource type="PackedScene" uid="uid://bg4a5flvnhv1c" path="res://tscns/generic_hit-hurt_box/hitbox.tscn" id="3_5kiv5"]
+[ext_resource type="PackedScene" uid="uid://dopwp0etou4cy" path="res://Scripts/enemy_stats.tscn" id="4_uvri3"]
+[ext_resource type="ArrayMesh" uid="uid://cb60y0dxdei6q" path="res://obj-models/char_attempt/char_attempt.obj" id="5_qbk44"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_kuily"]
+radius = 0.35
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_vr258"]
+albedo_color = Color(0.870588, 0.156863, 0.156863, 1)
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_ldam2"]
+material = SubResource("StandardMaterial3D_vr258")
+radius = 0.35
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ds1am"]
+albedo_color = Color(0.870588, 0.156863, 0.156863, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_7vnbc"]
+size = Vector3(0.7, 0.7, 0.35)
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_6svnj"]
+radius = 8.0
+
+[node name="npc_badguy" type="CharacterBody3D" groups=["Enemy"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+collision_mask = 272
+script = ExtResource("1_ns7rk")
+
+[node name="dev_entity_name" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.39849, 0)
+pixel_size = 0.01
+billboard = 2
+text = "npc_badguy
+(dev entity)"
+font = ExtResource("1_ram25")
+
+[node name="Hitbox" parent="." instance=ExtResource("3_5kiv5")]
+collision_layer = 192
+collision_mask = 8
+
+[node name="CollisionShape3D" parent="Hitbox" index="0"]
+shape = SubResource("CapsuleShape3D_kuily")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("CapsuleShape3D_kuily")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+cast_shadow = 0
+mesh = SubResource("CapsuleMesh_ldam2")
+skeleton = NodePath("../CollisionShape3D")
+
+[node name="NpcHeadLocation" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.65, 0)
+
+[node name="headX" type="Marker3D" parent="NpcHeadLocation"]
+
+[node name="RayCast3D" type="RayCast3D" parent="NpcHeadLocation/headX"]
+target_position = Vector3(0, 0, -10)
+collision_mask = 768
+debug_shape_custom_color = Color(0.596078, 0, 0.572549, 1)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="NpcHeadLocation/headX"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.20288)
+material_override = SubResource("StandardMaterial3D_ds1am")
+cast_shadow = 0
+mesh = SubResource("BoxMesh_7vnbc")
+skeleton = NodePath("")
+
+[node name="muzzle" type="Marker3D" parent="NpcHeadLocation/headX"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.530238)
+
+[node name="Eyes" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
+
+[node name="eyeCast" type="RayCast3D" parent="Eyes"]
+target_position = Vector3(0, 0, -10)
+collision_mask = 0
+debug_shape_custom_color = Color(0, 1, 1, 1)
+
+[node name="EnemyStats" parent="." instance=ExtResource("4_uvri3")]
+max_health = 20
+
+[node name="THIS IS A DEV NPC" type="Node" parent="."]
+process_mode = 4
+
+[node name="SightRange" type="Area3D" parent="."]
+collision_mask = 512
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="SightRange"]
+shape = SubResource("SphereShape3D_6svnj")
+
+[node name="ShootTimer" type="Timer" parent="."]
+wait_time = 0.45
+
+[node name="CharAttempt_model" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.6, 0, 0, 0, 0.6, 0, 0, 0, 0.6, 0, -1, 0)
+visible = false
+mesh = ExtResource("5_qbk44")
+
+[connection signal="graceperiod_ended" from="Hitbox" to="." method="_on_hitbox_graceperiod_ended"]
+[connection signal="graceperiod_started" from="Hitbox" to="." method="_on_hitbox_graceperiod_started"]
+[connection signal="health_changed" from="EnemyStats" to="." method="_on_enemy_stats_health_changed"]
+[connection signal="no_health" from="EnemyStats" to="." method="_on_enemy_stats_no_health"]
+[connection signal="body_entered" from="SightRange" to="." method="_on_sight_range_body_entered"]
+[connection signal="body_exited" from="SightRange" to="." method="_on_sight_range_body_exited"]
+[connection signal="timeout" from="ShootTimer" to="." method="_on_shoot_timer_timeout"]
+
+[editable path="Hitbox"]

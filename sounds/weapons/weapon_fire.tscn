@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://cgwyoj2deqwpg"]
+
+[ext_resource type="Script" uid="uid://cyoov4u5w3pu6" path="res://sounds/weapons/weapon_fire.gd" id="1_c4gd8"]
+
+[node name="weapon_fire" type="AudioStreamPlayer"]
+script = ExtResource("1_c4gd8")
+
+[connection signal="finished" from="." to="." method="_on_finished"]

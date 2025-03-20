@@ -1,0 +1,39 @@
+[gd_scene load_steps=6 format=3 uid="uid://dod12a2wormh0"]
+
+[ext_resource type="Script" path="res://entities/items/pickups/item_medkit_medium.gd" id="1_2jg6j"]
+[ext_resource type="Texture2D" uid="uid://dsyhfjrtv31ju" path="res://placeholders/Mediumhealth.png" id="1_yicil"]
+[ext_resource type="FontFile" uid="uid://xukm84lst3g5" path="res://ZTGatha/ZTGatha-SemiBold.otf" id="2_2s645"]
+[ext_resource type="PackedScene" uid="uid://evy8l6341evn" path="res://tscns/generic_hit-hurt_box/entity_collision_hull.tscn" id="2_bp0w0"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_v0q68"]
+size = Vector3(0.9, 0.9, 0.9)
+
+[node name="item_medkit_medium" type="Node3D"]
+script = ExtResource("1_2jg6j")
+
+[node name="entityCollisionHull" parent="." instance=ExtResource("2_bp0w0")]
+healthRatio = 50
+entityType = 1
+
+[node name="CollisionShape3D" parent="entityCollisionHull" index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.45, 0)
+shape = SubResource("BoxShape3D_v0q68")
+
+[node name="healthkit_Sprite" type="Sprite3D" parent="."]
+transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0, 0.5, 0)
+billboard = 1
+texture = ExtResource("1_yicil")
+
+[node name="dev_entity_name" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4, 0)
+pixel_size = 0.01
+billboard = 2
+text = "item_medkit_medium
+(WIP)"
+font = ExtResource("2_2s645")
+
+[connection signal="body_entered" from="entityCollisionHull" to="." method="_on_entity_collision_hull_body_entered"]
+[connection signal="pickup_RespawnEnd" from="entityCollisionHull" to="." method="_on_entity_collision_hull_pickup_respawn_end"]
+[connection signal="pickup_RespawnStart" from="entityCollisionHull" to="." method="_on_entity_collision_hull_pickup_respawn_start"]
+
+[editable path="entityCollisionHull"]

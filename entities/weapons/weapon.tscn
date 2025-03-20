@@ -1,0 +1,17 @@
+[gd_scene load_steps=2 format=3 uid="uid://78vc80y3pt41"]
+
+[ext_resource type="Script" uid="uid://dhsiag5s2bs4o" path="res://entities/weapons/weapon.gd" id="1_e4m06"]
+
+[node name="Weapon" type="Node3D"]
+script = ExtResource("1_e4m06")
+
+[node name="WeaponMesh" type="MeshInstance3D" parent="."]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, -0.4)
+
+[node name="hitscanOrigin" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+
+[node name="Timer" type="Timer" parent="."]
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
