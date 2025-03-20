@@ -3,6 +3,12 @@ extends CharacterBody3D
 @onready var body = $Body
 @onready var head = $Body/Head
 @onready var head_position: Vector3 = head.position
+@onready var base_camera: Camera3D = $CameraPivot/CameraMarker3D/BaseCamera
+
+
+@onready var animation_player: AnimationPlayer = $AnimationPlayer
+@onready var animation_tree: AnimationTree = $AnimationTree
+
 
 var mouse_sensitivity: float = 0.1
 
@@ -10,6 +16,7 @@ var mouse_sensitivity: float = 0.1
 @export var ACCELERATION_AIR: float = 1.0
 @export var SPEED_DEFAULT: float = 7.0
 @export var SPEED_ON_STAIRS: float = 5.0
+@export var LOOKING_SPEED: float = 10.0
 
 var acceleration: float = ACCELERATION_DEFAULT
 var speed: float = SPEED_DEFAULT
@@ -17,6 +24,7 @@ var speed: float = SPEED_DEFAULT
 @export var gravity: float = 9.8
 @export var jump: float = 5.0
 var direction: Vector3 = Vector3.ZERO
+var previous_look_direction = Vector3()
 var main_velocity: Vector3 = Vector3.ZERO
 var gravity_direction: Vector3 = Vector3.ZERO
 var movement: Vector3 = Vector3.ZERO
@@ -53,18 +61,21 @@ class StepResult:
 
 
 func _ready():
-	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
-	
+	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 	
 func _process(delta: float) -> void:
 
-	var interpolation_fraction = clamp(Engine.get_physics_interpolation_fraction(), 0, 1)
+	#var interpolation_fraction = clamp(Engine.get_physics_interpolation_fraction(), 0, 1)
 
 	if is_on_floor():
 		time_in_air = 0.0
 
 	else:
 		time_in_air += delta
+	body.look_at(ScreenPointToRay(), Vector3.UP)
+
+
+
 
 func _input(event):
 	if event is InputEventMouseMotion:
@@ -74,6 +85,21 @@ func _input(event):
 		
 		#head.rotate_x(deg_to_rad(-event.relative.y * mouse_sensitivity))
 		#head.rotation.x = clamp(head.rotation.x, deg_to_rad(-89), deg_to_rad(89))
+
+func ScreenPointToRay():
+	var spaceState = get_world_3d().direct_space_state
+	var mousePos = get_viewport().get_mouse_position()
+	var rayOrigin = base_camera.project_ray_origin(mousePos)
+	var rayEnd = rayOrigin + base_camera.project_ray_normal(mousePos) * 2000
+	var rayArray = spaceState.intersect_ray(PhysicsRayQueryParameters3D.create(rayOrigin, rayEnd))
+
+	if rayArray.has("position"):
+		var rayHitLocation = rayArray["position"]
+		rayHitLocation.y = body.global_transform.origin.y
+
+		previous_look_direction = rayHitLocation
+		return rayHitLocation
+	return previous_look_direction
 
 func _physics_process(delta):
 	var is_step: bool = false
