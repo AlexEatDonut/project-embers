@@ -20,6 +20,7 @@ This project's goal is to get me to make an actual product. I was rejected for a
 # Project content taken
 
 <a href="https://github.com/mrezai/GodotStairs">GodotStairs</a>
+<a href="https://poly.pizza/m/3To2e7sKmO">Pistol by Zsky [CC-BY] via Poly Pizza</a>
 
 <hr>
 
