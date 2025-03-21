@@ -1,0 +1,14 @@
+[remap]
+
+importer="VTF"
+type="Texture"
+uid="uid://co7hm8aqlxqj5"
+path="res://.godot/imported/kenney-green-texture06.vtf-37147a97a1e5d9bfbfca4d35253ac147.vtf.tres"
+
+[deps]
+
+source_file="res://godotvmfcontent/materials/devkenney/kenney-green-texture06.vtf"
+dest_files=["res://.godot/imported/kenney-green-texture06.vtf-37147a97a1e5d9bfbfca4d35253ac147.vtf.tres"]
+
+[params]
+
