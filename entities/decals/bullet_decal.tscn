@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://d1kc52iphu7lc"]
 
 [ext_resource type="Texture2D" uid="uid://cx64we5hk15e4" path="res://materials/decals/bullet_decal_placeholder.png" id="1_gc2p2"]
-[ext_resource type="Script" uid="uid://rf6s4pga8k20" path="res://entities/decals/bullet_decal.gd" id="2_h32l6"]
+[ext_resource type="Script" uid="uid://w3nmlitgyl7c" path="res://entities/decals/bullet_decal.gd" id="2_h32l6"]
 
 [node name="BulletDecal" type="Decal"]
 size = Vector3(0.15, 0.15, 0.15)
