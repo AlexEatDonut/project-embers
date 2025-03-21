@@ -5,6 +5,9 @@ extends RayCast3D
 @export var player_affiliation : bool
 @export var lingering : bool
 
+@onready var gpu_trail_3d: GPUTrail3D = $GPUTrail3D
+@onready var checker_timer: Timer = $CheckerTimer
+
 @onready var remote_transform := RemoteTransform3D.new()
 @onready var mesh = $MeshInstance3D
 @onready var bullet_decal = preload("res://entities/decals/bullet_decal.tscn")
@@ -17,6 +20,7 @@ signal collide_body(collider)
 
 func _ready() -> void:
 	self.top_level = true
+	position += (global_basis * Vector3.FORWARD) * -0.7
 
 func _physics_process(delta: float) -> void:
 	position += global_basis * Vector3.FORWARD * SPEED * delta
@@ -24,28 +28,29 @@ func _physics_process(delta: float) -> void:
 	force_raycast_update()
 	target = get_collider()
 	if is_colliding():
-		var bullet_hole = bullet_decal.instantiate()
-		var pt = get_collision_point()
-		var nrml = get_collision_normal()
-		global_position = get_collision_point()
-		create_bullethole(bullet_hole, target)
-		BulletDecalPool.spawn_bullet_decal(pt, nrml, target )
-		set_physics_process(false)
-		print(target.get_collision_layer())
-		#CODE THAT NEEDS REWRITE : DETECT WHICH LAYER IT IS DETECTING WITH
-		#if target.get_collision_layer() == 401:
-		#pass
-		#else : 
-			#emit_signal("collide_body", target)
-		#print(target)
-		emit_signal("collide_body", target)
-		if lingering == true :
-			target.add_child(remote_transform)
-			remote_transform.global_transform = global_transform
-			remote_transform.remote_path = remote_transform.get_path_to(self)
-			remote_transform.tree_exited.connect(_cleanup)
-		else :
-			_cleanup()
+		if not target.is_in_group("Player"):
+			var bullet_hole = bullet_decal.instantiate()
+			var pt = get_collision_point()
+			var nrml = get_collision_normal()
+			global_position = get_collision_point()
+			create_bullethole(bullet_hole, target)
+			BulletDecalPool.spawn_bullet_decal(pt, nrml, target )
+			set_physics_process(false)
+			print(target.get_collision_layer())
+			#CODE THAT NEEDS REWRITE : DETECT WHICH LAYER IT IS DETECTING WITH
+			#if target.get_collision_layer() == 401:
+			#pass
+			#else : 
+				#emit_signal("collide_body", target)
+			#print(target)
+			emit_signal("collide_body", target)
+			if lingering == true :
+				target.add_child(remote_transform)
+				remote_transform.global_transform = global_transform
+				remote_transform.remote_path = remote_transform.get_path_to(self)
+				remote_transform.tree_exited.connect(_cleanup)
+			else :
+				_cleanup()
 
 func create_bullethole(bh, target):
 	var root = get_tree().current_scene
@@ -70,3 +75,7 @@ func _on_collide_body(collider: Variant) -> void:
 		target._decrease_health(base_damage)
 	if target.is_in_group("Player") && player_affiliation == false :
 		pass
+
+
+func _on_checker_timer_timeout() -> void:
+	gpu_trail_3d.emitting = true

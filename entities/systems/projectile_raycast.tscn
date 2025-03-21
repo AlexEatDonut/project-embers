@@ -1,15 +1,36 @@
-[gd_scene load_steps=4 format=3 uid="uid://brr46dfllhl6c"]
+[gd_scene load_steps=12 format=3 uid="uid://brr46dfllhl6c"]
 
 [ext_resource type="Script" uid="uid://1jgb1sxgtgt1" path="res://entities/systems/projectile_raycast.gd" id="1_ttk0i"]
 [ext_resource type="Material" uid="uid://cyg8rtd0p220l" path="res://materials/tools/danger_indicator.tres" id="2_q3xxf"]
+[ext_resource type="Shader" uid="uid://mwoguvyjxon" path="res://addons/GPUTrail/shaders/trail.gdshader" id="3_gixme"]
+[ext_resource type="Shader" uid="uid://ojddj5owf7o4" path="res://addons/GPUTrail/shaders/trail_draw_pass.gdshader" id="4_3fu0e"]
+[ext_resource type="Texture2D" uid="uid://crk6pkb7e5rwc" path="res://addons/GPUTrail/defaults/texture.tres" id="5_pcfdv"]
+[ext_resource type="Texture2D" uid="uid://ct31fhxvcragr" path="res://addons/GPUTrail/defaults/curve.tres" id="6_8pfp8"]
+[ext_resource type="Script" uid="uid://sr4tbbdc08mg" path="res://addons/GPUTrail/GPUTrail3D.gd" id="7_1roem"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_n82i5"]
 material = ExtResource("2_q3xxf")
 radius = 0.05
 height = 0.2
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_m7058"]
+shader = ExtResource("3_gixme")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_j2yfy"]
+resource_local_to_scene = true
+render_priority = 0
+shader = ExtResource("4_3fu0e")
+shader_parameter/tex = ExtResource("5_pcfdv")
+shader_parameter/uv_offset = Vector2(0, 0)
+shader_parameter/color_ramp = ExtResource("5_pcfdv")
+shader_parameter/curve = ExtResource("6_8pfp8")
+shader_parameter/emmission_transform = Projection(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1)
+shader_parameter/flags = 44
+
+[sub_resource type="QuadMesh" id="QuadMesh_t2ser"]
+material = SubResource("ShaderMaterial_j2yfy")
+
 [node name="Projectile_raycast" type="RayCast3D"]
-collide_with_areas = true
 debug_shape_custom_color = Color(0.984314, 1, 0, 1)
 script = ExtResource("1_ttk0i")
 
@@ -22,5 +43,28 @@ wait_time = 15.0
 one_shot = true
 autostart = true
 
+[node name="GPUTrail3D" type="GPUParticles3D" parent="."]
+transform = Transform3D(0.075, 0, 0, 0, 0.075, 0, 0, 0, 0.075, 0, 0, 0)
+amount = 10
+lifetime = 10.0
+explosiveness = 1.0
+fixed_fps = 60
+process_material = SubResource("ShaderMaterial_m7058")
+draw_pass_1 = SubResource("QuadMesh_t2ser")
+script = ExtResource("7_1roem")
+length = 10
+length_seconds = 0.166667
+color_ramp = ExtResource("5_pcfdv")
+curve = ExtResource("6_8pfp8")
+billboard = true
+_defaults_have_been_set = true
+metadata/_custom_type_script = "uid://sr4tbbdc08mg"
+
+[node name="CheckerTimer" type="Timer" parent="."]
+wait_time = 0.2
+one_shot = true
+autostart = true
+
 [connection signal="collide_body" from="." to="." method="_on_collide_body"]
 [connection signal="timeout" from="Timer" to="." method="_cleanup"]
+[connection signal="timeout" from="CheckerTimer" to="." method="_on_checker_timer_timeout"]
