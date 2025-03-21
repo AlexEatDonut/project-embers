@@ -12,6 +12,7 @@ config_version=5
 
 config/name="project-embers"
 config/features=PackedStringArray("4.4", "Forward Plus")
+run/max_fps=144
 
 [autoload]
 
@@ -26,7 +27,26 @@ window/size/mode=2
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/godotvmf/plugin.cfg")
+enabled=PackedStringArray("res://addons/GPUTrail/plugin.cfg", "res://addons/godotvmf/plugin.cfg")
+
+[file_customization]
+
+folder_colors={
+"res://addons/": "gray",
+"res://entities/": "pink",
+"res://godotvmfcontent/": "purple",
+"res://maps/": "blue",
+"res://materials/": "teal",
+"res://models/": "green",
+"res://scripts/": "yellow",
+"res://shaders/": "orange",
+"res://sounds/": "red"
+}
+
+[global_group]
+
+Player="The player. Used as filter for enemies."
+Enemy="Generic enemies. Used as filter to take damage."
 
 [input]
 
@@ -67,6 +87,10 @@ shoot={
 3d_render/layer_2="Details"
 3d_render/layer_3="Foreground"
 3d_physics/layer_1="World"
+
+[physics]
+
+3d/physics_engine="Jolt Physics"
 
 [rendering]
 
