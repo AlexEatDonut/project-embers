@@ -2,6 +2,8 @@
 extends CharacterBody3D
 
 @onready var stats = $EnemyStats
+@onready var animation_tree: AnimationTree = $AnimationTree
+@onready var animation_player: AnimationPlayer = $AnimationPlayer
 
 @onready var shoottimer = $ShootTimer
 
@@ -13,7 +15,8 @@ const TURN_SPEED = 3
 
 enum {
 	IDLE,
-	ALERT
+	ALERT,
+	STAREDOWN
 }
 
 var state = IDLE
@@ -29,6 +32,9 @@ func _process(delta):
 			pass
 		ALERT:
 			print("enemy alerted")
+			
+		STAREDOWN:
+			pass
 			#Code : the head follows the player
 			#head.look_at(target.global_transform.origin + Vector3.UP, Vector3.UP)
 			
@@ -42,7 +48,7 @@ func _process(delta):
 			#rotate_y(deg_to_rad(eyes.rotation.y * TURN_SPEED))
 
 func _on_sight_range_body_entered(body: Node3D) -> void:
-	if body.is_in_group("Player"):
+	if body.is_in_group("Client"):
 		target = body
 		state = ALERT
 		shoottimer.start()
@@ -72,10 +78,18 @@ func _on_hitbox_graceperiod_ended() -> void:
 func _on_enemy_stats_no_health() -> void:
 	#create_death_effect() 
 	#aka create effects on death lmao
-	print("enemy lost all health , queue free-ing")
-	queue_free()
+	print("enemy lost all health , animating")
+	animation_player.play("death")
+	_on_animation_finished("death")
+	#print("enemy lost all health , queue free-ing")
+	#queue_free()
 
 
 func _on_enemy_stats_health_changed(value: Variant) -> void:
 	# check if health got bigger or lower, then do things accordingly with other signals
 	pass
+
+
+func _on_animation_finished(anim_name: StringName) -> void:
+		if anim_name == "death" :
+			queue_free()
