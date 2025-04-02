@@ -195,7 +195,7 @@ entity = {
 layers = 7
 light_energy = 0.784314
 
-[node name="funcs" type="Node3D" parent="Level/DevRoomBase/Entities"]
+[node name="funcs" type="Node3D" parent="Level/DevRoomBase/Entities" groups=["CameraFacingWall"]]
 
 [node name="func_brush_1626" parent="Level/DevRoomBase/Entities/funcs" instance=ExtResource("6_hdbnb")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 22.08, 1.92, -1.28)
@@ -405,6 +405,9 @@ flags = 2
 
 [node name="MeshInstance3D" parent="Level/DevRoomBase/Entities/funcs/func_brush_1626" index="0"]
 mesh = SubResource("ArrayMesh_c45t8")
+
+[node name="StaticBody3D" parent="Level/DevRoomBase/Entities/funcs/func_brush_1626/MeshInstance3D" index="0"]
+collision_layer = 4096
 
 [node name="CollisionShape3D" parent="Level/DevRoomBase/Entities/funcs/func_brush_1626/MeshInstance3D/StaticBody3D" index="0"]
 shape = SubResource("ConcavePolygonShape3D_titx5")
@@ -2555,6 +2558,9 @@ flags = 2
 layers = 4
 mesh = SubResource("ArrayMesh_7dbhb")
 
+[node name="StaticBody3D" parent="Level/DevRoomBase/Entities/funcs/func_brush_2978/MeshInstance3D" index="0"]
+collision_layer = 4096
+
 [node name="CollisionShape3D" parent="Level/DevRoomBase/Entities/funcs/func_brush_2978/MeshInstance3D/StaticBody3D" index="0"]
 shape = SubResource("ConcavePolygonShape3D_rinib")
 
@@ -4175,6 +4181,9 @@ flags = 2
 [node name="MeshInstance3D" parent="Level/DevRoomBase/Entities/funcs/func_brush_3025" index="0"]
 layers = 2
 mesh = SubResource("ArrayMesh_j4xeg")
+
+[node name="StaticBody3D" parent="Level/DevRoomBase/Entities/funcs/func_brush_3025/MeshInstance3D" index="0"]
+collision_layer = 4096
 
 [node name="CollisionShape3D" parent="Level/DevRoomBase/Entities/funcs/func_brush_3025/MeshInstance3D/StaticBody3D" index="0"]
 shape = SubResource("ConcavePolygonShape3D_o2lhs")
