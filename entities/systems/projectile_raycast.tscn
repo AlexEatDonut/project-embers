@@ -31,6 +31,7 @@ shader_parameter/flags = 44
 material = SubResource("ShaderMaterial_j2yfy")
 
 [node name="Projectile_raycast" type="RayCast3D"]
+collision_mask = 4105
 debug_shape_custom_color = Color(0.984314, 1, 0, 1)
 script = ExtResource("1_ttk0i")
 

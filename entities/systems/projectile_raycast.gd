@@ -28,7 +28,7 @@ func _physics_process(delta: float) -> void:
 	force_raycast_update()
 	target = get_collider()
 	if is_colliding():
-		if not target.is_in_group("Player"):
+		if not target.is_in_group("Client"):
 			var bullet_hole = bullet_decal.instantiate()
 			var pt = get_collision_point()
 			var nrml = get_collision_normal()
@@ -71,9 +71,9 @@ func _on_collide_body(collider: Variant) -> void:
 	#this is a hacky way to get around the hitbox system i have put in place. 
 	#I should call upon signals or some other ways later 
 	var target = collider.get_parent_node_3d() 
-	if target.is_in_group("Enemy") && player_affiliation == true :
+	if target.is_in_group("NPC") && player_affiliation == true :
 		target._decrease_health(base_damage)
-	if target.is_in_group("Player") && player_affiliation == false :
+	if target.is_in_group("Client") && player_affiliation == false :
 		pass
 
 
