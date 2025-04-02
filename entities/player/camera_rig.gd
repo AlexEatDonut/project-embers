@@ -1,4 +1,5 @@
 extends Node3D
+#@onready var player: CharacterBody3D = $".."
 
 @onready var background_viewport: SubViewport = $CameraMarker3D/BaseCamera/BackgroundViewportContainer/BackgroundViewport
 @onready var foreground_viewport: SubViewport = $CameraMarker3D/BaseCamera/ForegroundViewportContainer/ForegroundViewport
@@ -11,6 +12,9 @@ extends Node3D
 @onready var foreground_camera: Camera3D = $CameraMarker3D/BaseCamera/ForegroundViewportContainer/ForegroundViewport/ForegroundCamera
 @onready var details_camera: Camera3D = $CameraMarker3D/BaseCamera/DetailsViewportContainer/DetailsViewport/DetailsCamera
 
+
+#@onready var dead_zone_radius = 1
+#@onready var speed_factor = player.speed / dead_zone_radius
 
 func _ready():
 	resize();
@@ -27,3 +31,5 @@ func move_to_place():
 
 func _process(delta: float) -> void:
 	move_to_place()
+#	code to transform with a lerp. ENABLE TOP LEVEL ON CAMERAPIVOT AND THE ACCORDING VARs
+	#global_transform = lerp(global_transform, player.global_transform, speed_factor * delta)
