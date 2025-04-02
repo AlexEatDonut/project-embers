@@ -4,7 +4,10 @@ extends Node
 
 @export var max_health = 200: 
 	set = set_max_health
-	
+@export var closest_to_player : bool =  false 
+@export var highlighted : bool =  false 
+@export var locked_on : bool =  false 
+
 var health = max_health  :
 	get: 
 		return health
