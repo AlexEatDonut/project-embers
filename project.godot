@@ -45,8 +45,10 @@ folder_colors={
 
 [global_group]
 
-Player="The player. Used as filter for enemies."
-Enemy="Generic enemies. Used as filter to take damage."
+Client="The player/user/client. Used as filter for triggers and damage."
+NPC="Generic NPC. Used as filter for triggers and damage."
+Hostile1="Generic Hostile Group. Used as filter for triggers, damage, and affiliation."
+CameraFacingWall="A wall that faces the camera. Ignored by the raycast that checks for where the player is looking"
 
 [input]
 
@@ -86,7 +88,11 @@ shoot={
 3d_render/layer_1="Background"
 3d_render/layer_2="Details"
 3d_render/layer_3="Foreground"
-3d_physics/layer_1="World"
+3d_physics/layer_1="GeoCollisioners"
+3d_physics/layer_4="Hitboxes"
+3d_physics/layer_7="Dmgboxes"
+3d_physics/layer_10="Interactables"
+3d_physics/layer_13="CameraFacingWalls"
 
 [physics]
 
