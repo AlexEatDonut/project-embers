@@ -53,6 +53,7 @@ var update_camera = false
 var camera_gt_previous : Transform3D
 var camera_gt_current : Transform3D
 
+#var lookdirection_raycast_length = 100
 
 class StepResult:
 	var diff_position: Vector3 = Vector3.ZERO
@@ -74,9 +75,6 @@ func _process(delta: float) -> void:
 		time_in_air += delta
 	body.look_at(ScreenPointToRay(), Vector3.UP)
 
-
-
-
 func _input(event):
 	if event is InputEventMouseMotion:
 		#old body rotation code 
@@ -90,8 +88,10 @@ func ScreenPointToRay():
 	var spaceState = get_world_3d().direct_space_state
 	var mousePos = get_viewport().get_mouse_position()
 	var rayOrigin = base_camera.project_ray_origin(mousePos)
-	var rayEnd = rayOrigin + base_camera.project_ray_normal(mousePos) * 2000
-	var rayArray = spaceState.intersect_ray(PhysicsRayQueryParameters3D.create(rayOrigin, rayEnd))
+	var rayCollisionMasks: int = 1
+	var rayEnd = rayOrigin + base_camera.project_ray_normal(mousePos) * 200
+#	lookdirection_raycast_length could be reused later when i find how to take the location where the raycast is at a specific Y coord
+	var rayArray = spaceState.intersect_ray(PhysicsRayQueryParameters3D.create(rayOrigin, rayEnd, rayCollisionMasks))
 
 	if rayArray.has("position"):
 		var rayHitLocation = rayArray["position"]
@@ -99,6 +99,10 @@ func ScreenPointToRay():
 
 		previous_look_direction = rayHitLocation
 		return rayHitLocation
+#		leftover code in case i get lookdirection_raycast_length working as desired
+	#else :
+		#rayEnd.y = body.global_transform.origin.y
+		#return rayEnd
 	return previous_look_direction
 
 func _physics_process(delta):
