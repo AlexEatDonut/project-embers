@@ -1,18 +1,18 @@
-[gd_scene load_steps=18 format=3 uid="uid://datcydt1gx3u0"]
+[gd_scene load_steps=24 format=3 uid="uid://datcydt1gx3u0"]
 
 [ext_resource type="Script" uid="uid://dyb8npqlf2mdg" path="res://entities/npcs/npc_badguy.gd" id="1_ns7rk"]
-[ext_resource type="Material" uid="uid://cnq7n26g77h12" path="res://materials/tools/direction_indicator.tres" id="3_jogsh"]
+[ext_resource type="ArrayMesh" uid="uid://p3fyp22yx1vx" path="res://models/weapons/Pistol_02.obj" id="2_clyg5"]
 [ext_resource type="Material" uid="uid://cyg8rtd0p220l" path="res://materials/tools/danger_indicator.tres" id="3_op6lu"]
+[ext_resource type="Material" uid="uid://7c1ci4f7tsi8" path="res://materials/tools/pixel_perfect_outline.tres" id="3_t8x1e"]
+[ext_resource type="Material" uid="uid://bqm424qcrvg2h" path="res://materials/tools/positive_indicator.tres" id="4_l4v3p"]
 [ext_resource type="PackedScene" uid="uid://cp50t44nb5ryp" path="res://scripts/enemy_stats.tscn" id="4_uvri3"]
+[ext_resource type="Material" uid="uid://b7pixluig727d" path="res://materials/tools/highlight_indicator.tres" id="6_l4v3p"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_clyg5"]
+radius = 0.55
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_kuily"]
 radius = 0.35
-
-[sub_resource type="CylinderMesh" id="CylinderMesh_clyg5"]
-material = ExtResource("3_jogsh")
-top_radius = 0.15
-bottom_radius = 0.0
-height = 0.4
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_vr258"]
 albedo_color = Color(0.870588, 0.156863, 0.156863, 1)
@@ -20,6 +20,18 @@ albedo_color = Color(0.870588, 0.156863, 0.156863, 1)
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_ldam2"]
 material = SubResource("StandardMaterial3D_vr258")
 radius = 0.35
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_clyg5"]
+material = ExtResource("4_l4v3p")
+top_radius = 0.15
+bottom_radius = 0.0
+height = 0.4
+
+[sub_resource type="TorusMesh" id="TorusMesh_l4v3p"]
+material = ExtResource("6_l4v3p")
+outer_radius = 0.6
+rings = 12
+ring_segments = 4
 
 [sub_resource type="PrismMesh" id="PrismMesh_jogsh"]
 material = ExtResource("3_op6lu")
@@ -37,8 +49,11 @@ material = ExtResource("3_op6lu")
 text = "😭"
 pixel_size = 0.028
 
+[sub_resource type="SphereShape3D" id="SphereShape3D_jogsh"]
+radius = 10.0
+
 [sub_resource type="SphereShape3D" id="SphereShape3D_6svnj"]
-radius = 8.0
+radius = 16.0
 
 [sub_resource type="AnimationRootNode" id="AnimationRootNode_jogsh"]
 
@@ -87,6 +102,30 @@ tracks/3/path = NodePath("Body/Head:rotation")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("Body/HeldWeapon:position")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 1.4, -0.62)]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("Body/HeldWeapon:rotation")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
@@ -143,6 +182,30 @@ tracks/3/keys = {
 "update": 0,
 "values": [Vector3(0, 0, 0), Vector3(0, 0, 1.5708)]
 }
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("Body/HeldWeapon:position")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 0.23),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, 1.4, -0.62), Vector3(0, 0, -0.62)]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("Body/HeldWeapon:rotation")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0, 0.2399),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0, 0, 1.5708)]
+}
 
 [sub_resource type="Animation" id="Animation_jogsh"]
 resource_name = "idle"
@@ -155,8 +218,26 @@ _data = {
 }
 
 [node name="npc_badguy" type="CharacterBody3D" groups=["Hostile1", "NPC"]]
-collision_mask = 272
+collision_layer = 2
+collision_mask = 4359
 script = ExtResource("1_ns7rk")
+outline_material = ExtResource("3_t8x1e")
+
+[node name="RayToPlayer" type="RayCast3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.42, 0)
+
+[node name="Hitbox" type="Area3D" parent="."]
+collision_layer = 8
+collision_mask = 64
+
+[node name="ShapeHitbox" type="CollisionShape3D" parent="Hitbox"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("CylinderShape3D_clyg5")
+debug_color = Color(0.938242, 1.45355e-05, 0.624536, 0.42)
+
+[node name="CollisionShape_collider" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("CapsuleShape3D_kuily")
 
 [node name="EnemyStats" parent="." instance=ExtResource("4_uvri3")]
 max_health = 20
@@ -164,22 +245,48 @@ max_health = 20
 [node name="ShootTimer" type="Timer" parent="."]
 wait_time = 0.45
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
-shape = SubResource("CapsuleShape3D_kuily")
+[node name="ReactionTime" type="Timer" parent="."]
+wait_time = 0.45
 
 [node name="Body" type="Node3D" parent="."]
-
-[node name="LockOnIndicator" type="MeshInstance3D" parent="Body"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.44635, 0)
-cast_shadow = 0
-mesh = SubResource("CylinderMesh_clyg5")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Body"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 cast_shadow = 0
 mesh = SubResource("CapsuleMesh_ldam2")
-skeleton = NodePath("../../CollisionShape3D")
+skeleton = NodePath("../../CollisionShape_collider")
+
+[node name="BulletSpawnLocation" type="Marker3D" parent="Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4, -0.6)
+
+[node name="LineOfSight" type="Node3D" parent="Body"]
+
+[node name="LineOfSightRay" type="RayCast3D" parent="Body/LineOfSight"]
+transform = Transform3D(1, 0, 0, 0, 0.999926, -0.0121646, 0, 0.0121646, 0.999926, 0, 1.42, 0)
+target_position = Vector3(0, 0, -10)
+
+[node name="HeldWeapon" type="MeshInstance3D" parent="Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4, -0.62)
+mesh = ExtResource("2_clyg5")
+skeleton = NodePath("../../SightRange")
+
+[node name="HighlightIndicator" type="Node3D" parent="Body"]
+visible = false
+
+[node name="cone" type="MeshInstance3D" parent="Body/HighlightIndicator"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.44635, 0)
+cast_shadow = 0
+mesh = SubResource("CylinderMesh_clyg5")
+skeleton = NodePath("../..")
+
+[node name="LockOnIndicator" type="Node3D" parent="Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+visible = false
+
+[node name="ring" type="MeshInstance3D" parent="Body/LockOnIndicator"]
+gi_mode = 0
+mesh = SubResource("TorusMesh_l4v3p")
+skeleton = NodePath("")
 
 [node name="DirectionIndicator" type="Node3D" parent="Body"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0)
@@ -201,12 +308,20 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.7, 0)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.423752)
 mesh = SubResource("TextMesh_op6lu")
 
+[node name="AwarenessRange" type="Area3D" parent="."]
+collision_layer = 4096
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="AwarenessRange"]
+shape = SubResource("SphereShape3D_jogsh")
+debug_color = Color(0, 0.6, 0.701961, 1)
+
 [node name="SightRange" type="Area3D" parent="."]
-collision_layer = 2
-collision_mask = 512
+collision_layer = 4096
+collision_mask = 0
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="SightRange"]
 shape = SubResource("SphereShape3D_6svnj")
+debug_color = Color(5.10186e-06, 0.616042, 0.596089, 0.42)
 
 [node name="AnimationTree" type="AnimationTree" parent="."]
 tree_root = SubResource("AnimationRootNode_jogsh")
@@ -219,8 +334,12 @@ libraries = {
 autoplay = "idle"
 
 [connection signal="health_changed" from="EnemyStats" to="." method="_on_enemy_stats_health_changed"]
+[connection signal="highlight_off" from="EnemyStats" to="." method="_on_enemy_stats_highlight_off"]
+[connection signal="highlight_on" from="EnemyStats" to="." method="_on_enemy_stats_highlight_on"]
 [connection signal="no_health" from="EnemyStats" to="." method="_on_enemy_stats_no_health"]
 [connection signal="timeout" from="ShootTimer" to="." method="_on_shoot_timer_timeout"]
+[connection signal="body_entered" from="AwarenessRange" to="." method="_on_awareness_range_body_entered"]
+[connection signal="body_exited" from="AwarenessRange" to="." method="_on_awareness_range_body_exited"]
 [connection signal="body_entered" from="SightRange" to="." method="_on_sight_range_body_entered"]
 [connection signal="body_exited" from="SightRange" to="." method="_on_sight_range_body_exited"]
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_finished"]
