@@ -4,13 +4,12 @@ extends CharacterBody3D
 @onready var head = $Body/Head
 @onready var head_position: Vector3 = head.position
 @onready var base_camera: Camera3D = $CameraPivot/CameraMarker3D/BaseCamera
-
+@onready var enemy_detector: Area3D = $EnemyDetector
 
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
 @onready var animation_tree: AnimationTree = $AnimationTree
 
-
-var mouse_sensitivity: float = 0.1
+@export var mouse_sensitivity: float = 0.1
 
 @export var ACCELERATION_DEFAULT: float = 7.0
 @export var ACCELERATION_AIR: float = 1.0
@@ -18,17 +17,22 @@ var mouse_sensitivity: float = 0.1
 @export var SPEED_ON_STAIRS: float = 5.0
 @export var LOOKING_SPEED: float = 10.0
 
-var acceleration: float = ACCELERATION_DEFAULT
-var speed: float = SPEED_DEFAULT
-
 @export var gravity: float = 9.8
 @export var jump: float = 5.0
+
+#region Movement Related Variables
+var acceleration: float = ACCELERATION_DEFAULT
+var speed: float = SPEED_DEFAULT
 var direction: Vector3 = Vector3.ZERO
 var previous_look_direction = Vector3()
 var main_velocity: Vector3 = Vector3.ZERO
 var gravity_direction: Vector3 = Vector3.ZERO
 var movement: Vector3 = Vector3.ZERO
+var is_jumping: bool = false
+var is_in_air: bool = false
+#endregion
 
+#region Stairs Related Variables
 const STAIRS_FEELING_COEFFICIENT: float = 2.5
 const WALL_MARGIN: float = 0.001
 const STEP_DOWN_MARGIN: float = 0.01
@@ -42,9 +46,9 @@ const SPEED_CLAMP_SLOPE_STEP_UP_COEFFICIENT = 0.4
 var step_height_main: Vector3
 var step_incremental_check_height: Vector3
 var is_enabled_stair_stepping_in_air: bool = true
-var is_jumping: bool = false
-var is_in_air: bool = false
+#endregion
 
+#region Remnant Code from Godot Stairs
 var head_offset: Vector3 = Vector3.ZERO
 var camera_target_position : Vector3 = Vector3.ZERO
 var camera_lerp_coefficient: float = 1.0
@@ -52,14 +56,14 @@ var time_in_air: float = 0.0
 var update_camera = false
 var camera_gt_previous : Transform3D
 var camera_gt_current : Transform3D
+#endregion
 
-#var lookdirection_raycast_length = 100
-
+#region Godot Stairs Class
 class StepResult:
 	var diff_position: Vector3 = Vector3.ZERO
 	var normal: Vector3 = Vector3.ZERO
 	var is_step_up: bool = false
-
+#endregion
 
 func _ready():
 	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
@@ -67,13 +71,13 @@ func _ready():
 func _process(delta: float) -> void:
 
 	#var interpolation_fraction = clamp(Engine.get_physics_interpolation_fraction(), 0, 1)
-
 	if is_on_floor():
 		time_in_air = 0.0
 
 	else:
 		time_in_air += delta
 	body.look_at(ScreenPointToRay(), Vector3.UP)
+	Playerinfo.playerLocation = global_position
 
 func _input(event):
 	if event is InputEventMouseMotion:
@@ -96,8 +100,9 @@ func ScreenPointToRay():
 	if rayArray.has("position"):
 		var rayHitLocation = rayArray["position"]
 		rayHitLocation.y = body.global_transform.origin.y
-
 		previous_look_direction = rayHitLocation
+		enemy_detector.global_position = rayHitLocation
+		
 		return rayHitLocation
 #		leftover code in case i get lookdirection_raycast_length working as desired
 	#else :
@@ -171,6 +176,7 @@ func _physics_process(delta):
 		is_jumping = false
 		is_in_air = true
 
+#region Step Check Function Code
 func step_check(delta: float, is_jumping_: bool, step_result: StepResult):
 	var is_step: bool = false
 	
@@ -288,8 +294,9 @@ func step_check(delta: float, is_jumping_: bool, step_result: StepResult):
 				
 				if is_player_collided and test_motion_result.get_travel().y < -STEP_DOWN_MARGIN:
 					if test_motion_result.get_collision_normal().angle_to(Vector3.UP) <= deg_to_rad(STEP_MAX_SLOPE_DEGREE):
-						is_step = true
+						is_step = true	
 						step_result.diff_position = test_motion_result.get_travel()
 						step_result.normal = test_motion_result.get_collision_normal()
 
 	return is_step
+#endregion

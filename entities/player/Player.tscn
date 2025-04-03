@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=3 uid="uid://x3l0v6tbskoe"]
+[gd_scene load_steps=23 format=3 uid="uid://x3l0v6tbskoe"]
 
 [ext_resource type="Script" uid="uid://bqa6ywaj1f0ha" path="res://entities/player/Player.gd" id="1"]
 [ext_resource type="Material" uid="uid://cnq7n26g77h12" path="res://materials/tools/direction_indicator.tres" id="2_3c3w1"]
@@ -6,6 +6,7 @@
 [ext_resource type="Shader" uid="uid://tqasmi738v3e" path="res://shaders/forground_shader.gdshader" id="4_83hs8"]
 [ext_resource type="PackedScene" uid="uid://78vc80y3pt41" path="res://entities/weapons/weapon.tscn" id="5_g3lhm"]
 [ext_resource type="Resource" uid="uid://bf0kek81jvd6u" path="res://entities/weapons/weapon01_test/weapon01_test.tres" id="6_4pwj0"]
+[ext_resource type="PackedScene" uid="uid://g1elpx8h7qgu" path="res://entities/systems/enemy_detector.tscn" id="7_fmb3c"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_sl4o1"]
 radius = 0.3
@@ -150,12 +151,14 @@ _data = {
 }
 
 [node name="Player" type="CharacterBody3D" groups=["Client"]]
-collision_mask = 4673
+collision_mask = 37447
 wall_min_slide_angle = 0.0872665
 floor_snap_length = 0.2
 script = ExtResource("1")
 
 [node name="Hitbox" type="Area3D" parent="."]
+collision_layer = 8
+collision_mask = 64
 
 [node name="ShapeHitbox" type="CollisionShape3D" parent="Hitbox"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
@@ -273,3 +276,6 @@ anim_player = NodePath("../AnimationPlayer")
 libraries = {
 &"": SubResource("AnimationLibrary_gskgj")
 }
+
+[node name="EnemyDetector" parent="." instance=ExtResource("7_fmb3c")]
+top_level = true
