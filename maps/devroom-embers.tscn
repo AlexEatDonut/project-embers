@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=4 uid="uid://7sn7h46ed61m"]
+[gd_scene load_steps=22 format=4 uid="uid://7sn7h46ed61m"]
 
 [ext_resource type="Script" uid="uid://clvri6xpl7374" path="res://addons/godotvmf/src/VMFNode.gd" id="1_64br5"]
 [ext_resource type="ArrayMesh" uid="uid://q2tld5lpspia" path="res://godotvmfcontent/geometry/embers-devroom_vmf_import.mesh" id="2_m6f2d"]
@@ -142,6 +142,12 @@ sky_material = SubResource("ProceduralSkyMaterial_c45t8")
 [sub_resource type="Environment" id="Environment_m6f2d"]
 background_mode = 2
 sky = SubResource("Sky_titx5")
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_uejvj"]
+size = Vector2(200, 200)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_uejvj"]
+size = Vector3(200, 1, 200)
 
 [node name="Node3D" type="Node3D"]
 
@@ -407,7 +413,7 @@ flags = 2
 mesh = SubResource("ArrayMesh_c45t8")
 
 [node name="StaticBody3D" parent="Level/DevRoomBase/Entities/funcs/func_brush_1626/MeshInstance3D" index="0"]
-collision_layer = 4096
+collision_layer = 32768
 
 [node name="CollisionShape3D" parent="Level/DevRoomBase/Entities/funcs/func_brush_1626/MeshInstance3D/StaticBody3D" index="0"]
 shape = SubResource("ConcavePolygonShape3D_titx5")
@@ -2559,7 +2565,7 @@ layers = 4
 mesh = SubResource("ArrayMesh_7dbhb")
 
 [node name="StaticBody3D" parent="Level/DevRoomBase/Entities/funcs/func_brush_2978/MeshInstance3D" index="0"]
-collision_layer = 4096
+collision_layer = 32768
 
 [node name="CollisionShape3D" parent="Level/DevRoomBase/Entities/funcs/func_brush_2978/MeshInstance3D/StaticBody3D" index="0"]
 shape = SubResource("ConcavePolygonShape3D_rinib")
@@ -4183,7 +4189,7 @@ layers = 2
 mesh = SubResource("ArrayMesh_j4xeg")
 
 [node name="StaticBody3D" parent="Level/DevRoomBase/Entities/funcs/func_brush_3025/MeshInstance3D" index="0"]
-collision_layer = 4096
+collision_layer = 32768
 
 [node name="CollisionShape3D" parent="Level/DevRoomBase/Entities/funcs/func_brush_3025/MeshInstance3D/StaticBody3D" index="0"]
 shape = SubResource("ConcavePolygonShape3D_o2lhs")
@@ -4197,6 +4203,17 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.51498, 0, 11.099)
 environment = SubResource("Environment_m6f2d")
 
 [node name="Player" parent="." instance=ExtResource("8_uejvj")]
+
+[node name="SafetyNet" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2, 0)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="SafetyNet"]
+visible = false
+mesh = SubResource("PlaneMesh_uejvj")
+skeleton = NodePath("../..")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="SafetyNet"]
+shape = SubResource("BoxShape3D_uejvj")
 
 [editable path="Level/DevRoomBase/Entities/lights/light_environment"]
 [editable path="Level/DevRoomBase/Entities/funcs/func_brush_1626"]
