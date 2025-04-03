@@ -1,6 +1,6 @@
 extends RayCast3D
 
-@export var SPEED := 50
+@export var bullet_speed : float = 50
 @export var base_damage = 5
 @export var player_affiliation : bool
 @export var lingering : bool
@@ -23,8 +23,8 @@ func _ready() -> void:
 	position += (global_basis * Vector3.FORWARD) * -0.7
 
 func _physics_process(delta: float) -> void:
-	position += global_basis * Vector3.FORWARD * SPEED * delta
-	target_position = Vector3.FORWARD * SPEED * delta
+	position += global_basis * Vector3.FORWARD * bullet_speed * delta
+	target_position = Vector3.FORWARD * bullet_speed * delta
 	force_raycast_update()
 	target = get_collider()
 	if is_colliding():
@@ -36,13 +36,6 @@ func _physics_process(delta: float) -> void:
 			create_bullethole(bullet_hole, target)
 			BulletDecalPool.spawn_bullet_decal(pt, nrml, target )
 			set_physics_process(false)
-			print(target.get_collision_layer())
-			#CODE THAT NEEDS REWRITE : DETECT WHICH LAYER IT IS DETECTING WITH
-			#if target.get_collision_layer() == 401:
-			#pass
-			#else : 
-				#emit_signal("collide_body", target)
-			#print(target)
 			emit_signal("collide_body", target)
 			if lingering == true :
 				target.add_child(remote_transform)
