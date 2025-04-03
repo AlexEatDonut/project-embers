@@ -4,18 +4,18 @@ extends Node
 #lightround would be for low damage pistols and smgs
 #mid round would be for more medium damage guns
 #heavyrounds would be for revolvers, high damage handgun (handcannons, if you will) and even shotguns. 
-@export var ammoTypesMax := {
-	"lightRound" : 80, 
-	"midRound" : 60,
-	"heavyRound" : 30
-}
 
 @export var max_health = 100: 
 	set = set_max_health
 
 @export var godmode : bool = false
-
 var playerIsDead : bool = false
+
+var playerLocation
+
+var locked_on : bool = false
+var locked_on_location
+
 
 var health = max_health  :
 	get: 
@@ -31,7 +31,6 @@ var health = max_health  :
 		emit_signal("health_changed", health)
 		if health <= 0:
 			emit_signal("no_health")
-
 
 
 func set_max_health(value):
