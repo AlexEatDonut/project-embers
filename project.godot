@@ -21,9 +21,8 @@ Playerinfo="*res://scripts/playerinfo.tscn"
 
 [display]
 
-window/size/viewport_width=1920
-window/size/viewport_height=1080
-window/size/mode=2
+window/size/viewport_width=1280
+window/size/viewport_height=720
 
 [editor_plugins]
 
@@ -88,11 +87,14 @@ shoot={
 3d_render/layer_1="Background"
 3d_render/layer_2="Details"
 3d_render/layer_3="Foreground"
-3d_physics/layer_1="GeoCollisioners"
+3d_physics/layer_1="World&Client"
+3d_physics/layer_2="NPC_hostile"
+3d_physics/layer_3="NPC_friendly"
 3d_physics/layer_4="Hitboxes"
 3d_physics/layer_7="Dmgboxes"
 3d_physics/layer_10="Interactables"
-3d_physics/layer_13="CameraFacingWalls"
+3d_physics/layer_13="AreaTrigger"
+3d_physics/layer_16="CameraFacingWalls"
 
 [physics]
 
