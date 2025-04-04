@@ -1,0 +1,12 @@
+[gd_scene load_steps=3 format=3 uid="uid://cuwo7moitrwse"]
+
+[ext_resource type="AudioStream" uid="uid://byrlam52v41gq" path="res://sounds/ui/effects/660768__madpancake__kill-soundimpact.wav" id="1_kl8a7"]
+[ext_resource type="Script" uid="uid://bk5hnjlb1cw7d" path="res://sounds/ui/effects/critical_impact.gd" id="1_tu3wd"]
+
+[node name="CriticalImpact" type="AudioStreamPlayer"]
+stream = ExtResource("1_kl8a7")
+volume_db = -12.0
+autoplay = true
+script = ExtResource("1_tu3wd")
+
+[connection signal="finished" from="." to="." method="_on_finished"]
