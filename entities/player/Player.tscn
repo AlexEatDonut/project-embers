@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=3 uid="uid://x3l0v6tbskoe"]
+[gd_scene load_steps=25 format=3 uid="uid://x3l0v6tbskoe"]
 
 [ext_resource type="Script" uid="uid://bqa6ywaj1f0ha" path="res://entities/player/Player.gd" id="1"]
 [ext_resource type="Material" uid="uid://cnq7n26g77h12" path="res://materials/tools/direction_indicator.tres" id="2_3c3w1"]
@@ -7,6 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://78vc80y3pt41" path="res://entities/weapons/weapon.tscn" id="5_g3lhm"]
 [ext_resource type="Resource" uid="uid://bf0kek81jvd6u" path="res://entities/weapons/weapon01_test/weapon01_test.tres" id="6_4pwj0"]
 [ext_resource type="PackedScene" uid="uid://g1elpx8h7qgu" path="res://entities/systems/enemy_detector.tscn" id="7_fmb3c"]
+[ext_resource type="PackedScene" uid="uid://cpml3unngt286" path="res://entities/systems/critical_hit_zone.tscn" id="7_rl6fg"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_sl4o1"]
 radius = 0.3
@@ -84,6 +85,78 @@ tracks/1/keys = {
 "update": 0,
 "values": [Vector3(0, 0, 0)]
 }
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Body/Weapon:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Body/Weapon:rotation")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("Body/Head:position")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 1.7, 0)]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("Body/Head:rotation")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("Body/DirectionIndicator/ring:visible")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("Body/DirectionIndicator/arrow:position")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, -1.10515)]
+}
 
 [sub_resource type="Animation" id="Animation_83hs8"]
 resource_name = "default"
@@ -114,6 +187,33 @@ tracks/1/keys = {
 "values": [Vector3(0, 0, 0)]
 }
 
+[sub_resource type="Animation" id="Animation_rl6fg"]
+resource_name = "dev_reload"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Body/Weapon:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.19),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0, -0.5, 0.1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Body/Weapon:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.19),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(-0.349066, 0.349066, 0)]
+}
+
 [sub_resource type="Animation" id="Animation_aqcbf"]
 resource_name = "dev_slide"
 length = 0.1
@@ -142,11 +242,60 @@ tracks/1/keys = {
 "update": 0,
 "values": [Vector3(1.5708, 0, 0)]
 }
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Body/Head:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0.4, 0)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Body/Head:rotation")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(1.5708, 0, 0)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("Body/DirectionIndicator/ring:visible")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("Body/DirectionIndicator/arrow:position")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, -2.21)]
+}
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_gskgj"]
 _data = {
 &"RESET": SubResource("Animation_x8kxw"),
 &"default": SubResource("Animation_83hs8"),
+&"dev_reload": SubResource("Animation_rl6fg"),
 &"dev_slide": SubResource("Animation_aqcbf")
 }
 
@@ -155,6 +304,7 @@ collision_mask = 37447
 wall_min_slide_angle = 0.0872665
 floor_snap_length = 0.2
 script = ExtResource("1")
+SPEED_SHOOTING_DEFAULT = 4.0
 
 [node name="Hitbox" type="Area3D" parent="."]
 collision_layer = 8
@@ -268,6 +418,9 @@ cull_mask = 1047556
 projection = 1
 size = 20.0
 
+[node name="CriticalHitZone" parent="." instance=ExtResource("7_rl6fg")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+
 [node name="AnimationTree" type="AnimationTree" parent="."]
 tree_root = SubResource("AnimationRootNode_83hs8")
 anim_player = NodePath("../AnimationPlayer")
@@ -279,3 +432,8 @@ libraries = {
 
 [node name="EnemyDetector" parent="." instance=ExtResource("7_fmb3c")]
 top_level = true
+
+[node name="SlidingTimer" type="Timer" parent="."]
+wait_time = 0.7
+
+[connection signal="timeout" from="SlidingTimer" to="." method="_on_sliding_timer_timeout"]

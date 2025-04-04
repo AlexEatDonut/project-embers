@@ -14,6 +14,8 @@ extends CharacterBody3D
 @export var ACCELERATION_DEFAULT: float = 7.0
 @export var ACCELERATION_AIR: float = 1.0
 @export var SPEED_DEFAULT: float = 7.0
+@export var SPEED_SHOOTING_DEFAULT: float = snapped(SPEED_DEFAULT * 0.45, 1)
+@export var SPEED_SLIDING_DEFAULT: float = snapped(SPEED_DEFAULT * 1.7, 1) 
 @export var SPEED_ON_STAIRS: float = 5.0
 @export var LOOKING_SPEED: float = 10.0
 
@@ -23,6 +25,7 @@ extends CharacterBody3D
 #region Movement Related Variables
 var acceleration: float = ACCELERATION_DEFAULT
 var speed: float = SPEED_DEFAULT
+var speed_shooting: float = SPEED_SHOOTING_DEFAULT
 var direction: Vector3 = Vector3.ZERO
 var previous_look_direction = Vector3()
 var main_velocity: Vector3 = Vector3.ZERO
@@ -65,11 +68,46 @@ class StepResult:
 	var is_step_up: bool = false
 #endregion
 
+#region Sliding Variables
+@onready var sliding_timer: Timer = $SlidingTimer
+var slide_speed : float = SPEED_SLIDING_DEFAULT
+var sliding_deceleration : float = 3
+var slide_allowed : bool = true
+var last_known_direction = Vector3(1, 0, 1).normalized()
+var snap_into_cover : bool = true
+var slide_velocity: Vector3 = Vector3.ZERO
+#endregion
+
+enum {
+	NORMAL,
+	SHOOTING,
+	RELOADING,
+	COVER,
+	COVERSHOOTING,
+	COVERRELOAD,
+	SLIDING,
+	STUNNED,
+	DYING
+}
+
 func _ready():
 	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 	
 func _process(delta: float) -> void:
-
+	
+	match Playerinfo.state:
+		NORMAL:
+			pass
+		SHOOTING:
+			pass
+		SLIDING:
+			action_slide()
+		STUNNED:
+			pass
+		DYING:
+			pass
+	
+	
 	#var interpolation_fraction = clamp(Engine.get_physics_interpolation_fraction(), 0, 1)
 	if is_on_floor():
 		time_in_air = 0.0
@@ -79,14 +117,27 @@ func _process(delta: float) -> void:
 	body.look_at(ScreenPointToRay(), Vector3.UP)
 	Playerinfo.playerLocation = global_position
 
+
 func _input(event):
 	if event is InputEventMouseMotion:
 		#old body rotation code 
 		body.rotate_y(deg_to_rad(-event.relative.x * mouse_sensitivity))
 		
-		
 		#head.rotate_x(deg_to_rad(-event.relative.y * mouse_sensitivity))
 		#head.rotation.x = clamp(head.rotation.x, deg_to_rad(-89), deg_to_rad(89))
+
+func action_slide():
+	animation_player.play("dev_slide")
+
+func action_slide_start():
+	slide_allowed == false
+	sliding_timer.start()
+	snap_into_cover = false
+	slide_velocity = main_velocity
+
+func action_slide_end():
+	animation_player.play("default")
+	Playerinfo.state = NORMAL
 
 func ScreenPointToRay():
 	var spaceState = get_world_3d().direct_space_state
@@ -113,17 +164,22 @@ func ScreenPointToRay():
 func _physics_process(delta):
 	var is_step: bool = false
 	
-	var input = Input.get_vector("move_left", "move_right", "move_up", "move_down")
-	#direction = (body.global_transform.basis * Vector3(input.x, 0, input.y)).normalized()
-	direction = Vector3(input.x, 0, input.y).normalized()
+	if Playerinfo.state != SLIDING :
+		var input = Input.get_vector("move_left", "move_right", "move_up", "move_down")
+		direction = Vector3(input.x, 0, input.y).normalized()
+		if input != Vector2(0,0):
+			last_known_direction = direction
 
+	
 	if is_on_floor():
 		is_jumping = false
 		is_in_air = false
+		slide_allowed = true
 		acceleration = ACCELERATION_DEFAULT
 		gravity_direction = Vector3.ZERO
 	else:
 		is_in_air = true
+		slide_allowed = false
 		acceleration = ACCELERATION_AIR
 		gravity_direction += Vector3.DOWN * gravity * delta
 
@@ -134,13 +190,35 @@ func _physics_process(delta):
 		#gravity_direction = Vector3.UP * jump
 	
 #	beginning of theoretical sliding code 
-		#if Input.is_action_just_pressed("jump") and is_on_floor():
-		
 		# sliding will need to be done by getting the direction the character was moving to and then 
 		# give the player a burst of speed in that direction while preventing all movement keys 
 		# from fucking up with the slide.
+	if Input.is_action_just_pressed("action_slide") and is_on_floor() and slide_allowed == true:
+			Playerinfo.state = SLIDING
+			action_slide_start()
+			#if the key to slide is pressed while you are on the ground and are allowed to slide = you start sliding 
+	if Input.is_action_just_released("action_slide") and is_on_floor() and Playerinfo.state == SLIDING :
+		snap_into_cover = true
+		#if you are still sliding and release before the end of the timer, allow player to snap into cover
+	elif Input.is_action_just_released("action_slide") and is_on_floor():
+		slide_allowed = true
+		#if you are still sliding and release while state isn't as SLIDING, reallow sliding
 	
-	main_velocity = main_velocity.lerp(direction * speed, acceleration * delta)
+	
+	match Playerinfo.state :
+		SLIDING :
+			#TODO 
+			#I can't get the sliding to gradually go down, as it always resets to the first lowering, methinks ?
+			#I don't get it, actually
+			#slide_velocity -= last_known_direction * sliding_deceleration * delta
+			#slide_velocity = slide_velocity.lerp(last_known_direction * slide_speed, acceleration * delta)
+			main_velocity = main_velocity.lerp(last_known_direction * slide_speed, acceleration * delta)
+			#clamp(main_velocity, speed , slide_speed)
+	
+		NORMAL :
+			main_velocity = main_velocity.lerp(direction * speed, acceleration * delta)
+		SHOOTING : 
+			main_velocity = main_velocity.lerp(direction * speed_shooting, acceleration * delta)
 
 	var step_result : StepResult = StepResult.new()
 	
@@ -161,8 +239,10 @@ func _physics_process(delta):
 		if abs(head_offset.y) <= 0.01:
 			speed = SPEED_DEFAULT
 
-	movement = main_velocity + gravity_direction
-
+	if Playerinfo.state == SLIDING: 
+		movement = main_velocity + gravity_direction
+	else :
+		movement = main_velocity + gravity_direction
 	set_velocity(movement)
 	set_max_slides(6)
 	move_and_slide()
@@ -175,6 +255,10 @@ func _physics_process(delta):
 	if is_jumping:
 		is_jumping = false
 		is_in_air = true
+
+
+func _on_sliding_timer_timeout() -> void:
+	action_slide_end()
 
 #region Step Check Function Code
 func step_check(delta: float, is_jumping_: bool, step_result: StepResult):

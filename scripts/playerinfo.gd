@@ -13,9 +13,24 @@ var playerIsDead : bool = false
 
 var playerLocation
 
+var currently_sliding : bool = false
+
 var locked_on : bool = false
 var locked_on_location
 
+enum {
+	NORMAL,
+	SHOOTING,
+	RELOADING,
+	COVER,
+	COVERSHOOTING,
+	COVERRELOAD,
+	SLIDING,
+	STUNNED,
+	DYING
+}
+
+var state = NORMAL
 
 var health = max_health  :
 	get: 

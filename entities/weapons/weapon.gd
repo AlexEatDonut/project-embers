@@ -4,20 +4,37 @@ extends Node3D
 
 var readyForFire := true
 var deltaTime:float
-var state := IDLE 
+var wp_state := WP_IDLE 
 
 #preloading the raycast to call upon it later
 #@onready var hitscan = preload("res://tscns/generic_hit-hurt_box/raycast3d_hitscan.tscn")
 @onready var hitscan = preload("res://entities/systems/projectile_raycast.tscn")
 
 enum{
-	IDLE,
-	SHOOTING,
-	RELOADING
+	WP_IDLE,
+	WP_SHOOTING,
+	WP_READY,
+	WP_RELOADING
 }
+
+#region Playerinfo States
+enum {
+	NORMAL,
+	SHOOTING,
+	RELOADING,
+	COVER,
+	COVERSHOOTING,
+	COVERRELOAD,
+	SLIDING,
+	STUNNED,
+	DYING
+}
+#endregion
+
 
 @onready var weapon_mesh : MeshInstance3D = %WeaponMesh
 @onready var timer = $Timer
+@onready var fire_ready_timer: Timer = $FireReady
 
 func _ready() -> void:
 	load_weapon()
@@ -36,14 +53,20 @@ func playGunShot():
 
 
 func _unhandled_input(event : InputEvent):
-	if event.is_action_pressed("shoot"):
-		state = SHOOTING
+	if event.is_action_pressed("shoot") and Playerinfo.state != SLIDING:
+		wp_state = WP_SHOOTING
+		Playerinfo.state = SHOOTING
 		_weapon_fire(deltaTime)
-	if event.is_action_released("shoot"):
-		state = IDLE
+		fire_ready_timer.stop()
+	if event.is_action_released("shoot") :
+		if Playerinfo.state != SLIDING:
+			_on_fire_ready_timeout()
+		wp_state = WP_READY
+		fire_ready_timer.start()
+	
 
 func _weapon_fire(delta):
-	while state == SHOOTING :
+	while wp_state == WP_SHOOTING :
 		#print(timer.time_left)
 		if timer.time_left == 0 :
 		#print("shooting with my weapon :)")
@@ -63,3 +86,8 @@ func _weapon_fire(delta):
 func _on_timer_timeout() -> void:
 	readyForFire = true
 	timer.stop()
+
+func _on_fire_ready_timeout() -> void:
+	wp_state = WP_IDLE
+	if Playerinfo.state != SLIDING :
+		Playerinfo.state = NORMAL

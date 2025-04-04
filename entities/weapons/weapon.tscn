@@ -14,4 +14,8 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
 
 [node name="Timer" type="Timer" parent="."]
 
+[node name="FireReady" type="Timer" parent="."]
+wait_time = 0.3
+
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
+[connection signal="timeout" from="FireReady" to="." method="_on_fire_ready_timeout"]
