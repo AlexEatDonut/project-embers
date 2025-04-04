@@ -14,7 +14,6 @@ func _on_body_entered(body: Node3D) -> void:
 	if target.is_in_group("NPC"):
 		target.enemy_stats.highlighted = true
 
-
 func _on_body_exited(body: Node3D) -> void:
 	var target = body
 	if target.is_in_group("NPC"):

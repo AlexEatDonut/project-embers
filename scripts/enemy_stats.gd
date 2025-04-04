@@ -4,12 +4,18 @@ extends Node
 
 @export var max_health = 200: 
 	set = set_max_health
-@export var close_to_player : bool =  false 
+
+
 @export var closest_to_player : bool =  false :
 	set = set_closest_to_player
 @export var highlighted : bool =  false : 
 	set = set_highlight
 @export var locked_on : bool =  false 
+#previously named critically_elligible
+@export var in_critical_hit_range : bool = false :
+	set = set_in_critical_hit_range
+
+@export var crit_factor : float = 3
 
 var health = max_health  :
 	get: 
@@ -41,6 +47,14 @@ func set_highlight(boolean):
 		emit_signal("highlight_off")
 		highlighted = false
 
+func set_in_critical_hit_range(boolean) :
+	if boolean == true:
+		emit_signal("takes_crit_damage_on")
+		in_critical_hit_range = true
+	else :
+		emit_signal("takes_crit_damage_off")
+		in_critical_hit_range = false
+
 signal no_health
 signal health_changed(value)
 signal max_health_changed(value)
@@ -53,6 +67,9 @@ signal highlight_off
 
 signal lockon_on
 signal lockon_off
+
+signal takes_crit_damage_on
+signal takes_crit_damage_off
 
 func _ready():
 	self.health = max_health
