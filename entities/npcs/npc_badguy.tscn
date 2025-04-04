@@ -9,7 +9,7 @@
 [ext_resource type="Material" uid="uid://b7pixluig727d" path="res://materials/tools/highlight_indicator.tres" id="6_l4v3p"]
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_clyg5"]
-radius = 0.55
+radius = 0.65
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_kuily"]
 radius = 0.35
@@ -240,7 +240,8 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 shape = SubResource("CapsuleShape3D_kuily")
 
 [node name="EnemyStats" parent="." instance=ExtResource("4_uvri3")]
-max_health = 20
+max_health = 24
+crit_factor = 5.0
 
 [node name="ShootTimer" type="Timer" parent="."]
 wait_time = 0.45
