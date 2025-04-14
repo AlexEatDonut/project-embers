@@ -6,15 +6,21 @@ extends CharacterBody3D
 @onready var base_camera: Camera3D = $CameraPivot/CameraMarker3D/BaseCamera
 @onready var enemy_detector: Area3D = $EnemyDetector
 
+@onready var sliding_timer: Timer = $SlidingTimer
+@onready var slide_cooldown: Timer = $SlideCooldown
+
+@onready var cover_cooldown: Timer = $CoverCooldown
+
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
 @onready var animation_tree: AnimationTree = $AnimationTree
 
 @export var mouse_sensitivity: float = 0.1
 
+#region Movement Related Variables
 @export var ACCELERATION_DEFAULT: float = 7.0
 @export var ACCELERATION_AIR: float = 1.0
 @export var SPEED_DEFAULT: float = 7.0
-@export var SPEED_SHOOTING_DEFAULT: float = snapped(SPEED_DEFAULT * 0.45, 1)
+@export var SPEED_SHOOTING_DEFAULT: float = snapped(SPEED_DEFAULT * 0.55, 1)
 @export var SPEED_SLIDING_DEFAULT: float = snapped(SPEED_DEFAULT * 1.7, 1) 
 @export var SPEED_ON_STAIRS: float = 5.0
 @export var LOOKING_SPEED: float = 10.0
@@ -22,7 +28,6 @@ extends CharacterBody3D
 @export var gravity: float = 9.8
 @export var jump: float = 5.0
 
-#region Movement Related Variables
 var acceleration: float = ACCELERATION_DEFAULT
 var speed: float = SPEED_DEFAULT
 var speed_shooting: float = SPEED_SHOOTING_DEFAULT
@@ -69,13 +74,24 @@ class StepResult:
 #endregion
 
 #region Sliding Variables
-@onready var sliding_timer: Timer = $SlidingTimer
+#SLIDE SPEED VARIABLES
 var slide_speed : float = SPEED_SLIDING_DEFAULT
 var sliding_deceleration : float = 3
-var slide_allowed : bool = true
-var last_known_direction = Vector3(1, 0, 1).normalized()
-var snap_into_cover : bool = true
 var slide_velocity: Vector3 = Vector3.ZERO
+
+#SLIDE RULE VARIABLES
+#is a mix of factors, tells if you are allowed to slide from a mix of reasons
+var slide_elligibility :bool = false
+#is the current state allows sliding
+var is_slide_allowed : bool = true
+#if the slide button is held
+var is_slide_button_on : bool = false
+#if the player is sliding
+var is_player_sliding : bool = false
+#if the cooldown is still ongoing
+var is_slide_on_cooldown : bool = false
+#last known direction of the player 
+var last_known_direction = Vector3(1, 0, 1).normalized()
 #endregion
 
 enum {
@@ -92,21 +108,26 @@ enum {
 
 func _ready():
 	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+	Playerinfo.connect("request_player_teleport", attempt_player_teleport)
+	Playerinfo.connect("request_player_cover", attempt_player_cover)
 	
 func _process(delta: float) -> void:
 	
 	match Playerinfo.state:
 		NORMAL:
-			pass
+			is_slide_allowed == true
 		SHOOTING:
-			pass
+			is_slide_allowed == true
+		COVER:
+			is_slide_allowed == true
+			_behind_cover()
 		SLIDING:
-			action_slide()
+			is_slide_allowed == false
+			_dodge_slide()
 		STUNNED:
-			pass
+			is_slide_allowed == false
 		DYING:
-			pass
-	
+			is_slide_allowed == false
 	
 	#var interpolation_fraction = clamp(Engine.get_physics_interpolation_fraction(), 0, 1)
 	if is_on_floor():
@@ -114,30 +135,58 @@ func _process(delta: float) -> void:
 
 	else:
 		time_in_air += delta
-	body.look_at(ScreenPointToRay(), Vector3.UP)
+	if is_player_sliding == false:
+		body.look_at(ScreenPointToRay(), Vector3.UP)
+	enemy_detector.global_position = ScreenPointToRay()
 	Playerinfo.playerLocation = global_position
 
+func attempt_player_teleport(destination):
+	global_position = destination.global_position
+	print("attempted to teleport player")
+
+func attempt_player_cover():
+	reset_all()
+	Playerinfo.state = COVER
+	Playerinfo.prevent_movement_input = true
+	cover_cooldown.start()
+
+func reset_all():
+	animation_player.play("default")
+	Playerinfo.state = NORMAL
+	is_slide_button_on = false
+	Playerinfo.prevent_movement_input = false
 
 func _input(event):
-	if event is InputEventMouseMotion:
+	pass
+#wtf does this code do. I thought it was rotating the player, but clearly it works fine without it
+	#if event is InputEventMouseMotion :
+		#body.rotate_y(deg_to_rad(-event.relative.x * mouse_sensitivity))
 		#old body rotation code 
-		body.rotate_y(deg_to_rad(-event.relative.x * mouse_sensitivity))
-		
+		#body.rotate_y(deg_to_rad())
 		#head.rotate_x(deg_to_rad(-event.relative.y * mouse_sensitivity))
 		#head.rotation.x = clamp(head.rotation.x, deg_to_rad(-89), deg_to_rad(89))
 
-func action_slide():
-	animation_player.play("dev_slide")
+func _behind_cover():
+	animation_player.play("dev_cover")
 
-func action_slide_start():
-	slide_allowed == false
+func _dodge_slide():
+	animation_player.play("dev_slide")
+	is_player_sliding = true
+	Playerinfo.snap_into_cover = true
+	Playerinfo.prevent_movement_input = true
+
+func dodge_slide_start():
+	
+	Playerinfo.state = SLIDING
+	is_slide_on_cooldown = true
 	sliding_timer.start()
-	snap_into_cover = false
+	slide_cooldown.start()
 	slide_velocity = main_velocity
+	print("started sliding")
 
 func action_slide_end():
-	animation_player.play("default")
-	Playerinfo.state = NORMAL
+	is_player_sliding = false
+	reset_all()
 
 func ScreenPointToRay():
 	var spaceState = get_world_3d().direct_space_state
@@ -152,7 +201,6 @@ func ScreenPointToRay():
 		var rayHitLocation = rayArray["position"]
 		rayHitLocation.y = body.global_transform.origin.y
 		previous_look_direction = rayHitLocation
-		enemy_detector.global_position = rayHitLocation
 		
 		return rayHitLocation
 #		leftover code in case i get lookdirection_raycast_length working as desired
@@ -163,8 +211,7 @@ func ScreenPointToRay():
 
 func _physics_process(delta):
 	var is_step: bool = false
-	
-	if Playerinfo.state != SLIDING :
+	if Playerinfo.prevent_movement_input == false :
 		var input = Input.get_vector("move_left", "move_right", "move_up", "move_down")
 		direction = Vector3(input.x, 0, input.y).normalized()
 		if input != Vector2(0,0):
@@ -174,51 +221,49 @@ func _physics_process(delta):
 	if is_on_floor():
 		is_jumping = false
 		is_in_air = false
-		slide_allowed = true
 		acceleration = ACCELERATION_DEFAULT
 		gravity_direction = Vector3.ZERO
 	else:
 		is_in_air = true
-		slide_allowed = false
 		acceleration = ACCELERATION_AIR
 		gravity_direction += Vector3.DOWN * gravity * delta
 
-#	Disabling jumping code.
+#	Disabled jumping code.
 	#if Input.is_action_just_pressed("jump") and is_on_floor():
 		#is_jumping = true
 		#is_in_air = false
 		#gravity_direction = Vector3.UP * jump
 	
-#	beginning of theoretical sliding code 
+#	SLIDING CODE
 		# sliding will need to be done by getting the direction the character was moving to and then 
 		# give the player a burst of speed in that direction while preventing all movement keys 
 		# from fucking up with the slide.
-	if Input.is_action_just_pressed("action_slide") and is_on_floor() and slide_allowed == true:
-			Playerinfo.state = SLIDING
-			action_slide_start()
+		
+		#i want to change how the idle into slide works, by instead getting where the player is looking at rather than the previous direction
+	if is_on_floor() and is_slide_allowed == true and is_slide_on_cooldown == false:
+		slide_elligibility = true
+	else:
+		slide_elligibility = false
+	if Input.is_action_pressed("action_slide") and slide_elligibility == true:
+		dodge_slide_start()
+		is_slide_button_on = true
+	elif Input.is_action_just_released("action_slide"):
+		is_slide_button_on = false
+
+
 			#if the key to slide is pressed while you are on the ground and are allowed to slide = you start sliding 
-	if Input.is_action_just_released("action_slide") and is_on_floor() and Playerinfo.state == SLIDING :
-		snap_into_cover = true
-		#if you are still sliding and release before the end of the timer, allow player to snap into cover
-	elif Input.is_action_just_released("action_slide") and is_on_floor():
-		slide_allowed = true
-		#if you are still sliding and release while state isn't as SLIDING, reallow sliding
-	
-	
-	match Playerinfo.state :
-		SLIDING :
-			#TODO 
-			#I can't get the sliding to gradually go down, as it always resets to the first lowering, methinks ?
-			#I don't get it, actually
-			#slide_velocity -= last_known_direction * sliding_deceleration * delta
-			#slide_velocity = slide_velocity.lerp(last_known_direction * slide_speed, acceleration * delta)
-			main_velocity = main_velocity.lerp(last_known_direction * slide_speed, acceleration * delta)
-			#clamp(main_velocity, speed , slide_speed)
-	
-		NORMAL :
-			main_velocity = main_velocity.lerp(direction * speed, acceleration * delta)
-		SHOOTING : 
-			main_velocity = main_velocity.lerp(direction * speed_shooting, acceleration * delta)
+			#if you are NOT allowed to slide, ignore the input
+	match [is_slide_button_on, is_on_floor(), Playerinfo.state]:
+		[false, true, SLIDING]:
+			#if slide button is not pressed, on the ground and you are still sliding
+			pass
+		[false, true, _]:
+			#if slide button is not pressed, on the ground and you are no longer sliding (is literally anything else)
+			#allow sliding
+			Playerinfo.snap_into_cover = false
+
+
+
 
 	var step_result : StepResult = StepResult.new()
 	
@@ -239,10 +284,23 @@ func _physics_process(delta):
 		if abs(head_offset.y) <= 0.01:
 			speed = SPEED_DEFAULT
 
-	if Playerinfo.state == SLIDING: 
-		movement = main_velocity + gravity_direction
-	else :
-		movement = main_velocity + gravity_direction
+	match Playerinfo.state :
+		SLIDING :
+			#TODO 
+			#I can't get the sliding to gradually go down, as it always resets to the first lowering, methinks ?
+			#I don't get it, actually
+			#slide_velocity -= last_known_direction * sliding_deceleration * delta
+			#slide_velocity = slide_velocity.lerp(last_known_direction * slide_speed, acceleration * delta)
+			main_velocity = main_velocity.lerp(last_known_direction * slide_speed, acceleration * delta)
+			#clamp(main_velocity, speed , slide_speed)
+	
+		NORMAL :
+			main_velocity = main_velocity.lerp(direction * speed, acceleration * delta)
+		SHOOTING : 
+			main_velocity = main_velocity.lerp(direction * speed_shooting, acceleration * delta)
+		_:
+			pass
+	movement = main_velocity + gravity_direction
 	set_velocity(movement)
 	set_max_slides(6)
 	move_and_slide()
@@ -259,6 +317,12 @@ func _physics_process(delta):
 
 func _on_sliding_timer_timeout() -> void:
 	action_slide_end()
+
+func _on_cover_cooldown_timeout() -> void:
+	Playerinfo.prevent_movement_input = false
+
+func _on_slide_cooldown_timeout() -> void:
+	is_slide_on_cooldown = false
 
 #region Step Check Function Code
 func step_check(delta: float, is_jumping_: bool, step_result: StepResult):
