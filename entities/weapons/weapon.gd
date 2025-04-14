@@ -59,7 +59,7 @@ func _unhandled_input(event : InputEvent):
 		_weapon_fire(deltaTime)
 		fire_ready_timer.stop()
 	if event.is_action_released("shoot") :
-		if Playerinfo.state != SLIDING:
+		if Playerinfo.state == SLIDING:
 			_on_fire_ready_timeout()
 		wp_state = WP_READY
 		fire_ready_timer.start()
