@@ -31,7 +31,6 @@ enum {
 }
 #endregion
 
-
 @onready var weapon_mesh : MeshInstance3D = %WeaponMesh
 @onready var timer = $Timer
 @onready var fire_ready_timer: Timer = $FireReady
@@ -51,16 +50,33 @@ func playGunShot():
 	var gunShot = preload("res://sounds/weapons/weapon01_test_snd.tscn").instantiate()
 	get_tree().current_scene.add_child(gunShot)
 
+func wp_fire():
+	wp_state = WP_SHOOTING
+	_weapon_fire(deltaTime)
+	fire_ready_timer.stop()
 
-func _unhandled_input(event : InputEvent):
-	if event.is_action_pressed("shoot") and Playerinfo.state != SLIDING:
-		wp_state = WP_SHOOTING
-		Playerinfo.state = SHOOTING
-		_weapon_fire(deltaTime)
-		fire_ready_timer.stop()
+func _input(event : InputEvent):
+	if event.is_action_pressed("shoot"):
+		match Playerinfo.state:
+			SLIDING:
+				pass
+			COVER :
+				Playerinfo.state = COVERSHOOTING
+				wp_fire()
+			_:
+				Playerinfo.state = SHOOTING
+				wp_fire()
 	if event.is_action_released("shoot") :
-		if Playerinfo.state == SLIDING:
-			_on_fire_ready_timeout()
+		match Playerinfo.state:
+			SLIDING:
+				_on_fire_ready_timeout()
+			COVER :
+				print("wtf")
+			COVERSHOOTING :
+				Playerinfo.state = COVER
+			_:
+				pass
+
 		wp_state = WP_READY
 		fire_ready_timer.start()
 	
@@ -71,7 +87,6 @@ func _weapon_fire(delta):
 		if timer.time_left == 0 :
 		#print("shooting with my weapon :)")
 			playGunShot()
-
 			var damageHitscan = hitscan.instantiate()
 			damageHitscan.player_affiliation = true
 			damageHitscan.lingering = false
@@ -81,7 +96,6 @@ func _weapon_fire(delta):
 			timer.start(WEAPON_INFO.fire_rate)
 			readyForFire = false
 		await get_tree().create_timer(delta).timeout
-
 
 func _on_timer_timeout() -> void:
 	readyForFire = true
