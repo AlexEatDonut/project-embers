@@ -11,10 +11,7 @@ extends Node
 @export var godmode : bool = false
 var playerIsDead : bool = false
 
-var cover_tracker = 0 :
-	set = set_cover_tracker
 var snap_into_cover : bool = true
-var currently_sliding : bool = false
 
 var playerLocation
 
@@ -58,17 +55,6 @@ func set_max_health(value):
 	max_health = value
 	self.health = min (health, max_health)
 	emit_signal("max_health_changed", max_health)
-
-func set_cover_tracker(is_increase):
-	#true = augmenter ; false = réduire
-	if is_increase == true :
-		cover_tracker += 1
-		print("cover tracker increased")
-	elif is_increase == false :
-		cover_tracker -= 1
-		print("cover tracker decreased")
-	else :
-		print("error, parsed not-a-boolean in place of the boolean ")
 
 func decrease_health(healthTaken, ratio):
 	#var predamage_health = Playerinfo.health
