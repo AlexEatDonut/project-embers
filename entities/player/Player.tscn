@@ -484,7 +484,7 @@ wait_time = 0.7
 [node name="SlideCooldown" type="Timer" parent="."]
 
 [node name="CoverCooldown" type="Timer" parent="."]
-wait_time = 0.8
+wait_time = 0.1
 
 [connection signal="timeout" from="SlidingTimer" to="." method="_on_sliding_timer_timeout"]
 [connection signal="timeout" from="SlideCooldown" to="." method="_on_slide_cooldown_timeout"]
