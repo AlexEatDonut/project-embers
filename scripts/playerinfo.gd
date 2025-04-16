@@ -12,6 +12,8 @@ extends Node
 var playerIsDead : bool = false
 
 var snap_into_cover : bool = true
+var is_behind_cover : bool = false :
+	set = set_behind_cover
 
 var playerLocation
 
@@ -35,6 +37,7 @@ var state = NORMAL
 @onready var player_character = get_tree().get_root().find_children("Player")
 
 var prevent_movement_input : bool = false
+var movement_prevented: bool = false
 
 var health = max_health  :
 	get: 
@@ -79,36 +82,45 @@ signal health_decreased
 signal health_increased
 signal max_health_changed(value)
 
-signal request_player_teleport(node_destination)
-signal request_player_cover()
+signal request_dodge_slide_end()
+signal request_player_cover_walk_in()
+signal request_player_cover_teleported(node_destination)
+signal request_player_cover_snapped(node_destination)
+signal request_player_out_of_cover()
 
-func cover_handler(teleport_location:Marker3D, area_trigger:Area3D):
-	match [area_trigger.name,snap_into_cover]:
-		["CoverArea", true]:
+func set_behind_cover(newBool):
+	match newBool :
+		true:
+			state = COVER
+		false:
+			emit_signal("request_player_out_of_cover")
+
+func cover_snapper(teleport_location:Marker3D):
+	match snap_into_cover:
+		true:
 			#hitting large hitbox with snapping on.
 			#We do the thing : we snap the player into place and put him into the cover state. 
 			#We stop the shooting, we stop the sliding and give the player back controls after a cooldown
-			emit_signal("request_player_teleport", teleport_location)
-			emit_signal("request_player_cover")
-		["CoverArea", false]:
+			emit_signal("request_dodge_slide_end")
+			emit_signal("request_player_cover_snapped", teleport_location)
+		false:
 			pass
 			#hitting large hitbox with snapping off.
 			#We don't snap the player into the cover, but we change a variable to be able to 
 			#turn the sliding into just a button to get into cover
-		["SnapArea", true]:
-			pass
-			#hitting small hitbox with snapping on.
-			#if it's on, it doesn't matter, it's going to be like the false one anyway. 
-			#If your snapping is on, you might be already in the bigger hitbox at this point
-			#do nothing
-		["SnapArea", false]:
-			pass
-			#hitting small hitbox with snapping off.
-			#We do the thing : we snap the player into place and put him into the cover state. 
-			#We stop the shooting, we stop the sliding and give the player back controls after a cooldown
 
-func place_player_into_cover():
-	pass
+
+func cover_handler(teleport_location:Marker3D):
+	print(snap_into_cover)
+	is_behind_cover = true
+	match snap_into_cover:
+		true:
+			emit_signal("request_player_cover_teleported", teleport_location)
+		false:
+			pass
+			#emit_signal("request_player_cover_walk_in")
+	
+	#emit_signal("request_player_cover_teleported")
 
 func _ready():
 	self.health = max_health

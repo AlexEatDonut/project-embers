@@ -71,7 +71,7 @@ func _input(event : InputEvent):
 			SLIDING:
 				_on_fire_ready_timeout()
 			COVER :
-				print("wtf")
+				Playerinfo.state = COVER
 			COVERSHOOTING :
 				Playerinfo.state = COVER
 			_:
@@ -103,5 +103,14 @@ func _on_timer_timeout() -> void:
 
 func _on_fire_ready_timeout() -> void:
 	wp_state = WP_IDLE
-	if Playerinfo.state != SLIDING :
-		Playerinfo.state = NORMAL
+	match Playerinfo.state:
+		SHOOTING:
+			Playerinfo.state = NORMAL
+		COVER:
+			Playerinfo.state = COVER
+		COVERSHOOTING:
+			Playerinfo.state = COVER
+		SLIDING:
+			pass
+		_:
+			Playerinfo.state = NORMAL

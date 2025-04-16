@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=3 uid="uid://x3l0v6tbskoe"]
+[gd_scene load_steps=27 format=3 uid="uid://x3l0v6tbskoe"]
 
 [ext_resource type="Script" uid="uid://bqa6ywaj1f0ha" path="res://entities/player/Player.gd" id="1"]
 [ext_resource type="Material" uid="uid://cnq7n26g77h12" path="res://materials/tools/direction_indicator.tres" id="2_3c3w1"]
@@ -312,7 +312,7 @@ tracks/3/keys = {
 }
 tracks/4/type = "value"
 tracks/4/imported = false
-tracks/4/enabled = true
+tracks/4/enabled = false
 tracks/4/path = NodePath("Body/DirectionIndicator/ring:visible")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
@@ -343,6 +343,12 @@ _data = {
 &"dev_reload": SubResource("Animation_rl6fg"),
 &"dev_slide": SubResource("Animation_aqcbf")
 }
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_ak4un"]
+size = Vector2(100, 100)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_1ms0h"]
+size = Vector3(100, 1, 100)
 
 [node name="Player" type="CharacterBody3D" groups=["Client"]]
 collision_mask = 37447
@@ -474,17 +480,32 @@ anim_player = NodePath("../AnimationPlayer")
 libraries = {
 &"": SubResource("AnimationLibrary_gskgj")
 }
+autoplay = "dev_slide"
 
 [node name="EnemyDetector" parent="." instance=ExtResource("7_fmb3c")]
 top_level = true
 
 [node name="SlidingTimer" type="Timer" parent="."]
 wait_time = 0.7
+one_shot = true
 
 [node name="SlideCooldown" type="Timer" parent="."]
+one_shot = true
 
 [node name="CoverCooldown" type="Timer" parent="."]
 wait_time = 0.1
+one_shot = true
+
+[node name="SafetyNet" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="SafetyNet"]
+visible = false
+mesh = SubResource("PlaneMesh_ak4un")
+skeleton = NodePath("../..")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="SafetyNet"]
+shape = SubResource("BoxShape3D_1ms0h")
 
 [connection signal="timeout" from="SlidingTimer" to="." method="_on_sliding_timer_timeout"]
 [connection signal="timeout" from="SlideCooldown" to="." method="_on_slide_cooldown_timeout"]

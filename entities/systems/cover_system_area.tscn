@@ -11,13 +11,14 @@ script = ExtResource("1_h0m7l")
 collision_layer = 4096
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="CoverArea"]
+debug_color = Color(0.858824, 0, 0.341176, 1)
 
 [node name="SnapArea" type="Area3D" parent="."]
 collision_layer = 4096
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="SnapArea"]
+debug_color = Color(0, 0.541176, 0.631373, 1)
 
 [connection signal="body_entered" from="CoverArea" to="." method="_on_cover_area_body_entered"]
 [connection signal="body_exited" from="CoverArea" to="." method="_on_cover_area_body_exited"]
 [connection signal="body_entered" from="SnapArea" to="." method="_on_snap_area_body_entered"]
-[connection signal="body_exited" from="SnapArea" to="." method="_on_snap_area_body_exited"]

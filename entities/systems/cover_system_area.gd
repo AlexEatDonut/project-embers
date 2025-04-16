@@ -7,23 +7,16 @@ extends Node3D
 func _on_cover_area_body_entered(body: Node3D) -> void:
 	var target = body
 	if target.is_in_group("Client"):
-		#Playerinfo.set_cover_tracker(true)
-		Playerinfo.cover_handler(cover_marker_3d,cover_area)
+		Playerinfo.cover_handler(cover_marker_3d)
+		Playerinfo.is_behind_cover == true
 	#signal into somewhere that asks "is the player ready for snapping in ?" and from there teleport the player into $Marker3D
 
 func _on_cover_area_body_exited(body: Node3D) -> void:
 	var target = body
 	if target.is_in_group("Client"):
-		#Playerinfo.set_cover_tracker(false)
-		Playerinfo.cover_handler(cover_marker_3d,cover_area)
+		Playerinfo.is_behind_cover = false
 
 func _on_snap_area_body_entered(body: Node3D) -> void:
 	var target = body
 	if target.is_in_group("Client"):
-		Playerinfo.cover_handler(cover_marker_3d,snap_area)
-
-
-func _on_snap_area_body_exited(body: Node3D) -> void:
-	var target = body
-	if target.is_in_group("Client"):
-		Playerinfo.cover_handler(cover_marker_3d,snap_area)
+		Playerinfo.cover_snapper(cover_marker_3d)
