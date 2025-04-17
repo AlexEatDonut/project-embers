@@ -65,8 +65,10 @@ func _on_collide_body(collider: Variant) -> void:
 	#I should call upon signals or some other ways later 
 	var target = collider.get_parent_node_3d() 
 	if target.is_in_group("NPC") && player_affiliation == true :
+		#bullet deals damage to enemies
 		target._decrease_health(base_damage)
 	if target.is_in_group("Client") && player_affiliation == false :
+		#bullet deals damage to player and NPC
 		pass
 
 
