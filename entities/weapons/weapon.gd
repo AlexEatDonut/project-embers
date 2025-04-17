@@ -34,6 +34,7 @@ enum {
 @onready var weapon_mesh : MeshInstance3D = %WeaponMesh
 @onready var timer = $Timer
 @onready var fire_ready_timer: Timer = $FireReady
+@onready var gunShot_sfx
 
 func _ready() -> void:
 	load_weapon()
@@ -47,8 +48,8 @@ func _physics_process(delta: float) -> void:
 	deltaTime = delta
 
 func playGunShot():
-	var gunShot = preload("res://sounds/weapons/weapon01_test_snd.tscn").instantiate()
-	get_tree().current_scene.add_child(gunShot)
+	gunShot_sfx = preload("res://sounds/weapons/weapon01_test_snd.tscn").instantiate()
+	get_tree().current_scene.add_child(gunShot_sfx)
 
 func wp_fire():
 	wp_state = WP_SHOOTING
