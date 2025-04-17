@@ -5,7 +5,7 @@ This project is private. You aren't supposed to see this.
 
 ## Goal of the project
 
-This project's goal is to get me to make an actual product. I was rejected for an inscription at an video game school, so I might as well work towards not being a NEET anymore.
+This project's goal is to get me to make an actual product. I was rejected when trying to enter a video game school, so I might as well work towards not being a NEET anymore.
 
 # Google docs shortcuts
 
@@ -24,6 +24,10 @@ This project's goal is to get me to make an actual product. I was rejected for a
 <a href="https://github.com/mrezai/GodotStairs">GodotStairs</a>
 
 <a href="https://poly.pizza/m/3To2e7sKmO">Pistol by Zsky [CC-BY] via Poly Pizza</a>
+
+<a href="https://game-icons.net/1x1/john-colburn/pistol-gun.html">Pistol gun icon by John Colburn under CC BY 3.0</a>
+
+<a href="https://www.dafont.com/quantum-4.font?l[]=10&l[]=1">Quantum by Sesohq</a>
 
 <hr>
 
