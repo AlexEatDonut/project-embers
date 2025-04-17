@@ -24,7 +24,7 @@ extends CharacterBody3D
 @export var SPEED_SHOOTING_DEFAULT: float = snapped(SPEED_DEFAULT * 0.55, 1)
 @export var SPEED_SLIDING_DEFAULT: float = snapped(SPEED_DEFAULT * 6, 1) 
 @export var SPEED_COVER_DEFAULT: float = snapped(SPEED_DEFAULT * 0.3, 1)
-@export var SPEED_COVERSHOOTING_DEFAULT: float = 0
+@export var SPEED_COVERSHOOTING_DEFAULT: float = snapped(SPEED_DEFAULT * 0.1, 1)
 
 @export var SPEED_ON_STAIRS: float = 5.0
 @export var LOOKING_SPEED: float = 10.0
@@ -525,3 +525,10 @@ func step_check(delta: float, is_jumping_: bool, step_result: StepResult):
 
 	return is_step
 #endregion
+
+
+func _on_hitbox_body_entered(body: Node3D, damage_variable) -> void:
+	if body.has(damage_variable):
+		pass
+	else:
+		print("error. Projectile doesn't have a damage variable")

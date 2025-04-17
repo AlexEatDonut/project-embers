@@ -1,4 +1,4 @@
-[gd_scene load_steps=27 format=3 uid="uid://x3l0v6tbskoe"]
+[gd_scene load_steps=34 format=3 uid="uid://x3l0v6tbskoe"]
 
 [ext_resource type="Script" uid="uid://bqa6ywaj1f0ha" path="res://entities/player/Player.gd" id="1"]
 [ext_resource type="Material" uid="uid://cnq7n26g77h12" path="res://materials/tools/direction_indicator.tres" id="2_3c3w1"]
@@ -10,6 +10,9 @@
 [ext_resource type="Resource" uid="uid://bf0kek81jvd6u" path="res://entities/weapons/weapon01_test/weapon01_test.tres" id="6_4pwj0"]
 [ext_resource type="PackedScene" uid="uid://g1elpx8h7qgu" path="res://entities/systems/enemy_detector.tscn" id="7_fmb3c"]
 [ext_resource type="PackedScene" uid="uid://cpml3unngt286" path="res://entities/systems/critical_hit_zone.tscn" id="7_rl6fg"]
+[ext_resource type="Texture2D" uid="uid://dt05b5sdq5iaw" path="res://materials/dev/ember_placeholder_prototype.png" id="9_1ms0h"]
+[ext_resource type="Texture2D" uid="uid://3ntkx7qrqn2m" path="res://materials/dev/pistol-gun.svg" id="10_2rv2u"]
+[ext_resource type="FontFile" uid="uid://bjcccyc20uwb3" path="res://fonts/Quantum.otf" id="10_mq27t"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_sl4o1"]
 radius = 0.3
@@ -350,6 +353,30 @@ size = Vector2(100, 100)
 [sub_resource type="BoxShape3D" id="BoxShape3D_1ms0h"]
 size = Vector3(100, 1, 100)
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ak4un"]
+bg_color = Color(0, 0, 0, 0.254902)
+border_color = Color(0, 0, 0, 0.501961)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1ms0h"]
+bg_color = Color(0.6, 0.6, 0.6, 0.501961)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.270588, 0.270588, 0.270588, 0.752941)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mq27t"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+border_width_top = 1
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2rv2u"]
+bg_color = Color(0, 0, 0, 0.254902)
+border_color = Color(0, 0, 0, 0.501961)
+
 [node name="Player" type="CharacterBody3D" groups=["Client"]]
 collision_mask = 37447
 wall_min_slide_angle = 0.0872665
@@ -507,6 +534,257 @@ skeleton = NodePath("../..")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="SafetyNet"]
 shape = SubResource("BoxShape3D_1ms0h")
 
+[node name="UI_elements" type="CanvasLayer" parent="."]
+
+[node name="HUD" type="Control" parent="UI_elements"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ObjectivesPanel" type="Panel" parent="UI_elements/HUD"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -288.0
+offset_top = 32.0
+offset_right = -32.0
+offset_bottom = 208.0
+grow_horizontal = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_ak4un")
+
+[node name="MainObjective" type="Label" parent="UI_elements/HUD/ObjectivesPanel"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -120.0
+offset_top = 40.0
+offset_right = 120.0
+offset_bottom = 57.0
+grow_horizontal = 2
+theme_override_font_sizes/font_size = 12
+text = "Steal conversation history"
+vertical_alignment = 1
+
+[node name="Label_main_objective" type="Label" parent="UI_elements/HUD/ObjectivesPanel"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -120.0
+offset_top = 8.0
+offset_right = 120.0
+offset_bottom = 24.0
+grow_horizontal = 2
+theme_override_fonts/font = ExtResource("10_mq27t")
+theme_override_font_sizes/font_size = 12
+text = "Main Objective"
+vertical_alignment = 1
+
+[node name="Label_objectives" type="Label" parent="UI_elements/HUD/ObjectivesPanel"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -120.0
+offset_top = 72.0
+offset_right = 120.0
+offset_bottom = 88.0
+grow_horizontal = 2
+theme_override_fonts/font = ExtResource("10_mq27t")
+theme_override_font_sizes/font_size = 12
+text = "Secondary Objectives"
+vertical_alignment = 1
+
+[node name="Objectives" type="VBoxContainer" parent="UI_elements/HUD/ObjectivesPanel"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -120.0
+offset_top = 96.0
+offset_right = 120.0
+offset_bottom = 160.0
+grow_horizontal = 2
+
+[node name="Objective1" type="Label" parent="UI_elements/HUD/ObjectivesPanel/Objectives"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "Install ransomware on intranet"
+vertical_alignment = 1
+
+[node name="Objective2" type="Label" parent="UI_elements/HUD/ObjectivesPanel/Objectives"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "Collect 10 usb drives in the office"
+vertical_alignment = 1
+
+[node name="Objective3" type="Label" parent="UI_elements/HUD/ObjectivesPanel/Objectives"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "Depose of the CEO"
+vertical_alignment = 1
+
+[node name="PlayerInfoPanel" type="Panel" parent="UI_elements/HUD"]
+layout_mode = 1
+offset_left = 32.0
+offset_top = 32.0
+offset_right = 352.0
+offset_bottom = 128.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_ak4un")
+
+[node name="IconFrame" type="Panel" parent="UI_elements/HUD/PlayerInfoPanel"]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 8.0
+offset_top = -40.0
+offset_right = 88.0
+offset_bottom = 40.0
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_1ms0h")
+
+[node name="Avatar" type="TextureRect" parent="UI_elements/HUD/PlayerInfoPanel/IconFrame"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -38.0
+offset_top = -38.0
+offset_right = 38.0
+offset_bottom = 38.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("9_1ms0h")
+expand_mode = 1
+
+[node name="Label_health" type="Label" parent="UI_elements/HUD/PlayerInfoPanel"]
+layout_mode = 0
+offset_left = 96.0
+offset_top = 12.0
+offset_right = 312.0
+offset_bottom = 36.0
+theme_override_fonts/font = ExtResource("10_mq27t")
+theme_override_font_sizes/font_size = 16
+text = "Health and Armor"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Health&Armor" type="Panel" parent="UI_elements/HUD/PlayerInfoPanel"]
+layout_mode = 0
+offset_left = 96.0
+offset_top = 42.0
+offset_right = 312.0
+offset_bottom = 82.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_mq27t")
+
+[node name="Armor" type="Label" parent="UI_elements/HUD/PlayerInfoPanel/Health&Armor"]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -108.0
+offset_top = -20.0
+offset_bottom = 20.0
+grow_horizontal = 0
+grow_vertical = 2
+theme_override_font_sizes/font_size = 28
+text = "50"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Health" type="Label" parent="UI_elements/HUD/PlayerInfoPanel/Health&Armor"]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_top = -20.0
+offset_right = 108.0
+offset_bottom = 20.0
+grow_vertical = 2
+theme_override_font_sizes/font_size = 28
+text = "100,0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="WeaponInfoPanel" type="Panel" parent="UI_elements/HUD"]
+layout_mode = 1
+offset_left = 32.0
+offset_top = 144.0
+offset_right = 224.0
+offset_bottom = 208.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_2rv2u")
+
+[node name="IconFrame1" type="Panel" parent="UI_elements/HUD/WeaponInfoPanel"]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 8.0
+offset_top = -24.0
+offset_right = 56.0
+offset_bottom = 24.0
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_1ms0h")
+
+[node name="Avatar" type="TextureRect" parent="UI_elements/HUD/WeaponInfoPanel/IconFrame1"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("10_2rv2u")
+expand_mode = 1
+
+[node name="Label_ammo" type="Label" parent="UI_elements/HUD/WeaponInfoPanel"]
+layout_mode = 0
+offset_left = 64.0
+offset_top = 12.0
+offset_right = 184.0
+offset_bottom = 28.0
+theme_override_fonts/font = ExtResource("10_mq27t")
+theme_override_font_sizes/font_size = 12
+text = "Ammo"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Ammo_frame" type="Panel" parent="UI_elements/HUD/WeaponInfoPanel"]
+layout_mode = 0
+offset_left = 64.0
+offset_top = 32.0
+offset_right = 184.0
+offset_bottom = 56.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_mq27t")
+
+[node name="Ammocount" type="Label" parent="UI_elements/HUD/WeaponInfoPanel/Ammo_frame"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 15
+text = "10"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[connection signal="body_entered" from="Hitbox" to="." method="_on_hitbox_body_entered"]
 [connection signal="timeout" from="SlidingTimer" to="." method="_on_sliding_timer_timeout"]
 [connection signal="timeout" from="SlideCooldown" to="." method="_on_slide_cooldown_timeout"]
 [connection signal="timeout" from="CoverCooldown" to="." method="_on_cover_cooldown_timeout"]
