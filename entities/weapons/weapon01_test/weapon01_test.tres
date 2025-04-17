@@ -1,6 +1,7 @@
-[gd_resource type="Resource" script_class="WeaponResource" load_steps=3 format=3 uid="uid://bf0kek81jvd6u"]
+[gd_resource type="Resource" script_class="WeaponResource" load_steps=4 format=3 uid="uid://bf0kek81jvd6u"]
 
 [ext_resource type="ArrayMesh" uid="uid://p3fyp22yx1vx" path="res://models/weapons/Pistol_02.obj" id="1_7l0w5"]
+[ext_resource type="PackedScene" uid="uid://cgulaqbea2hv" path="res://sounds/weapons/weapon01_test_snd.tscn" id="1_tu5cn"]
 [ext_resource type="Script" uid="uid://wutcf3bomvbq" path="res://entities/weapons/weapon_resource.gd" id="2_cau67"]
 
 [resource]
@@ -8,6 +9,7 @@ script = ExtResource("2_cau67")
 name = &"Developper Pistol"
 description = &"A pistol for developpement."
 weapon_type = &"Pistol"
+fire_sound = ExtResource("1_tu5cn")
 price = 0.0
 base_damage = 5.0
 accuracy_factor = 1.0

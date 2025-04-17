@@ -5,7 +5,8 @@ extends Node
 #mid round would be for more medium damage guns
 #heavyrounds would be for revolvers, high damage handgun (handcannons, if you will) and even shotguns. 
 
-@export var max_health = 100: 
+#max health is 1000 cause it's 100 with one decimal
+@export var max_health = 1000: 
 	set = set_max_health
 
 @export var godmode : bool = false
@@ -83,7 +84,6 @@ signal health_increased
 signal max_health_changed(value)
 
 signal request_dodge_slide_end()
-signal request_player_cover_walk_in()
 signal request_player_cover_teleported(node_destination)
 signal request_player_cover_snapped(node_destination)
 signal request_player_out_of_cover()
@@ -109,7 +109,6 @@ func cover_snapper(teleport_location:Marker3D):
 			#We don't snap the player into the cover, but we change a variable to be able to 
 			#turn the sliding into just a button to get into cover
 
-
 func cover_handler(teleport_location:Marker3D):
 	print(snap_into_cover)
 	is_behind_cover = true
@@ -118,9 +117,6 @@ func cover_handler(teleport_location:Marker3D):
 			emit_signal("request_player_cover_teleported", teleport_location)
 		false:
 			pass
-			#emit_signal("request_player_cover_walk_in")
-	
-	#emit_signal("request_player_cover_teleported")
 
 func _ready():
 	self.health = max_health
