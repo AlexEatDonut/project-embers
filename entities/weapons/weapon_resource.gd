@@ -1,12 +1,12 @@
 class_name WeaponResource
 extends Resource
 
-
 @export_category("Weapon data")
 @export var name : StringName
 @export var description : StringName
 @export var weapon_type : StringName
 @export var fire_sound : PackedScene
+@export var dry_fire_sound : PackedScene
 @export var price : float
 
 @export_category("Weapon stats")
