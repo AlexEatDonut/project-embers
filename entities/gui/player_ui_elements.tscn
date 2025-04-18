@@ -1,0 +1,248 @@
+[gd_scene load_steps=8 format=3 uid="uid://4lmtef3aw73d"]
+
+[ext_resource type="Texture2D" uid="uid://dt05b5sdq5iaw" path="res://materials/dev/ember_placeholder_prototype.png" id="1_jwhsd"]
+[ext_resource type="FontFile" uid="uid://bjcccyc20uwb3" path="res://fonts/Quantum.otf" id="2_6qadn"]
+[ext_resource type="Texture2D" uid="uid://3ntkx7qrqn2m" path="res://materials/dev/pistol-gun.svg" id="3_6bgx0"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ak4un"]
+bg_color = Color(0, 0, 0, 0.254902)
+border_color = Color(0, 0, 0, 0.501961)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1ms0h"]
+bg_color = Color(0.6, 0.6, 0.6, 0.501961)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.270588, 0.270588, 0.270588, 0.752941)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mq27t"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+border_width_top = 1
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2rv2u"]
+bg_color = Color(0, 0, 0, 0.254902)
+border_color = Color(0, 0, 0, 0.501961)
+
+[node name="UI_elements" type="CanvasLayer"]
+
+[node name="HUD" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ObjectivesPanel" type="Panel" parent="HUD"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -895.0
+offset_top = 32.0
+offset_right = -575.0
+offset_bottom = 128.0
+grow_horizontal = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_ak4un")
+
+[node name="MarginContainer" type="MarginContainer" parent="HUD/ObjectivesPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="Objectives" type="VBoxContainer" parent="HUD/ObjectivesPanel/MarginContainer"]
+layout_mode = 2
+size_flags_vertical = 8
+
+[node name="MainObjective" type="Label" parent="HUD/ObjectivesPanel/MarginContainer/Objectives"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_font_sizes/font_size = 18
+text = "Steal conversation history"
+vertical_alignment = 1
+
+[node name="Objective1_text" type="Label" parent="HUD/ObjectivesPanel/MarginContainer/Objectives"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 10
+text = "Install ransomware on intranet"
+vertical_alignment = 1
+
+[node name="Objective2_text" type="Label" parent="HUD/ObjectivesPanel/MarginContainer/Objectives"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 10
+text = "Collect 10 usb drives in the office"
+vertical_alignment = 1
+
+[node name="Objective3_text" type="Label" parent="HUD/ObjectivesPanel/MarginContainer/Objectives"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 10
+text = "Depose of the CEO"
+vertical_alignment = 1
+
+[node name="PlayerInfoPanel" type="Panel" parent="HUD"]
+layout_mode = 1
+offset_left = 32.0
+offset_top = 32.0
+offset_right = 352.0
+offset_bottom = 128.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_ak4un")
+
+[node name="IconFrame" type="Panel" parent="HUD/PlayerInfoPanel"]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 8.0
+offset_top = -40.0
+offset_right = 88.0
+offset_bottom = 40.0
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_1ms0h")
+
+[node name="Avatar" type="TextureRect" parent="HUD/PlayerInfoPanel/IconFrame"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -38.0
+offset_top = -38.0
+offset_right = 38.0
+offset_bottom = 38.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_jwhsd")
+expand_mode = 1
+
+[node name="Label_health" type="Label" parent="HUD/PlayerInfoPanel"]
+layout_mode = 0
+offset_left = 96.0
+offset_top = 12.0
+offset_right = 312.0
+offset_bottom = 36.0
+theme_override_fonts/font = ExtResource("2_6qadn")
+theme_override_font_sizes/font_size = 16
+text = "Health and Armor"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Health&Armor" type="Panel" parent="HUD/PlayerInfoPanel"]
+layout_mode = 0
+offset_left = 96.0
+offset_top = 42.0
+offset_right = 312.0
+offset_bottom = 82.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_mq27t")
+
+[node name="Armor" type="Label" parent="HUD/PlayerInfoPanel/Health&Armor"]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -108.0
+offset_top = -20.0
+offset_bottom = 20.0
+grow_horizontal = 0
+grow_vertical = 2
+theme_override_font_sizes/font_size = 28
+text = "50"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Health" type="Label" parent="HUD/PlayerInfoPanel/Health&Armor"]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_top = -20.0
+offset_right = 108.0
+offset_bottom = 20.0
+grow_vertical = 2
+theme_override_font_sizes/font_size = 28
+text = "100,0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="WeaponInfoPanel" type="Panel" parent="HUD"]
+layout_mode = 1
+offset_left = 32.0
+offset_top = 144.0
+offset_right = 224.0
+offset_bottom = 208.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_2rv2u")
+
+[node name="IconFrame1" type="Panel" parent="HUD/WeaponInfoPanel"]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 8.0
+offset_top = -24.0
+offset_right = 56.0
+offset_bottom = 24.0
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_1ms0h")
+
+[node name="Avatar" type="TextureRect" parent="HUD/WeaponInfoPanel/IconFrame1"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("3_6bgx0")
+expand_mode = 1
+
+[node name="Label_ammo" type="Label" parent="HUD/WeaponInfoPanel"]
+layout_mode = 0
+offset_left = 64.0
+offset_top = 12.0
+offset_right = 184.0
+offset_bottom = 28.0
+theme_override_fonts/font = ExtResource("2_6qadn")
+theme_override_font_sizes/font_size = 12
+text = "Ammo"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Ammo_frame" type="Panel" parent="HUD/WeaponInfoPanel"]
+layout_mode = 0
+offset_left = 64.0
+offset_top = 32.0
+offset_right = 184.0
+offset_bottom = 56.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_mq27t")
+
+[node name="Ammocount" type="Label" parent="HUD/WeaponInfoPanel/Ammo_frame"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 15
+text = "10"
+horizontal_alignment = 1
+vertical_alignment = 1
