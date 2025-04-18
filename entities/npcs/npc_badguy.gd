@@ -25,7 +25,7 @@ extends CharacterBody3D
 
 @export var outline_material : Material
 
-@export var alert_rotation_speed : Vector3 = Vector3(0, 50, 0)
+@export var alert_rotation_speed : Vector3 = Vector3(0, 10, 0)
 
 var target
 var lookat_target
@@ -50,7 +50,6 @@ func _process(delta):
 		IDLE:
 			pass
 		ALERT:
-			print("enemy alerted")
 			looking_around(delta)
 		STAREDOWN:
 			look_at_player(target)
@@ -96,31 +95,28 @@ func _on_enemy_stats_no_health() -> void:
 	animation_player.play("death")
 #endregion
 
-
-
 func _on_enemy_stats_health_changed(value: Variant) -> void:
 	# check if health got bigger or lower, then do things accordingly with other signals
 	pass
+
 func _on_animation_finished(anim_name: StringName) -> void:
 		if anim_name == "death" :
 			queue_free()
 
-
 #region #RANGE CHECKS
 func _on_awareness_range_body_entered(body: Node3D) -> void:
-		if body.is_in_group("Client"):
-			target = body
-			state = STAREDOWN
-			shoot_timer.start()
+	if body.is_in_group("Client"):
+		target = body
+		state = ALERT
+
 func _on_awareness_range_body_exited(body: Node3D) -> void:
 	state = IDLE
-	shoot_timer.stop()
-
 
 func _on_sight_range_body_entered(body: Node3D) -> void:
 	if body.is_in_group("Client"):
 		target = body
-		state = ALERT
+		
+		state = STAREDOWN
 		shoot_timer.start()
 
 func _on_sight_range_body_exited(body: Node3D) -> void:
@@ -131,7 +127,6 @@ func _on_sight_range_body_exited(body: Node3D) -> void:
 func _on_enemy_stats_highlight_on() -> void:
 	highlight_indicator.visible = true
 	character_mesh.material_overlay = outline_material
-
 
 func _on_enemy_stats_highlight_off() -> void:
 	highlight_indicator.visible = false
