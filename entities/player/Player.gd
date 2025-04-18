@@ -16,6 +16,11 @@ extends CharacterBody3D
 
 @export var mouse_sensitivity: float = 0.1
 
+#region Hud Variables
+@onready var hud_label_health: Label = $"UI_elements/HUD/PlayerInfoPanel/Health&Armor/Health"
+@onready var hud_label_armor: Label = $"UI_elements/HUD/PlayerInfoPanel/Health&Armor/Armor"
+#endregion
+
 #region Movement Related Variables
 @export var ACCELERATION_DEFAULT: float = 10.0
 @export var ACCELERATION_AIR: float = 1.0
@@ -97,6 +102,8 @@ var is_slide_on_cooldown : bool = false
 var last_known_direction = Vector3(1, 0, 1).normalized()
 #endregion
 
+
+
 enum {
 	NORMAL,
 	SHOOTING,
@@ -117,28 +124,32 @@ func _ready():
 	Playerinfo.connect("request_player_cover_snapped", attempt_player_cover_snapped)
 	Playerinfo.connect("request_dodge_slide_end", dodge_slide_end)
 	Playerinfo.connect("request_player_out_of_cover", attempt_player_escape_cover)
+	Playerinfo.connect("health_decreased", hud_update)
+	
+	hud_label_health.text = str(Playerinfo.health / 10)
+	hud_label_armor.text = str(Playerinfo.armor / 10)
 	
 func _process(delta: float) -> void:
 	#reminder : this is the "every frame, do thing" functions
 	match Playerinfo.state:
 		NORMAL:
-			is_slide_allowed == true
+			is_slide_allowed = true
 			animation_player.play("default")
 		SHOOTING:
-			is_slide_allowed == true
+			is_slide_allowed = true
 		COVER:
-			is_slide_allowed == true
+			is_slide_allowed = true
 			_behind_cover()
 		COVERSHOOTING:
-			is_slide_allowed == true
+			is_slide_allowed = true
 			_behind_cover()
 		SLIDING:
-			is_slide_allowed == false
+			is_slide_allowed = false
 			_dodge_slide_handler()
 		STUNNED:
-			is_slide_allowed == false
+			is_slide_allowed = false
 		DYING:
-			is_slide_allowed == false
+			is_slide_allowed = false
 	
 	if is_on_floor():
 		time_in_air = 0.0
@@ -179,6 +190,9 @@ func attempt_player_escape_cover():
 			COVERSHOOTING:
 				Playerinfo.state = SHOOTING
 
+func hud_update():
+	hud_label_health.text = str(Playerinfo.health / 10)
+
 #func reset_all():
 	#animation_player.play("default")
 	#Playerinfo.state = NORMAL
@@ -216,7 +230,6 @@ func _dodge_slide_handler():
 	animation_player.play("dev_slide")
 	is_player_sliding = true
 
-
 func toggle_dodge_slide():
 	match is_player_sliding:
 		#the player IS sliding : stop it
@@ -225,8 +238,6 @@ func toggle_dodge_slide():
 		#the player ISN'T sliding : start it
 		false:
 			dodge_slide_start()
-
-
 
 func dodge_slide_end():
 	Playerinfo.state = NORMAL
@@ -238,16 +249,17 @@ func dodge_slide_end():
 	Playerinfo.prevent_movement_input = false
 
 func dodge_slide_start():
-	slide_direction = velocity
-	SLIDE_ACCELARATION = SPEED_SLIDING_DEFAULT
-	slide_velocity = default_slide_velocity
-	Playerinfo.state = SLIDING
-	is_slide_on_cooldown = true
-	sliding_timer.start()
-	slide_cooldown.start()
-	is_player_sliding = true
-	Playerinfo.snap_into_cover = true
-	Playerinfo.prevent_movement_input = true
+	if slide_elligibility== true:
+		slide_direction = velocity
+		SLIDE_ACCELARATION = SPEED_SLIDING_DEFAULT
+		slide_velocity = default_slide_velocity
+		Playerinfo.state = SLIDING
+		is_slide_on_cooldown = true
+		sliding_timer.start()
+		slide_cooldown.start()
+		is_player_sliding = true
+		Playerinfo.snap_into_cover = true
+		Playerinfo.prevent_movement_input = true
 
 func prevent_all_movement():
 	Playerinfo.movement_prevented = true
@@ -291,45 +303,19 @@ func _physics_process(delta):
 		acceleration = ACCELERATION_AIR
 		gravity_direction += Vector3.DOWN * gravity * delta
 
-#	Disabled jumping code.
+#Disabled jumping code.
 	#if Input.is_action_just_pressed("jump") and is_on_floor():
 		#is_jumping = true
 		#is_in_air = false
 		#gravity_direction = Vector3.UP * jump
 	
-#	SLIDING CODE
-		#I press space > Is in a state that allows it ? > Is on the floor ? >  Is the CD over ?
-		#if yes to all, toggle the dodge-slide on.
-		#this is handled in the inputs
-		
-		#every frame, we check of the player is allowed to dodge-slide
-		#is_slide_allowed is state dependant. "Is slide allowed by the current state" is its full name, basically
-		if is_on_floor() and is_slide_allowed == true and is_slide_on_cooldown == false:
-			slide_elligibility = true
-		
-		# sliding will need to be done by getting the direction the character was moving to and then 
-		# give the player a burst of speed in that direction while preventing all movement keys 
-		# from fucking up with the slide.
-		#i want to change how the idle into slide works, by instead getting where the player is looking at rather than the previous direction
-
-	#else:
-		#slide_elligibility = false
-	#if Input.is_action_pressed("action_slide") and slide_elligibility == true:
-		#dodge_slide_start()
-		#is_slide_button_on = true
-	#elif Input.is_action_just_released("action_slide"):
-		#is_slide_button_on = false
-			##if the key to slide is pressed while you are on the ground and are allowed to slide = you start sliding 
-			##if you are NOT allowed to slide, ignore the input
-	#match [is_slide_button_on, is_on_floor(), Playerinfo.state]:
-		#[false, true, SLIDING]:
-			##if slide button is not pressed, on the ground and you are still sliding
-			#pass
-		#[false, true, _]:
-			##if slide button is not pressed, on the ground and you are no longer sliding (is literally anything else)
-			##allow sliding
-			#Playerinfo.snap_into_cover = false
-	
+#SLIDING ELIGIBILITY
+	#every frame, we check of the player is allowed to dodge-slide
+	#is_slide_allowed is state dependant. "Is slide allowed by the current state" is its full name, basically
+	if is_on_floor() and is_slide_allowed == true and is_slide_on_cooldown == false:
+		slide_elligibility = true
+	else:
+		slide_elligibility = false
 	
 	
 	var step_result : StepResult = StepResult.new()
@@ -525,10 +511,3 @@ func step_check(delta: float, is_jumping_: bool, step_result: StepResult):
 
 	return is_step
 #endregion
-
-
-func _on_hitbox_body_entered(body: Node3D, damage_variable) -> void:
-	if body.has(damage_variable):
-		pass
-	else:
-		print("error. Projectile doesn't have a damage variable")
