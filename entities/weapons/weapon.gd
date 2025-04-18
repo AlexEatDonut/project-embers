@@ -5,10 +5,14 @@ extends Node3D
 var readyForFire := true
 var deltaTime:float
 var wp_state := WP_IDLE 
+var is_hugging_wall : bool = false
+var damageHitscan
 
-#preloading the raycast to call upon it later
-#@onready var hitscan = preload("res://tscns/generic_hit-hurt_box/raycast3d_hitscan.tscn")
-@onready var hitscan = preload("res://entities/systems/projectile_raycast.tscn")
+@onready var wall_raycast: RayCast3D = $WallRaycast
+
+#preloading the raycasts to call upon it later
+@onready var hitscan = preload("res://entities/systems/raycast3d_hitscan.tscn")
+@onready var hitscan_projectile = preload("res://entities/systems/projectile_raycast.tscn")
 
 enum{
 	WP_IDLE,
@@ -38,6 +42,12 @@ enum {
 
 func _ready() -> void:
 	load_weapon()
+
+func _process(delta: float) -> void:
+	if wall_raycast.is_colliding():
+		is_hugging_wall = true
+	else:
+		is_hugging_wall = false
 
 func load_weapon() -> void:
 	weapon_mesh.mesh = WEAPON_INFO.mesh
@@ -80,15 +90,17 @@ func _input(event : InputEvent):
 
 		wp_state = WP_READY
 		fire_ready_timer.start()
-	
 
 func _weapon_fire(delta):
 	while wp_state == WP_SHOOTING :
-		#print(timer.time_left)
 		if timer.time_left == 0 :
-		#print("shooting with my weapon :)")
 			playGunShot()
-			var damageHitscan = hitscan.instantiate()
+			if is_hugging_wall == true:
+				damageHitscan = hitscan.instantiate()
+				damageHitscan.bullet_speed = 1
+			else:
+				damageHitscan = hitscan_projectile.instantiate()
+				damageHitscan.bullet_speed = 50
 			damageHitscan.player_affiliation = true
 			damageHitscan.lingering = false
 			damageHitscan.base_damage = WEAPON_INFO.base_damage
