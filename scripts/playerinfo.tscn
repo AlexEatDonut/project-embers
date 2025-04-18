@@ -4,3 +4,4 @@
 
 [node name="playerInfo" type="Node"]
 script = ExtResource("1_s3sv0")
+max_armor = 500

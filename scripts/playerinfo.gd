@@ -9,6 +9,9 @@ extends Node
 @export var max_health = 1000: 
 	set = set_max_health
 
+@export var max_armor = 50:
+	set = set_max_armor
+
 @export var godmode : bool = false
 var playerIsDead : bool = false
 
@@ -55,10 +58,28 @@ var health = max_health  :
 		if health <= 0:
 			emit_signal("no_health")
 
+var armor = max_armor  :
+	get: 
+		return armor
+	set(value): 
+		if armor > value:
+			emit_signal("health_decreased")
+		elif armor < value: 
+			emit_signal("health_increased")
+		armor = value
+		emit_signal("armor_changed", armor)
+		if armor <= 0:
+			emit_signal("no_armor")
+
 func set_max_health(value):
 	max_health = value
 	self.health = min (health, max_health)
 	emit_signal("max_health_changed", max_health)
+
+func set_max_armor(value):
+	max_armor = value
+	self.armor = min (armor, max_armor)
+	emit_signal("max_armor_changed", max_armor)
 
 func decrease_health(healthTaken, ratio):
 	#var predamage_health = Playerinfo.health
@@ -79,9 +100,14 @@ func increase_health(healthGiven, ratio):
 
 signal no_health
 signal health_changed(value)
+signal max_health_changed(value)
+
+signal no_armor
+signal armor_changed(value)
+signal max_armor_changed(value)
+
 signal health_decreased
 signal health_increased
-signal max_health_changed(value)
 
 signal request_dodge_slide_end()
 signal request_player_cover_teleported(node_destination)
@@ -110,7 +136,6 @@ func cover_snapper(teleport_location:Marker3D):
 			#turn the sliding into just a button to get into cover
 
 func cover_handler(teleport_location:Marker3D):
-	print(snap_into_cover)
 	is_behind_cover = true
 	match snap_into_cover:
 		true:
@@ -120,4 +145,3 @@ func cover_handler(teleport_location:Marker3D):
 
 func _ready():
 	self.health = max_health
-	print(player_character)
