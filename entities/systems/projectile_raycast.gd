@@ -1,7 +1,7 @@
 extends RayCast3D
 
 @export var bullet_speed : float = 50
-@export var base_damage = 5
+@export var base_damage = 50
 @export var player_affiliation : bool
 @export var lingering : bool
 
@@ -14,13 +14,8 @@ extends RayCast3D
 
 var target
 
-#code imported from raycast hitbox
-#signal collide_world()
-signal collide_body(collider)
-
 func _ready() -> void:
 	self.top_level = true
-	position += (global_basis * Vector3.FORWARD) * -0.7
 
 func _physics_process(delta: float) -> void:
 	position += global_basis * Vector3.FORWARD * bullet_speed * delta
@@ -36,7 +31,6 @@ func _physics_process(delta: float) -> void:
 			create_bullethole(bullet_hole, target)
 			BulletDecalPool.spawn_bullet_decal(pt, nrml, target )
 			set_physics_process(false)
-			emit_signal("collide_body", target)
 			if lingering == true :
 				target.add_child(remote_transform)
 				remote_transform.global_transform = global_transform
@@ -49,28 +43,21 @@ func create_bullethole(bh, target):
 	var root = get_tree().current_scene
 	root.add_child(bh)
 	bh.global_transform.origin = get_collision_point()
-	#if get_collision_normal() == Vector3(1,0,0):
-		#bh.look_at(get_collision_point() + get_collision_normal(), Vector3.RIGHT)
-	#elif get_collision_normal() == Vector3(-1,0,0):
-		#bh.look_at(get_collision_point() + get_collision_normal(), Vector3.RIGHT)
-	#else:
-		#bh.look_at(get_collision_point() + get_collision_normal())
 
 func _cleanup() -> void:
 	queue_free()
 
-
 func _on_collide_body(collider: Variant) -> void:
-	#this is a hacky way to get around the hitbox system i have put in place. 
-	#I should call upon signals or some other ways later 
 	var target = collider.get_parent_node_3d() 
-	if target.is_in_group("NPC") && player_affiliation == true :
-		#bullet deals damage to enemies
-		target._decrease_health(base_damage)
-	if target.is_in_group("Client") && player_affiliation == false :
-		#bullet deals damage to player and NPC
-		pass
-
+	if target.is_in_group("NPC"):
+		match player_affiliation:
+			true : 
+				target._decrease_health(base_damage)
+	elif target.is_in_group("Client"):
+		match player_affiliation:
+			false:
+				print("hit player")
+				Playerinfo.decrease_health(base_damage,1)
 
 func _on_checker_timer_timeout() -> void:
 	gpu_trail_3d.emitting = true
