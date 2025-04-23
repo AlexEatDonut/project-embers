@@ -16,7 +16,7 @@ static func spawn_bullet_decal(global_pos : Vector3, normal : Vector3, parent : 
 
 	if not is_instance_valid(decal_pool[0]):
 		decal_pool.pop_front()
-	
+		
 	decal_instance.global_transform = Transform3D(Quaternion(Vector3.UP, normal), global_pos)
 	
 	#if there is a particle emitter

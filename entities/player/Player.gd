@@ -102,8 +102,6 @@ var is_slide_on_cooldown : bool = false
 var last_known_direction = Vector3(1, 0, 1).normalized()
 #endregion
 
-
-
 enum {
 	NORMAL,
 	SHOOTING,
@@ -153,15 +151,15 @@ func _process(delta: float) -> void:
 	
 	if is_on_floor():
 		time_in_air = 0.0
-
+	
 	else:
 		time_in_air += delta
 	
 	if is_player_sliding == false:
 		body.look_at(ScreenPointToRay(), Vector3.UP)
 	else:
-		body.look_at(transform.origin + slide_direction, Vector3.UP)
-		#make body look at moving direction
+		if slide_direction != Vector3(0,0,0) :
+			body.look_at(transform.origin + slide_direction, Vector3.UP)
 	enemy_detector.global_position = ScreenPointToRay()
 	Playerinfo.playerLocation = global_position
 
@@ -277,7 +275,6 @@ func ScreenPointToRay():
 		var rayHitLocation = rayArray["position"]
 		rayHitLocation.y = body.global_transform.origin.y
 		previous_look_direction = rayHitLocation
-		
 		return rayHitLocation
 #		leftover code in case i get lookdirection_raycast_length working as desired
 	#else :
@@ -316,7 +313,6 @@ func _physics_process(delta):
 		slide_elligibility = true
 	else:
 		slide_elligibility = false
-	
 	
 	var step_result : StepResult = StepResult.new()
 	
@@ -376,13 +372,11 @@ func _physics_process(delta):
 		is_jumping = false
 		is_in_air = true
 
-
 func _on_sliding_timer_timeout() -> void:
 	toggle_dodge_slide()
 
 func _on_cover_cooldown_timeout() -> void:
 	Playerinfo.movement_prevented = false
-	
 
 func _on_slide_cooldown_timeout() -> void:
 	is_slide_on_cooldown = false
@@ -393,7 +387,6 @@ func step_check(delta: float, is_jumping_: bool, step_result: StepResult):
 	
 	step_height_main = STEP_HEIGHT_DEFAULT
 	step_incremental_check_height = STEP_HEIGHT_DEFAULT / STEP_CHECK_COUNT
-	
 	if is_in_air and is_enabled_stair_stepping_in_air:
 		step_height_main = STEP_HEIGHT_IN_AIR_DEFAULT
 		step_incremental_check_height = STEP_HEIGHT_IN_AIR_DEFAULT / STEP_CHECK_COUNT
@@ -410,7 +403,6 @@ func step_check(delta: float, is_jumping_: bool, step_result: StepResult):
 			test_motion_params.motion = motion
 			
 			var is_player_collided: bool = PhysicsServer3D.body_test_motion(self.get_rid(), test_motion_params, test_motion_result)
-
 			if is_player_collided and test_motion_result.get_collision_normal().y < 0:
 				continue
 

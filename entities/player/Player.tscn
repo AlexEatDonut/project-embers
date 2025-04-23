@@ -381,7 +381,6 @@ shape = ExtResource("2_ak4un")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Body"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
-visible = false
 mesh = ExtResource("3_1ms0h")
 skeleton = NodePath("../..")
 

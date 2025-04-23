@@ -23,12 +23,12 @@ func _physics_process(delta: float) -> void:
 	force_raycast_update()
 	target = get_collider()
 	if is_colliding():
-		if not target.is_in_group("Client"):
+		_on_collide_body(target)
+		if not target.is_in_group("Client") || not target.is_in_group("NPC"):
 			var bullet_hole = bullet_decal.instantiate()
 			var pt = get_collision_point()
 			var nrml = get_collision_normal()
 			global_position = get_collision_point()
-			create_bullethole(bullet_hole, target)
 			BulletDecalPool.spawn_bullet_decal(pt, nrml, target )
 			set_physics_process(false)
 			if lingering == true :
@@ -48,15 +48,14 @@ func _cleanup() -> void:
 	queue_free()
 
 func _on_collide_body(collider: Variant) -> void:
-	var target = collider.get_parent_node_3d() 
-	if target.is_in_group("NPC"):
+	var collider_parent = collider.get_parent_node_3d() 
+	if collider_parent.is_in_group("NPC"):
 		match player_affiliation:
 			true : 
-				target._decrease_health(base_damage)
-	elif target.is_in_group("Client"):
+				collider_parent._decrease_health(base_damage)
+	elif collider.is_in_group("Client"):
 		match player_affiliation:
 			false:
-				print("hit player")
 				Playerinfo.decrease_health(base_damage,1)
 
 func _on_checker_timer_timeout() -> void:
