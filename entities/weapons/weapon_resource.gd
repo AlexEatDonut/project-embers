@@ -12,6 +12,7 @@ extends Resource
 @export_category("Weapon stats")
 @export var base_damage : float
 @export var accuracy_factor : float
+@export var fire_cost : float
 @export var first_shot_accuracy : float
 @export var fall_off_range : float
 @export var fire_rate : float

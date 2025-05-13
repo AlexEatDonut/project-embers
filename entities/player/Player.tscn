@@ -1,4 +1,4 @@
-[gd_scene load_steps=28 format=3 uid="uid://x3l0v6tbskoe"]
+[gd_scene load_steps=29 format=3 uid="uid://x3l0v6tbskoe"]
 
 [ext_resource type="Script" uid="uid://bqa6ywaj1f0ha" path="res://entities/player/Player.gd" id="1"]
 [ext_resource type="Material" uid="uid://cnq7n26g77h12" path="res://materials/tools/direction_indicator.tres" id="2_3c3w1"]
@@ -8,6 +8,7 @@
 [ext_resource type="Shader" uid="uid://tqasmi738v3e" path="res://shaders/forground_shader.gdshader" id="4_83hs8"]
 [ext_resource type="PackedScene" uid="uid://78vc80y3pt41" path="res://entities/weapons/weapon.tscn" id="5_g3lhm"]
 [ext_resource type="Resource" uid="uid://bf0kek81jvd6u" path="res://entities/weapons/weapon01_test/weapon01_test.tres" id="6_4pwj0"]
+[ext_resource type="ArrayMesh" uid="uid://p3fyp22yx1vx" path="res://models/weapons/Pistol_02.obj" id="7_2rv2u"]
 [ext_resource type="PackedScene" uid="uid://g1elpx8h7qgu" path="res://entities/systems/enemy_detector.tscn" id="7_fmb3c"]
 [ext_resource type="PackedScene" uid="uid://cpml3unngt286" path="res://entities/systems/critical_hit_zone.tscn" id="7_rl6fg"]
 [ext_resource type="PackedScene" uid="uid://4lmtef3aw73d" path="res://entities/gui/player_ui_elements.tscn" id="11_1ms0h"]
@@ -81,19 +82,19 @@ tracks/1/keys = {
 tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("Body/Weapon:position")
+tracks/2/path = NodePath("Body/Head:position")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector3(0, 0, 0)]
+"values": [Vector3(0, 1.7, 0)]
 }
 tracks/3/type = "value"
 tracks/3/imported = false
 tracks/3/enabled = true
-tracks/3/path = NodePath("Body/Weapon:rotation")
+tracks/3/path = NodePath("Body/Head:rotation")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
@@ -105,62 +106,74 @@ tracks/3/keys = {
 tracks/4/type = "value"
 tracks/4/imported = false
 tracks/4/enabled = true
-tracks/4/path = NodePath("Body/Head:position")
+tracks/4/path = NodePath("Body/DirectionIndicator/ring:visible")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector3(0, 1.7, 0)]
+"update": 1,
+"values": [true]
 }
 tracks/5/type = "value"
 tracks/5/imported = false
 tracks/5/enabled = true
-tracks/5/path = NodePath("Body/Head:rotation")
+tracks/5/path = NodePath("Body/DirectionIndicator/arrow:position")
 tracks/5/interp = 1
 tracks/5/loop_wrap = true
 tracks/5/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector3(0, 0, 0)]
+"values": [Vector3(0, 0, -1.10515)]
 }
 tracks/6/type = "value"
 tracks/6/imported = false
 tracks/6/enabled = true
-tracks/6/path = NodePath("Body/DirectionIndicator/ring:visible")
+tracks/6/path = NodePath("Body/MeshInstance3D:scale")
 tracks/6/interp = 1
 tracks/6/loop_wrap = true
 tracks/6/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [true]
+"update": 0,
+"values": [Vector3(1, 1, 1)]
 }
 tracks/7/type = "value"
 tracks/7/imported = false
 tracks/7/enabled = true
-tracks/7/path = NodePath("Body/DirectionIndicator/arrow:position")
+tracks/7/path = NodePath("Body/Weapon/WeaponMesh:rotation")
 tracks/7/interp = 1
 tracks/7/loop_wrap = true
 tracks/7/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector3(0, 0, -1.10515)]
+"values": [Vector3(0, 0, 0)]
 }
 tracks/8/type = "value"
 tracks/8/imported = false
 tracks/8/enabled = true
-tracks/8/path = NodePath("Body/MeshInstance3D:scale")
+tracks/8/path = NodePath("Body/Weapon:rotation")
 tracks/8/interp = 1
 tracks/8/loop_wrap = true
 tracks/8/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector3(1, 1, 1)]
+"values": [Vector3(0, 0, 0)]
+}
+tracks/9/type = "value"
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/path = NodePath("Body/Weapon:position")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
 }
 
 [sub_resource type="Animation" id="Animation_83hs8"]
@@ -237,14 +250,14 @@ resource_name = "dev_reload"
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Body/Weapon:position")
+tracks/0/path = NodePath("Body/Weapon/WeaponMesh:rotation")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.19),
+"times": PackedFloat32Array(0, 1),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [Vector3(0, 0, 0), Vector3(0, -0.5, 0.1)]
+"values": [Vector3(0, 0, 0), Vector3(-12.5664, 0, 0)]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -253,10 +266,22 @@ tracks/1/path = NodePath("Body/Weapon:rotation")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.19),
-"transitions": PackedFloat32Array(1, 1),
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector3(0, 0, 0), Vector3(-0.349066, 0.349066, 0)]
+"values": [Vector3(0, 0, -0.523599)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Body/Weapon:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(-0.5, 0.25, 0)]
 }
 
 [sub_resource type="Animation" id="Animation_aqcbf"]
@@ -407,6 +432,9 @@ mesh = SubResource("TextMesh_3c3w1")
 [node name="Weapon" parent="Body" instance=ExtResource("5_g3lhm")]
 WEAPON_INFO = ExtResource("6_4pwj0")
 
+[node name="WeaponMesh" parent="Body/Weapon" index="1"]
+mesh = ExtResource("7_2rv2u")
+
 [node name="CameraPivot" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 script = ExtResource("3_wnvi2")
@@ -515,4 +543,5 @@ shape = SubResource("BoxShape3D_1ms0h")
 [connection signal="timeout" from="SlideCooldown" to="." method="_on_slide_cooldown_timeout"]
 [connection signal="timeout" from="CoverCooldown" to="." method="_on_cover_cooldown_timeout"]
 
+[editable path="Body/Weapon"]
 [editable path="UI_elements"]

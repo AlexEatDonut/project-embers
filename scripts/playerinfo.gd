@@ -1,10 +1,5 @@
 extends Node
 
-#im unsure if/how im going to implement weapon types and different ammo capacity
-#lightround would be for low damage pistols and smgs
-#mid round would be for more medium damage guns
-#heavyrounds would be for revolvers, high damage handgun (handcannons, if you will) and even shotguns. 
-
 #max health is 1000 cause it's 100 with one decimal
 @export var max_health = 1000: 
 	set = set_max_health
@@ -78,13 +73,13 @@ func set_max_health(value):
 
 func set_max_armor(value):
 	max_armor = value
-	self.armor = min (armor, max_armor)
+	self.armor = min(armor, max_armor)
 	emit_signal("max_armor_changed", max_armor)
 
 func decrease_health(healthTaken, ratio):
 	#var predamage_health = Playerinfo.health
 	var healthDamage = healthTaken * ratio
-	Playerinfo.health -= healthDamage
+	self.health -= healthDamage
 	emit_signal("health_decreased")
 	
 func increase_health(healthGiven, ratio):

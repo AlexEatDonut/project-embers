@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://nur42rwhp0hq" path="res://entities/weapons/weapon.gd" id="1_e4m06"]
 
 [node name="Weapon" type="Node3D"]
+process_priority = 1
 script = ExtResource("1_e4m06")
 
 [node name="WallRaycast" type="RayCast3D" parent="."]
@@ -17,12 +18,22 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.42, 1.3, -0.3)
 [node name="hitscanOrigin" type="Marker3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
 
-[node name="Timer" type="Timer" parent="."]
+[node name="FireRateTimer" type="Timer" parent="."]
 one_shot = true
 
 [node name="FireReady" type="Timer" parent="."]
 wait_time = 0.3
 one_shot = true
 
-[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
+[node name="Reload_timer" type="Timer" parent="."]
+one_shot = true
+
+[node name="SpawnTimer" type="Timer" parent="."]
+wait_time = 0.2
+one_shot = true
+autostart = true
+
+[connection signal="timeout" from="FireRateTimer" to="." method="_on_fire_rate_timer_timeout"]
 [connection signal="timeout" from="FireReady" to="." method="_on_fire_ready_timeout"]
+[connection signal="timeout" from="Reload_timer" to="." method="_on_reload_timer_timeout"]
+[connection signal="timeout" from="SpawnTimer" to="." method="_on_spawn_timer_timeout"]

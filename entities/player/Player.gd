@@ -11,6 +11,8 @@ extends CharacterBody3D
 
 @onready var cover_cooldown: Timer = $CoverCooldown
 
+@onready var weapon: Node3D = $Body/Weapon
+
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
 @onready var animation_tree: AnimationTree = $AnimationTree
 
@@ -19,6 +21,7 @@ extends CharacterBody3D
 #region Hud Variables
 @onready var hud_label_health: Label = $"UI_elements/HUD/PlayerInfoPanel/Health&Armor/Health"
 @onready var hud_label_armor: Label = $"UI_elements/HUD/PlayerInfoPanel/Health&Armor/Armor"
+@onready var hud_label_ammo: Label = $UI_elements/HUD/WeaponInfoPanel/Ammo_frame/Ammocount
 #endregion
 
 #region Movement Related Variables
@@ -123,9 +126,11 @@ func _ready():
 	Playerinfo.connect("request_dodge_slide_end", dodge_slide_end)
 	Playerinfo.connect("request_player_out_of_cover", attempt_player_escape_cover)
 	Playerinfo.connect("health_decreased", hud_update)
+	weapon.connect("shot_fired", hud_update)
+	weapon.connect("start_reloading", reloading_weapon)
+	weapon.connect("request_hud_update", hud_update)
 	
-	hud_label_health.text = str(Playerinfo.health / 10)
-	hud_label_armor.text = str(Playerinfo.armor / 10)
+	hud_update()
 	
 func _process(delta: float) -> void:
 	#reminder : this is the "every frame, do thing" functions
@@ -135,6 +140,9 @@ func _process(delta: float) -> void:
 			animation_player.play("default")
 		SHOOTING:
 			is_slide_allowed = true
+		RELOADING:
+			is_slide_allowed = true
+			animation_player.play("dev_reload")
 		COVER:
 			is_slide_allowed = true
 			_behind_cover()
@@ -188,8 +196,16 @@ func attempt_player_escape_cover():
 			COVERSHOOTING:
 				Playerinfo.state = SHOOTING
 
+func reloading_weapon():
+	Playerinfo.state = RELOADING
+
 func hud_update():
 	hud_label_health.text = str(Playerinfo.health / 10)
+	hud_label_ammo.text = str(weapon.ammo_count)
+func hud_update_hp():
+	hud_label_health.text = str(Playerinfo.health / 10)
+func hud_update_ammo():
+	hud_label_ammo.text = str(weapon.ammo_count)
 
 #func reset_all():
 	#animation_player.play("default")
@@ -340,6 +356,9 @@ func _physics_process(delta):
 			#clamp(main_velocity, speed , slide_speed)
 			movement = slide_velocity + gravity_direction
 		NORMAL :
+			main_velocity = main_velocity.lerp(direction * speed, acceleration * delta)
+			movement = main_velocity + gravity_direction
+		RELOADING : 
 			main_velocity = main_velocity.lerp(direction * speed, acceleration * delta)
 			movement = main_velocity + gravity_direction
 		SHOOTING : 
