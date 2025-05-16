@@ -29,6 +29,20 @@ This project's goal is to get me to make an actual product. I was rejected when 
 
 <a href="https://www.dafont.com/quantum-4.font?l[]=10&l[]=1">Quantum by Sesohq</a>
 
+# Sound Effects
+
+<a href="https://freesound.org/people/morganpurkis/sounds/385811/"> Single Pistol Gunshot 3 by morganpurkis</a>
+
+The next 3 sounds have been combined into one sound effect.
+
+<a href="https://freesound.org/people/fastson/sounds/399116/">DryFire_01.wav</a> by <a href="https://freesound.org/people/fastson/">fastson</a> | License: <a href="http://creativecommons.org/licenses/by/3.0/">Attribution 3.0</a>
+
+<a href="https://freesound.org/people/JakLocke/sounds/412294/">Gun trigger pull 1</a> by <a href="https://freesound.org/people/JakLocke/">JakLocke</a> | License: <a href="https://creativecommons.org/licenses/by/4.0/">Attribution 4.0</a>
+
+<a href="https://freesound.org/people/ser%C3%B8t%C5%8Dnin/sounds/725402/">A rifle being dry fired once</a> by <a href="https://freesound.org/people/ser%C3%B8t%C5%8Dnin/">serøtōnin</a> | License: <a href="http://creativecommons.org/publicdomain/zero/1.0/">Creative Commons 0</a>
+
+
+
 <hr>
 
 <sub><sup>Copyright Rémi "AlexEatDonut" Peautre - 2025  
