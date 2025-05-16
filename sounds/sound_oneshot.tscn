@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://boa5nnno502aa"]
+
+[ext_resource type="Script" uid="uid://bn25xkkqoyo7g" path="res://sounds/sound_oneshot.gd" id="1_ce1qq"]
+
+[node name="sound_oneshot" type="AudioStreamPlayer"]
+autoplay = true
+script = ExtResource("1_ce1qq")
+
+[connection signal="finished" from="." to="." method="_on_finished"]
