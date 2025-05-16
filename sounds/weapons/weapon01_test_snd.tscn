@@ -6,4 +6,3 @@
 [node name="weapon01_test_snd" instance=ExtResource("1_pxcml")]
 stream = ExtResource("2_t3ho6")
 volume_db = -15.0
-autoplay = true

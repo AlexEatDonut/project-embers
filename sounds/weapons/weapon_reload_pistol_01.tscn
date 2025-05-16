@@ -1,0 +1,7 @@
+[gd_scene load_steps=3 format=3 uid="uid://caduhj1l2ijc6"]
+
+[ext_resource type="PackedScene" uid="uid://boa5nnno502aa" path="res://sounds/sound_oneshot.tscn" id="1_ui85o"]
+[ext_resource type="AudioStream" uid="uid://dw7ukxbu62i4w" path="res://sounds/weapons/377549__bunny_clark__pistol-reload.wav" id="2_tb7il"]
+
+[node name="weapon_reload_pistol01" instance=ExtResource("1_ui85o")]
+stream = ExtResource("2_tb7il")
