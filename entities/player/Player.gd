@@ -11,7 +11,7 @@ extends CharacterBody3D
 
 @onready var cover_cooldown: Timer = $CoverCooldown
 
-@onready var weapon: Node3D = $Body/Weapon
+#@onready var weapon: Node3D = $Body/Weapon
 
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
 @onready var animation_tree: AnimationTree = $AnimationTree
@@ -23,6 +23,20 @@ extends CharacterBody3D
 @onready var hud_label_armor: Label = $"UI_elements/HUD/PlayerInfoPanel/Health&Armor/Armor"
 @onready var hud_label_ammo: Label = $UI_elements/HUD/WeaponInfoPanel/Ammo_frame/Ammocount
 #endregion
+
+#region Weapons Variables
+var wp_current : WeaponResource = WEAPON_01_TEST
+var wp_can_fire : bool = true
+var wp_dry_fire : bool = false
+var wp_is_reloading : bool = false
+var wp_current_ammo : int = wp_current.max_mag 
+
+const WEAPON_01_TEST = preload("res://resources/weapons/weapon01_test.tres")
+
+
+
+#endregion
+
 
 #region Movement Related Variables
 @export var ACCELERATION_DEFAULT: float = 10.0
@@ -117,6 +131,14 @@ enum {
 	DYING
 }
 
+enum wp_states{
+	WP_IDLE,
+	WP_SHOOTING,
+	WP_FIRESTANCE,
+	WP_READY,
+	WP_RELOADING
+}
+
 func _ready():
 	default_slide_velocity = main_velocity
 	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
@@ -126,9 +148,9 @@ func _ready():
 	Playerinfo.connect("request_dodge_slide_end", dodge_slide_end)
 	Playerinfo.connect("request_player_out_of_cover", attempt_player_escape_cover)
 	Playerinfo.connect("health_decreased", hud_update)
-	weapon.connect("shot_fired", hud_update)
-	weapon.connect("start_reloading", reloading_weapon)
-	weapon.connect("request_hud_update", hud_update)
+	#weapon.connect("shot_fired", hud_update)
+	#weapon.connect("start_reloading", reloading_weapon)
+	#weapon.connect("request_hud_update", hud_update)
 	
 	hud_update()
 	
@@ -159,7 +181,6 @@ func _process(delta: float) -> void:
 	
 	if is_on_floor():
 		time_in_air = 0.0
-	
 	else:
 		time_in_air += delta
 	
@@ -167,14 +188,19 @@ func _process(delta: float) -> void:
 		body.look_at(ScreenPointToRay(), Vector3.UP)
 	else:
 		if slide_direction != Vector3(0,0,0) :
-			body.look_at(transform.origin + slide_direction, Vector3.UP)
+			if !global_transform.origin.is_equal_approx(slide_direction) :
+				body.look_at(transform.origin + slide_direction, Vector3.UP)
 	enemy_detector.global_position = ScreenPointToRay()
 	Playerinfo.playerLocation = global_position
+	
+	if wp_current_ammo == 0 :
+		wp_dry_fire = true
+	else:
+		wp_dry_fire = false
+	
 
 func attempt_player_cover_teleported(destination):
-	#global_position = lerp(global_position, destination.global_position, 0.7)
 	move_player(destination.global_position, 0.1)
-	#global_position = destination.global_position
 	dodge_slide_end()
 	prevent_all_movement()
 	await get_tree().create_timer(0.1).timeout
@@ -198,14 +224,17 @@ func attempt_player_escape_cover():
 
 func reloading_weapon():
 	Playerinfo.state = RELOADING
+	
+func stop_reloading_weapon():
+	Playerinfo.state = RELOADING
 
 func hud_update():
 	hud_label_health.text = str(Playerinfo.health / 10)
-	hud_label_ammo.text = str(weapon.ammo_count)
+	hud_label_ammo.text = str(wp_current_ammo)
 func hud_update_hp():
 	hud_label_health.text = str(Playerinfo.health / 10)
-func hud_update_ammo():
-	hud_label_ammo.text = str(weapon.ammo_count)
+#func hud_update_ammo():
+	#hud_label_ammo.text = str(weapon.ammo_count)
 
 #func reset_all():
 	#animation_player.play("default")
@@ -220,17 +249,6 @@ func _input(event):
 		if event.is_action_pressed("dodge_slide"):
 			if Playerinfo.state != SLIDING:
 				toggle_dodge_slide()
-			#is_slide_button_on = true
-		#if event.is_action_released("dodge_slide"):
-			#is_slide_button_on = false
-		
-#wtf does this code do. I thought it was rotating the player, but clearly it works fine without it
-	#if event is InputEventMouseMotion :
-		#body.rotate_y(deg_to_rad(-event.relative.x * mouse_sensitivity))
-		#old body rotation code 
-		#body.rotate_y(deg_to_rad())
-		#head.rotate_x(deg_to_rad(-event.relative.y * mouse_sensitivity))
-		#head.rotation.x = clamp(head.rotation.x, deg_to_rad(-89), deg_to_rad(89))
 
 func _behind_cover():
 	animation_player.play("dev_cover")
@@ -349,29 +367,33 @@ func _physics_process(delta):
 		if abs(head_offset.y) <= 0.01:
 			speed = SPEED_DEFAULT
 
+
 	match Playerinfo.state :
 		SLIDING :
-			SLIDE_ACCELARATION -= SLIDE_DECELARATION
 			slide_velocity = main_velocity.lerp(last_known_direction * (SLIDE_ACCELARATION - SLIDE_DECELARATION), acceleration * delta)
-			#clamp(main_velocity, speed , slide_speed)
-			movement = slide_velocity + gravity_direction
 		NORMAL :
 			main_velocity = main_velocity.lerp(direction * speed, acceleration * delta)
-			movement = main_velocity + gravity_direction
 		RELOADING : 
 			main_velocity = main_velocity.lerp(direction * speed, acceleration * delta)
-			movement = main_velocity + gravity_direction
 		SHOOTING : 
 			main_velocity = main_velocity.lerp(direction * speed_shooting, acceleration * delta)
-			movement = main_velocity + gravity_direction
 		COVER :
 			main_velocity = main_velocity.lerp(direction * speed_cover, acceleration * delta)
-			movement = main_velocity + gravity_direction
 		COVERSHOOTING :
 			main_velocity = main_velocity.lerp(direction * speed_covershooting, acceleration * delta)
-			movement = main_velocity + gravity_direction
-		_:
-			movement = main_velocity + gravity_direction
+		
+	#For every state, the player moves at a different speed. 
+	#Due to sliding having it's own velocity, every other state NEEDS to have 
+	#"movement = main_velocity + gravity_direction"
+	#This if is a workaround to avoid typing the thing many times
+	#This is sure to bite me in the ass when i need to filter out more than the SLIDING state
+	
+	if Playerinfo.state == SLIDING :
+		SLIDE_ACCELARATION -= SLIDE_DECELARATION
+		movement = slide_velocity + gravity_direction
+	else :
+		movement = main_velocity + gravity_direction
+	
 	if Playerinfo.movement_prevented != true:
 		set_velocity(movement)
 		set_max_slides(6)
