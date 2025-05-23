@@ -187,6 +187,11 @@ func _process(delta: float) -> void:
 			is_slide_allowed = false
 			wp_is_reloading = false
 	
+	if Playerinfo.state == SLIDING:
+		Playerinfo.intangible = true
+	else:
+		Playerinfo.intangible = false
+	
 	if is_on_floor():
 		time_in_air = 0.0
 	else:

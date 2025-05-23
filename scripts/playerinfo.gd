@@ -79,10 +79,12 @@ func set_max_armor(value):
 
 func decrease_health(healthTaken, ratio):
 	#var predamage_health = health
-	if !godmode or !intangible:
-		var healthDamage = healthTaken * ratio
-		self.health -= healthDamage
-		emit_signal("health_decreased")
+	if godmode == true or intangible == true:
+		ratio = 0
+
+	var healthDamage = healthTaken * ratio
+	self.health -= healthDamage
+	emit_signal("health_decreased")
 	
 func increase_health(healthGiven, ratio):
 	var prehealing_health = health
