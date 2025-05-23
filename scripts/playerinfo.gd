@@ -8,6 +8,7 @@ extends Node
 	set = set_max_armor
 
 @export var godmode : bool = false
+@export var intangible : bool = false
 var playerIsDead : bool = false
 
 var snap_into_cover : bool = true
@@ -77,18 +78,19 @@ func set_max_armor(value):
 	emit_signal("max_armor_changed", max_armor)
 
 func decrease_health(healthTaken, ratio):
-	#var predamage_health = Playerinfo.health
-	var healthDamage = healthTaken * ratio
-	self.health -= healthDamage
-	emit_signal("health_decreased")
+	#var predamage_health = health
+	if !godmode or !intangible:
+		var healthDamage = healthTaken * ratio
+		self.health -= healthDamage
+		emit_signal("health_decreased")
 	
 func increase_health(healthGiven, ratio):
-	var prehealing_health = Playerinfo.health
+	var prehealing_health = health
 	if healthGiven > 0 : 
 		#ratio is a percentage from 0 to 1
 		var healthBonus = max_health * ratio
-		var theorectical_newhealth = Playerinfo.health + healthBonus
-		Playerinfo.health = clamp(theorectical_newhealth, prehealing_health, Playerinfo.max_health)
+		var theorectical_newhealth = health + healthBonus
+		health = clamp(theorectical_newhealth, prehealing_health, max_health)
 		emit_signal("health_increased")
 	else: 
 		print("Error ! healthGiven was 0 or lower. Not multiplying to avoid calculus issues.")
