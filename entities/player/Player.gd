@@ -28,6 +28,7 @@ extends CharacterBody3D
 var wp_current : WeaponResource = WEAPON_01_TEST
 var wp_can_fire : bool = true
 var wp_dry_fire : bool = false
+var wp_can_reload : bool = false
 var wp_is_reloading : bool = false
 var wp_current_ammo : int = wp_current.max_mag 
 
@@ -159,25 +160,32 @@ func _process(delta: float) -> void:
 	match Playerinfo.state:
 		NORMAL:
 			is_slide_allowed = true
+			wp_is_reloading = false
 			animation_player.play("default")
 		SHOOTING:
 			is_slide_allowed = true
+			wp_is_reloading = false
 		RELOADING:
 			is_slide_allowed = true
+			wp_is_reloading = true
 			animation_player.play("dev_reload")
 		COVER:
 			is_slide_allowed = true
+			wp_is_reloading = false
 			_behind_cover()
 		COVERSHOOTING:
 			is_slide_allowed = true
+			wp_is_reloading = false
 			_behind_cover()
 		SLIDING:
 			is_slide_allowed = false
 			_dodge_slide_handler()
 		STUNNED:
 			is_slide_allowed = false
+			wp_is_reloading = false
 		DYING:
 			is_slide_allowed = false
+			wp_is_reloading = false
 	
 	if is_on_floor():
 		time_in_air = 0.0
@@ -222,11 +230,17 @@ func attempt_player_escape_cover():
 			COVERSHOOTING:
 				Playerinfo.state = SHOOTING
 
-func reloading_weapon():
-	Playerinfo.state = RELOADING
-	
+#TODO
+#TODO in order to actually make the game consistent in it's state changes, it might be a good idea to make a state machine
+#TODO kind of function in order to handle getting out of a state and not defaulting to NORMAL
+func state_exiter_handler(state_from):
+	pass
+
+#func reloading_weapon():
+	#Playerinfo.state = RELOADING
+	#
 func stop_reloading_weapon():
-	Playerinfo.state = RELOADING
+	Playerinfo.state = NORMAL
 
 func hud_update():
 	hud_label_health.text = str(Playerinfo.health / 10)

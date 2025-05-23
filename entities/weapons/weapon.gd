@@ -31,6 +31,7 @@ var successive_shots : float = 0
 enum{
 	WP_IDLE,
 	WP_SHOOTING,
+	WP_FIRESTANCE,
 	WP_READY,
 	WP_RELOADING
 }
@@ -64,7 +65,11 @@ func _process(delta: float) -> void:
 		parent.wp_dry_fire = false
 	elif parent.wp_current_ammo <= 0:
 		parent.wp_dry_fire = true
-
+	
+	if parent.wp_is_reloading == false and parent.wp_current_ammo != wp_current.max_mag :
+		parent.wp_can_reload = true
+	else:
+		parent.wp_can_reload = false
 
 func _physics_process(delta: float) -> void:
 	deltaTime = delta
@@ -89,17 +94,20 @@ func wp_fire():
 			firing_stance_timer.stop()
 
 func wp_reload_handler(isManual : bool):
-	if wp_state == WP_RELOADING:
-		pass
-	else :
+	stop_wp_firing()
+	if parent.wp_can_reload == true and parent.wp_is_reloading == false or !isManual :
 		parent.wp_can_fire = false
+		Playerinfo.state = RELOADING
 		wp_state = WP_RELOADING
 		firing_stance_timer.stop()
 		fire_rate_timer.stop()
 		wp_reload()
+	else:
+		pass
+
 
 func wp_reload():
-	parent.reloading_weapon()
+	#parent.reloading_weapon()
 	playReloadSfx()
 	firing_stance_timer.stop()
 	reload_timer.start(wp_current.reload_speed)
@@ -118,7 +126,6 @@ func _input(event : InputEvent):
 	if event.is_action_released("shoot") :
 		stop_wp_firing()
 	if event.is_action_pressed("reload"):
-		stop_wp_firing()
 		wp_reload_handler(true)
 
 func _weapon_fire(delta):
