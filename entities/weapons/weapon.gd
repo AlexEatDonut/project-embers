@@ -53,7 +53,7 @@ enum {
 func _ready() -> void:
 	#load_weapon()
 	wp_current = parent.wp_current
-	
+	weapon_mesh.mesh = wp_current.mesh
 
 func _process(delta: float) -> void:
 	if wall_raycast.is_colliding():
@@ -95,7 +95,7 @@ func wp_fire():
 
 func wp_reload_handler(isManual : bool):
 	stop_wp_firing()
-	if parent.wp_can_reload == true and parent.wp_is_reloading == false or !isManual :
+	if parent.wp_can_reload == true and parent.wp_is_reloading == false or isManual == false :
 		parent.wp_can_fire = false
 		Playerinfo.state = RELOADING
 		wp_state = WP_RELOADING
@@ -107,7 +107,6 @@ func wp_reload_handler(isManual : bool):
 
 
 func wp_reload():
-	#parent.reloading_weapon()
 	playReloadSfx()
 	firing_stance_timer.stop()
 	reload_timer.start(wp_current.reload_speed)

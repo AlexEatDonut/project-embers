@@ -244,8 +244,8 @@ func state_exiter_handler(state_from):
 #func reloading_weapon():
 	#Playerinfo.state = RELOADING
 	#
-func stop_reloading_weapon():
-	Playerinfo.state = NORMAL
+#func stop_reloading_weapon():
+	#Playerinfo.state = NORMAL
 
 func hud_update():
 	hud_label_health.text = str(Playerinfo.health / 10)
