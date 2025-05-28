@@ -1,0 +1,14 @@
+[remap]
+
+importer="VTF"
+type="Texture"
+uid="uid://co2sisg1bkrox"
+path="res://.godot/imported/city_skyline.vtf-dbff0191920d04b2d1de0443b7d94cac.vtf.tres"
+
+[deps]
+
+source_file="res://godotvmfcontent/materials/environnement/city_skyline.vtf"
+dest_files=["res://.godot/imported/city_skyline.vtf-dbff0191920d04b2d1de0443b7d94cac.vtf.tres"]
+
+[params]
+

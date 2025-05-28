@@ -1,0 +1,14 @@
+[remap]
+
+importer="VMT"
+type="Material"
+uid="uid://bqqa27mlmuhgq"
+path="res://.godot/imported/kenney-light-texture09.vmt-f54f28db40055f7a198a80dbf50f94ed.vmt.tres"
+
+[deps]
+
+source_file="res://godotvmfcontent/materials/devkenney/kenney-light-texture09.vmt"
+dest_files=["res://.godot/imported/kenney-light-texture09.vmt-f54f28db40055f7a198a80dbf50f94ed.vmt.tres"]
+
+[params]
+

@@ -1,0 +1,5 @@
+"LightmappedGeneric"
+{
+	"$basetexture" "environnement/city_skyline"
+	"$alphatest" 1
+}

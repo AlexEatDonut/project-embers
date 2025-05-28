@@ -1,0 +1,14 @@
+[remap]
+
+importer="VTF"
+type="Texture"
+uid="uid://dlas5335hmcrw"
+path="res://.godot/imported/toolsnodraw.vtf-aada7b67b719668d1b3de0231e796770.vtf.tres"
+
+[deps]
+
+source_file="res://godotvmfcontent/materials/tools/toolsnodraw.vtf"
+dest_files=["res://.godot/imported/toolsnodraw.vtf-aada7b67b719668d1b3de0231e796770.vtf.tres"]
+
+[params]
+

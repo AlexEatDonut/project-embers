@@ -1,0 +1,14 @@
+[remap]
+
+importer="VTF"
+type="Texture"
+uid="uid://bomt7yy2jy2f2"
+path="res://.godot/imported/kenney-light-texture09.vtf-c86cbb09e6d867652d66962667026aaf.vtf.tres"
+
+[deps]
+
+source_file="res://godotvmfcontent/materials/devkenney/kenney-light-texture09.vtf"
+dest_files=["res://.godot/imported/kenney-light-texture09.vtf-c86cbb09e6d867652d66962667026aaf.vtf.tres"]
+
+[params]
+

@@ -1,0 +1,14 @@
+[remap]
+
+importer="VMT"
+type="Material"
+uid="uid://fdjlel4l6u7x"
+path="res://.godot/imported/toolsnodraw.vmt-d4be3377a80b0fb278a828a1c417cfe7.vmt.tres"
+
+[deps]
+
+source_file="res://godotvmfcontent/materials/tools/toolsnodraw.vmt"
+dest_files=["res://.godot/imported/toolsnodraw.vmt-d4be3377a80b0fb278a828a1c417cfe7.vmt.tres"]
+
+[params]
+

@@ -1,0 +1,14 @@
+[remap]
+
+importer="VMT"
+type="Material"
+uid="uid://45134k7j3uoe"
+path="res://.godot/imported/city_skyline.vmt-f1bf8a59958cc1dfff019d0917468e97.vmt.tres"
+
+[deps]
+
+source_file="res://godotvmfcontent/materials/environnement/city_skyline.vmt"
+dest_files=["res://.godot/imported/city_skyline.vmt-f1bf8a59958cc1dfff019d0917468e97.vmt.tres"]
+
+[params]
+
