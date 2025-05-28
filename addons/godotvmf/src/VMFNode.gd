@@ -108,15 +108,14 @@ func import_geometry(_reimport := false) -> void:
 
 	VMFTool.generate_collisions(geometry_mesh);
 	save_collision_file();
-	# generate_occluder(true);
 
 	if not get_meta("instance", false):
 		generate_navmesh(geometry_mesh);
 
 	geometry_mesh.mesh = VMFTool.cleanup_mesh(geometry_mesh.mesh);
 
-	# if VMFConfig.import.generate_lightmap_uv2 and not is_runtime:
-	# 	geometry_mesh.mesh.lightmap_unwrap(geometry_mesh.global_transform, texel_size);
+	if VMFConfig.import.generate_lightmap_uv2 and not is_runtime:
+		geometry_mesh.mesh.lightmap_unwrap(geometry_mesh.global_transform, texel_size);
 
 	geometry_mesh.mesh = save_geometry_file(geometry_mesh.mesh);
 
@@ -149,7 +148,7 @@ func save_geometry_file(target_mesh: Mesh):
 	
 	var err := ResourceSaver.save(target_mesh, resource_path, ResourceSaver.FLAG_COMPRESS);
 	if err:
-		VMFLogger.error("Failed to save resource: %s" % err);
+		VMFLogger.error("Failed to save geometry resource: %s" % err);
 		return;
 	
 	target_mesh.take_over_path(resource_path);
@@ -164,10 +163,14 @@ func save_collision_file() -> void:
 		var collision := body.get_node('collision');
 		var shape = collision.shape;
 		var save_path := "%s/%s_collision_%s.res" % [VMFConfig.import.geometry_folder, _vmf_identifer(), body.name];
+
+		if not DirAccess.dir_exists_absolute(save_path.get_base_dir()):
+			DirAccess.make_dir_recursive_absolute(save_path.get_base_dir());
+
 		var error := ResourceSaver.save(collision.shape, save_path, ResourceSaver.FLAG_COMPRESS);
 
 		if error:
-			VMFLogger.error("Failed to save resource: %s" % error);
+			VMFLogger.error("Failed to save collision resource: %s" % error);
 			continue;
 		shape.take_over_path(save_path);
 		collision.shape = load(save_path);
@@ -199,7 +202,6 @@ func import_models():
 		if not FileAccess.file_exists(vtx_path): vtx_path = vtx_dx90_path;
 		if not FileAccess.file_exists(vtx_path): continue;
 		if not FileAccess.file_exists(vvd_path): continue;
-		if not FileAccess.file_exists(phy_path): continue;
 
 		var model_materials = MDLReader.new(mdl_path).get_possible_material_paths();
 
@@ -210,14 +212,14 @@ func import_models():
 		DirAccess.make_dir_recursive_absolute(target_path.get_base_dir());
 		DirAccess.copy_absolute(vtx_path, target_path + '.dx90.vtx');
 		DirAccess.copy_absolute(vvd_path, target_path + ".vvd");
-		DirAccess.copy_absolute(phy_path, target_path + ".phy");
+		if FileAccess.file_exists(phy_path): DirAccess.copy_absolute(phy_path, target_path + ".phy");
 		DirAccess.copy_absolute(mdl_path, target_path + ".mdl");
 
 		has_imported_resources = true;
 
 
 func import_materials() -> void:
-	if VMFConfig.materials.import_mode == VMFConfigClass.MaterialsConfig.ImportMode.USE_EXISTING:
+	if VMFConfig.materials.import_mode == VMFConfig.MaterialsConfig.ImportMode.USE_EXISTING:
 		return;
 
 	var list: Array[String] = [];

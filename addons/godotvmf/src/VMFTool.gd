@@ -197,7 +197,7 @@ static func generate_collisions(mesh_instance: MeshInstance3D):
 	var extend_transformer = Engine.get_main_loop().root.get_node_or_null("VMFExtendTransformer");
 
 	# NOTE: If the mesh is too small then we don't need to generate SteamAudioGeometry for this mesh;
-	var is_allowed_to_generate_steam_audio = mesh.get_aabb().size.length() > 2;
+	var is_allowed_to_generate_steam_audio = mesh.get_aabb().size.length() > 10;
 
 	for surface_idx in range(mesh.get_surface_count()):
 		var material = mesh.surface_get_material(surface_idx);
@@ -279,6 +279,8 @@ static func cleanup_mesh(original_mesh: ArrayMesh):
 
 	var surface_removed = 0;
 	for surface_idx in range(original_mesh.get_surface_count()):
+		# NOTE: Remapping surface material meta to the new index in case previous surface was removed
+		original_mesh.set_meta("surface_material_" + str(surface_idx - surface_removed), original_mesh.get_meta("surface_material_" + str(surface_idx), ""));
 		surface_idx -= surface_removed;
 
 		var material_name = original_mesh.get_meta("surface_material_" + str(surface_idx), "").to_lower();
@@ -304,7 +306,7 @@ static func cleanup_mesh(original_mesh: ArrayMesh):
 
 		if is_norender and is_44:
 			original_mesh.surface_remove(surface_idx);
-			surface_idx -= 1;
+			surface_removed += 1;
 			continue;
 
 		if is_norender or is_44: continue;
@@ -319,7 +321,7 @@ static func cleanup_mesh(original_mesh: ArrayMesh):
 static func create_steam_audio_geometry(surface_prop: String, collision_shape: CollisionShape3D):
 	if not type_exists("SteamAudioGeometry"): return;
 
-	var path = (VMFConfig.config.import.steamAudioMaterialsFolder + "/" + surface_prop + ".tres") \
+	var path = (VMFConfig.import.steam_audio_materials_folder + "/" + surface_prop + ".tres") \
 		.replace("\\", "/") \
 		.replace("//", "/") \
 		.replace("res:/", "res://");
