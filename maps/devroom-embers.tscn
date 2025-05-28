@@ -143,14 +143,14 @@ size = Vector3(1.9978, 1, 1.7218)
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_c45t8"]
 
-[sub_resource type="Sky" id="Sky_titx5"]
+[sub_resource type="Sky" id="Sky_5dcyu"]
 sky_material = SubResource("ProceduralSkyMaterial_c45t8")
 
 [sub_resource type="Environment" id="Environment_m6f2d"]
 background_mode = 2
-sky = SubResource("Sky_titx5")
+sky = SubResource("Sky_5dcyu")
 
-[node name="Node3D" type="Node3D"]
+[node name="DevroomEmbers" type="Node3D"]
 
 [node name="Level" type="Node3D" parent="."]
 transform = Transform3D(0.707107, 0, -0.707107, 0, 1, 0, 0.707107, 0, 0.707107, 0, 0, 0)
