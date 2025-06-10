@@ -1,11 +1,10 @@
-[gd_scene load_steps=16 format=3 uid="uid://bjy067xrqbd7c"]
+[gd_scene load_steps=15 format=3 uid="uid://bjy067xrqbd7c"]
 
 [ext_resource type="Script" uid="uid://clvri6xpl7374" path="res://addons/godotvmf/src/VMFNode.gd" id="1_pibn7"]
 [ext_resource type="Script" uid="uid://d135wimle32s2" path="res://maps/main_menu.gd" id="1_x41nj"]
 [ext_resource type="ArrayMesh" uid="uid://fqw14bnl8uwf" path="res://godotvmfcontent/geometry/bridge_main_menu_dev_vmf_import.mesh" id="2_clsku"]
 [ext_resource type="Shape3D" uid="uid://cj2uovbrfs15o" path="res://godotvmfcontent/geometry/bridge_main_menu_dev_vmf_collision_surface_prop_default.res" id="3_dp8ya"]
 [ext_resource type="PackedScene" uid="uid://cwxttgf1xbejo" path="res://godotvmfcontent/entities/light_environment.tscn" id="4_wy2bt"]
-[ext_resource type="Script" uid="uid://b4sh2fq2c6eav" path="res://godotvmfcontent/entities/light_environment.gd" id="5_bmqo8"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_kshxf"]
 sky_top_color = Color(0.156863, 0.227451, 0.266667, 1)
@@ -242,7 +241,6 @@ shape = ExtResource("3_dp8ya")
 
 [node name="light_environment" parent="Level/VMFNode/Entities/lights" instance=ExtResource("4_wy2bt")]
 transform = Transform3D(-0.965926, -0.198267, 0.166366, 0, 0.642788, 0.766044, -0.258819, 0.739942, -0.620885, 0, 0, 0)
-script = ExtResource("5_bmqo8")
 entity = {
 "SunSpreadAngle": 0,
 "_AmbientScaleHDR": 1,
@@ -268,11 +266,6 @@ entity = {
 [node name="DirectionalLight3D" parent="Level/VMFNode/Entities/lights/light_environment" index="0"]
 light_color = Color(0.686275, 0.901961, 0.937255, 1)
 light_energy = 0.0392157
-shadow_enabled = true
-shadow_bias = 0.001
-shadow_reverse_cull_face = true
-shadow_blur = 3.0
-sky_mode = 1
 
 [node name="funcs" type="Node3D" parent="Level/VMFNode/Entities"]
 
