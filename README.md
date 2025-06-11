@@ -5,7 +5,7 @@ This project is private. You aren't supposed to see this.
 
 ## Goal of the project
 
-This project's goal is to get me to make an actual product. I was rejected when trying to enter a video game school, so I might as well work towards not being a NEET anymore.
+This project's goal is to get me to make something closer to an actual product. I was rejected when trying to enter a video game school, so I might as well work to make my chances better next year.
 
 # Google docs shortcuts
 
@@ -50,5 +50,6 @@ The next 3 sounds have been combined into one sound effect.
 <hr>
 
 <sub><sup>Copyright Rémi "AlexEatDonut" Peautre - 2025  
+Concept art by Wip_tent
 Hammer editor, software by Valve corporation  
 Hammer ++, software extension by Ficool2</sup></sub>
