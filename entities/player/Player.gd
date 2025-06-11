@@ -7,6 +7,8 @@ extends CharacterBody3D
 @onready var base_camera: Camera3D = $CameraPivot/CameraMarker3D/BaseCamera
 @onready var enemy_detector: Area3D = $EnemyDetector
 
+@onready var slide_direction_3D: Marker3D = $SlideDirection
+
 @onready var sliding_timer: Timer = $SlidingTimer
 @onready var slide_cooldown: Timer = $SlideCooldown
 
@@ -109,7 +111,6 @@ var SLIDE_DECELARATION_DEFAULT : float = 1
 var SLIDE_DECELARATION : float = SLIDE_DECELARATION_DEFAULT
 var SLIDE_ACCELARATION : float = SPEED_SLIDING_DEFAULT
 var slide_velocity: Vector3 = Vector3.ZERO
-var slide_direction : Vector3 = Vector3.ZERO
 var default_slide_velocity : Vector3 = Vector3.ZERO
 #SLIDE RULE VARIABLES
 #is a mix of factors, tells if you are allowed to slide from a mix of reasons
@@ -155,6 +156,7 @@ func _ready():
 	#weapon.connect("shot_fired", hud_update)
 	#weapon.connect("start_reloading", reloading_weapon)
 	#weapon.connect("request_hud_update", hud_update)
+	slide_direction_3D.position = Vector3(0,0,5) 
 	
 	hud_update()
 	
@@ -200,12 +202,6 @@ func _process(delta: float) -> void:
 	else:
 		time_in_air += delta
 	
-	if is_player_sliding == false:
-		body.look_at(ScreenPointToRay(), Vector3.UP)
-	else:
-		if slide_direction != Vector3(0,0,0) :
-			if !global_transform.origin.is_equal_approx(slide_direction) :
-				body.look_at(transform.origin + slide_direction, Vector3.UP)
 	enemy_detector.global_position = ScreenPointToRay()
 	Playerinfo.playerLocation = global_position
 	
@@ -295,25 +291,19 @@ func _dodge_slide_handler():
 
 func dodge_slide_end():
 	#Playerinfo.state = NORMAL
-	is_slide_on_cooldown = false
 	sliding_timer.stop()
-	slide_cooldown.stop()
 	is_player_sliding = false
 	Playerinfo.snap_into_cover = false
-	Playerinfo.prevent_movement_input = false
 
 func dodge_slide_start():
-	if slide_elligibility== true:
-		slide_direction = velocity
-		SLIDE_ACCELARATION = SPEED_SLIDING_DEFAULT
-		slide_velocity = default_slide_velocity
-		#Playerinfo.state = SLIDING
-		is_slide_on_cooldown = true
-		sliding_timer.start()
-		slide_cooldown.start()
-		is_player_sliding = true
-		Playerinfo.snap_into_cover = true
-		Playerinfo.prevent_movement_input = true
+	#if slide_elligibility== true:
+	SLIDE_ACCELARATION = SPEED_SLIDING_DEFAULT
+	slide_velocity = default_slide_velocity
+	is_slide_on_cooldown = true
+	sliding_timer.start()
+	slide_cooldown.start()
+	is_player_sliding = true
+	Playerinfo.snap_into_cover = true
 
 func prevent_all_movement():
 	Playerinfo.movement_prevented = true

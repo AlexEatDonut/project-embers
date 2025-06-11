@@ -5,11 +5,14 @@ func enter(previous_state_path: String, data := {}) -> void:
 	player.is_slide_allowed = false
 
 func physics_update(delta: float) -> void:
-
+	
+	player.body.look_at(player.ScreenPointToRay(), Vector3.UP)
+	
 	var is_step: bool = false
 	var input = Input.get_vector("move_left", "move_right", "move_up", "move_down")
 	player.direction = Vector3(input.x, 0, input.y).normalized()
 	if input != Vector2(0,0):
+		player.slide_direction_3D.position = Vector3((input.x*5), 0, (input.y*5))
 		player.last_known_direction = player.direction
 
 	if player.is_on_floor():
@@ -46,7 +49,6 @@ func physics_update(delta: float) -> void:
 	
 	player.main_velocity = player.main_velocity.lerp(player.direction * player.speed, player.acceleration * delta)
 	player.movement = player.main_velocity + player.gravity_direction
-	
 	
 	if not Playerinfo.movement_prevented:
 		player.set_velocity(player.movement)

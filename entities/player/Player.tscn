@@ -1,4 +1,4 @@
-[gd_scene load_steps=36 format=3 uid="uid://x3l0v6tbskoe"]
+[gd_scene load_steps=38 format=3 uid="uid://x3l0v6tbskoe"]
 
 [ext_resource type="Script" uid="uid://bqa6ywaj1f0ha" path="res://entities/player/Player.gd" id="1"]
 [ext_resource type="Material" uid="uid://cnq7n26g77h12" path="res://materials/tools/direction_indicator.tres" id="2_3c3w1"]
@@ -10,6 +10,7 @@
 [ext_resource type="Resource" uid="uid://bf0kek81jvd6u" path="res://resources/weapons/weapon01_test.tres" id="6_4pwj0"]
 [ext_resource type="PackedScene" uid="uid://g1elpx8h7qgu" path="res://entities/systems/enemy_detector.tscn" id="7_fmb3c"]
 [ext_resource type="PackedScene" uid="uid://cpml3unngt286" path="res://entities/systems/critical_hit_zone.tscn" id="7_rl6fg"]
+[ext_resource type="Material" uid="uid://cyg8rtd0p220l" path="res://materials/tools/danger_indicator.tres" id="10_j531f"]
 [ext_resource type="PackedScene" uid="uid://4lmtef3aw73d" path="res://entities/gui/player_ui_elements.tscn" id="11_1ms0h"]
 [ext_resource type="Script" uid="uid://c8rrd3ehyg428" path="res://resources/state_machine/state_machine.gd" id="12_2rv2u"]
 [ext_resource type="Texture2D" uid="uid://wjul2wft543" path="res://materials/dev/protag_placeholder_prototype.png" id="12_ax5yc"]
@@ -55,6 +56,11 @@ shader_parameter/MULTIPLIER = 0.56
 shader_parameter/SCALE = 0.25
 shader_parameter/SOFTNESS = 0.25
 shader_parameter/BASE_OPACITY = 0.75
+
+[sub_resource type="SphereMesh" id="SphereMesh_j531f"]
+material = ExtResource("10_j531f")
+radius = 0.2
+height = 0.4
 
 [sub_resource type="AnimationRootNode" id="AnimationRootNode_83hs8"]
 
@@ -490,6 +496,12 @@ size = 20.0
 
 [node name="CriticalHitZone" parent="." instance=ExtResource("7_rl6fg")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+
+[node name="SlideDirection" type="Marker3D" parent="."]
+gizmo_extents = 0.0
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="SlideDirection"]
+mesh = SubResource("SphereMesh_j531f")
 
 [node name="AnimationTree" type="AnimationTree" parent="."]
 tree_root = SubResource("AnimationRootNode_83hs8")

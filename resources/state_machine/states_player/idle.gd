@@ -8,6 +8,9 @@ func enter(previous_state_path: String, data := {}) -> void:
 	player.animation_player.play("default")
 
 func physics_update(delta: float) -> void:
+	
+	player.body.look_at(player.ScreenPointToRay(), Vector3.UP)
+	
 	var is_step: bool = false
 	var input = Input.get_vector("move_left", "move_right", "move_up", "move_down")
 	if input != Vector2(0,0):

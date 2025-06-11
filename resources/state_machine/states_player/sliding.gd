@@ -1,18 +1,35 @@
 extends PlayerState
 
+var exiter_timer: float
+var slide_direction
 
 func enter(previous_state_path: String, data := {}) -> void:
 	player.dodge_slide_start()
+	exiter_timer = 15
 	player.animation_player.play("dev_slide")
+	slide_direction = player.slide_direction_3D.position
+	player.body.look_at(player.transform.origin + slide_direction, Vector3.UP)
 
 func physics_update(delta: float) -> void:
+	
+	#if player.slide_direction != Vector3(0,0,0) :
+			#if !player.global_transform.origin.is_equal_approx(player.slide_direction) :
+				#player.body.look_at(player.transform.origin + player.slide_direction, Vector3.UP)
+	
 	var input = Input.get_vector("move_left", "move_right", "move_up", "move_down")
-	if player.sliding_timer.timeout:
-		player.dodge_slide_end()
+#	on timeout -> ask "is player moving or nah"
+#	how tf do you find the timeout
+	if exiter_timer >0 :
+		exiter_timer -= 1
+	elif exiter_timer == 0:
+		if player.is_player_sliding == false:
+			player.dodge_slide_end()
 		if input != Vector2(0,0):
 			finished.emit(IDLE)
 		else:
 			finished.emit(MOVING)
+
+
 
 	var is_step: bool = false
 
