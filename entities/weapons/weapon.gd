@@ -39,17 +39,17 @@ enum{
 #this is here to switch it, despite the state variable being in it's own script.
 #TODO : Make it functions instead of switching it directly with its enums
 #region Playerinfo States
-enum {
-	NORMAL,
-	SHOOTING,
-	RELOADING,
-	COVER,
-	COVERSHOOTING,
-	COVERRELOAD,
-	SLIDING,
-	STUNNED,
-	DYING
-}
+#enum {
+	#NORMAL,
+	#SHOOTING,
+	#RELOADING,
+	#COVER,
+	#COVERSHOOTING,
+	#COVERRELOAD,
+	#SLIDING,
+	#STUNNED,
+	#DYING
+#}
 #endregion
 
 func _ready() -> void:
@@ -99,7 +99,7 @@ func wp_reload_handler(isManual : bool):
 	stop_wp_firing()
 	if parent.wp_can_reload == true and parent.wp_is_reloading == false or isManual == false :
 		parent.wp_can_fire = false
-		Playerinfo.state = RELOADING
+		#Playerinfo.state = RELOADING
 		wp_state = WP_RELOADING
 		firing_stance_timer.stop()
 		fire_rate_timer.stop()
@@ -115,14 +115,14 @@ func wp_reload():
 
 func _input(event : InputEvent):
 	if event.is_action_pressed("shoot"):
-		match Playerinfo.state:
-			SLIDING:
-				pass
-			COVER :
-				Playerinfo.state = COVERSHOOTING
-				wp_fire()
-			_:
-				Playerinfo.state = SHOOTING
+		#match Playerinfo.state:
+			#SLIDING:
+				#pass
+			#COVER :
+				#Playerinfo.state = COVERSHOOTING
+				#wp_fire()
+			#_:
+				#Playerinfo.state = SHOOTING
 				wp_fire()
 	if event.is_action_released("shoot") :
 		stop_wp_firing()
@@ -167,15 +167,15 @@ func spawn_raycast():
 	#damageHitscan.transform.rotation += Vector3(spread_x, spread_y, 0)
 
 func stop_wp_firing():
-	match Playerinfo.state:
-		SLIDING:
-			_on_firing_stance_timeout()
-		COVER :
-			Playerinfo.state = COVER
-		COVERSHOOTING :
-			Playerinfo.state = COVER
-		_:
-			pass
+	#match Playerinfo.state:
+		#SLIDING:
+			#_on_firing_stance_timeout()
+		#COVER :
+			#Playerinfo.state = COVER
+		#COVERSHOOTING :
+			#Playerinfo.state = COVER
+		#_:
+			#pass
 	wp_state = WP_READY
 	firing_stance_timer.start()
 
@@ -186,17 +186,17 @@ func _on_fire_rate_timer_timeout() -> void:
 
 func _on_firing_stance_timeout() -> void:
 	wp_state = WP_IDLE
-	match Playerinfo.state:
-		SHOOTING:
-			Playerinfo.state = NORMAL
-		COVER:
-			Playerinfo.state = COVER
-		COVERSHOOTING:
-			Playerinfo.state = COVER
-		SLIDING:
-			pass
-		_:
-			Playerinfo.state = NORMAL
+	#match Playerinfo.state:
+		#SHOOTING:
+			#Playerinfo.state = NORMAL
+		#COVER:
+			#Playerinfo.state = COVER
+		#COVERSHOOTING:
+			#Playerinfo.state = COVER
+		#SLIDING:
+			#pass
+		#_:
+			#Playerinfo.state = NORMAL
 	if parent.wp_dry_fire == true and fire_rate_timer.time_left == 0 and parent.wp_can_fire == true:
 		wp_reload_handler(false)
 

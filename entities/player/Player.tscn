@@ -276,7 +276,6 @@ resource_name = "dev_reload"
 
 [sub_resource type="Animation" id="Animation_aqcbf"]
 resource_name = "dev_slide"
-length = 0.1
 loop_mode = 1
 tracks/0/type = "value"
 tracks/0/imported = false
@@ -500,6 +499,7 @@ anim_player = NodePath("../AnimationPlayer")
 libraries = {
 &"": SubResource("AnimationLibrary_gskgj")
 }
+autoplay = "default"
 
 [node name="EnemyDetector" parent="." instance=ExtResource("7_fmb3c")]
 top_level = true

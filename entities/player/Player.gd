@@ -121,17 +121,17 @@ var is_slide_on_cooldown : bool = false
 var last_known_direction = Vector3(1, 0, 1).normalized()
 #endregion
 
-enum {
-	NORMAL,
-	SHOOTING,
-	RELOADING,
-	COVER,
-	COVERSHOOTING,
-	COVERRELOAD,
-	SLIDING,
-	STUNNED,
-	DYING
-}
+#enum {
+	#NORMAL,
+	#SHOOTING,
+	#RELOADING,
+	#COVER,
+	#COVERSHOOTING,
+	#COVERRELOAD,
+	#SLIDING,
+	#STUNNED,
+	#DYING
+#}
 #these are the states for the weapon.
 #this is here to switch it, despite the state variable being in it's own script.
 #TODO : Make it functions instead of switching it directly with its enums
@@ -160,41 +160,41 @@ func _ready():
 	
 func _process(delta: float) -> void:
 	#reminder : this is the "every frame, do thing" functions
-	match Playerinfo.state:
-		NORMAL:
-			is_slide_allowed = true
-			wp_is_reloading = false
-			animation_player.play("default")
-		SHOOTING:
-			is_slide_allowed = true
-			wp_is_reloading = false
-		RELOADING:
-			is_slide_allowed = true
-			wp_is_reloading = true
-			animation_player.play("dev_reload")
-		COVER:
-			is_slide_allowed = true
-			wp_is_reloading = false
-			_behind_cover()
-		COVERSHOOTING:
-			is_slide_allowed = true
-			wp_is_reloading = false
-			_behind_cover()
-		SLIDING:
-			is_slide_allowed = false
-			_dodge_slide_handler()
-		STUNNED:
-			is_slide_allowed = false
-			wp_is_reloading = false
-		DYING:
-			is_slide_allowed = false
-			wp_is_reloading = false
-	
-	if Playerinfo.state == SLIDING:
-		Playerinfo.intangible = true
-	else:
-		Playerinfo.intangible = false
-	
+	#match Playerinfo.state:
+		#NORMAL:
+			#is_slide_allowed = true
+			#wp_is_reloading = false
+			#animation_player.play("default")
+		#SHOOTING:
+			#is_slide_allowed = true
+			#wp_is_reloading = false
+		#RELOADING:
+			#is_slide_allowed = true
+			#wp_is_reloading = true
+			#animation_player.play("dev_reload")
+		#COVER:
+			#is_slide_allowed = true
+			#wp_is_reloading = false
+			#_behind_cover()
+		#COVERSHOOTING:
+			#is_slide_allowed = true
+			#wp_is_reloading = false
+			#_behind_cover()
+		#SLIDING:
+			#is_slide_allowed = false
+			#_dodge_slide_handler()
+		#STUNNED:
+			#is_slide_allowed = false
+			#wp_is_reloading = false
+		#DYING:
+			#is_slide_allowed = false
+			#wp_is_reloading = false
+	#
+	#if Playerinfo.state == SLIDING:
+		#Playerinfo.intangible = true
+	#else:
+		#Playerinfo.intangible = false
+	#
 	if is_on_floor():
 		time_in_air = 0.0
 	else:
@@ -232,11 +232,12 @@ func move_player(destination, duration):
 	tween.tween_property(self, ^"position" ,destination ,duration) # take two seconds to move
 
 func attempt_player_escape_cover():
-		match Playerinfo.state :
-			COVER:
-				Playerinfo.state = NORMAL
-			COVERSHOOTING:
-				Playerinfo.state = SHOOTING
+	pass
+		#match Playerinfo.state :
+			#COVER:
+				#Playerinfo.state = NORMAL
+			#COVERSHOOTING:
+				#Playerinfo.state = SHOOTING
 
 #TODO
 #TODO in order to actually make the game consistent in it's state changes, it might be a good idea to make a state machine
@@ -273,11 +274,11 @@ func _input(event):
 
 func _behind_cover():
 	animation_player.play("dev_cover")
-	match Playerinfo.state:
-		COVER:
-			pass
-		COVERSHOOTING:
-			pass
+	#match Playerinfo.state:
+		#COVER:
+			#pass
+		#COVERSHOOTING:
+			#pass
 
 func _dodge_slide_handler():
 	animation_player.play("dev_slide")
@@ -293,7 +294,7 @@ func _dodge_slide_handler():
 			#dodge_slide_start()
 
 func dodge_slide_end():
-	Playerinfo.state = NORMAL
+	#Playerinfo.state = NORMAL
 	is_slide_on_cooldown = false
 	sliding_timer.stop()
 	slide_cooldown.stop()
@@ -306,7 +307,7 @@ func dodge_slide_start():
 		slide_direction = velocity
 		SLIDE_ACCELARATION = SPEED_SLIDING_DEFAULT
 		slide_velocity = default_slide_velocity
-		Playerinfo.state = SLIDING
+		#Playerinfo.state = SLIDING
 		is_slide_on_cooldown = true
 		sliding_timer.start()
 		slide_cooldown.start()
@@ -440,6 +441,14 @@ func _on_slide_cooldown_timeout() -> void:
 	is_slide_on_cooldown = false
 
 #region Step Check Function Code
+func create_step_result():
+	var step_result : StepResult = StepResult.new()
+	return step_result
+	
+func create_step_check(delta, is_jumping, step_result):
+	var is_step = step_check(delta, is_jumping, step_result)
+	return is_step
+
 func step_check(delta: float, is_jumping_: bool, step_result: StepResult):
 	var is_step: bool = false
 	

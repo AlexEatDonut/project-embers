@@ -20,19 +20,19 @@ var playerLocation
 var locked_on : bool = false
 var locked_on_location
 
-enum {
-	NORMAL,
-	SHOOTING,
-	RELOADING,
-	COVER,
-	COVERSHOOTING,
-	COVERRELOAD,
-	SLIDING,
-	STUNNED,
-	DYING
-}
-
-var state = NORMAL
+#enum {
+	#NORMAL,
+	#SHOOTING,
+	#RELOADING,
+	#COVER,
+	#COVERSHOOTING,
+	#COVERRELOAD,
+	#SLIDING,
+	#STUNNED,
+	#DYING
+#}
+#
+#var state = NORMAL
 
 @onready var player_character = get_tree().get_root().find_children("Player")
 
@@ -115,8 +115,8 @@ signal request_player_out_of_cover()
 
 func set_behind_cover(newBool):
 	match newBool :
-		true:
-			state = COVER
+		#true:
+			#state = COVER
 		false:
 			emit_signal("request_player_out_of_cover")
 
