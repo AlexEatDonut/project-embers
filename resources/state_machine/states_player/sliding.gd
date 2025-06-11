@@ -1,11 +1,5 @@
 extends PlayerState
 
-#region Godot Stairs Class
-class StepResult:
-	var diff_position: Vector3 = Vector3.ZERO
-	var normal: Vector3 = Vector3.ZERO
-	var is_step_up: bool = false
-#endregion
 
 func enter(previous_state_path: String, data := {}) -> void:
 	player.dodge_slide_start()
@@ -29,15 +23,9 @@ func physics_update(delta: float) -> void:
 		player.gravity_direction = Vector3.ZERO
 	elif not player.is_on_floor():
 		finished.emit(FALLING)
-
-	if player.is_on_floor() and player.is_slide_allowed == true and player.is_slide_on_cooldown == false:
-		player.slide_elligibility = true
-	else:
-		player.slide_elligibility = false
 	
-	var step_result : StepResult = StepResult.new()
-	
-	is_step = step_check(delta, player.is_jumping, step_result)
+	var step_result = player.create_step_result()
+	is_step = player.create_step_check(delta, player.is_jumping, step_result)
 	
 	if is_step:
 		var is_enabled_stair_stepping: bool = true
@@ -76,127 +64,3 @@ func physics_update(delta: float) -> void:
 	if player.is_jumping:
 		player.is_jumping = false
 		player.is_in_air = true
-
-
-#region Step Check Function Code
-func step_check(delta: float, is_jumping_: bool, step_result: StepResult):
-	var is_step: bool = false
-	
-	player.step_height_main = player.STEP_HEIGHT_DEFAULT
-	player.step_incremental_check_height = player.STEP_HEIGHT_DEFAULT / player.STEP_CHECK_COUNT
-	if player.is_in_air and player.is_enabled_stair_stepping_in_air:
-		player.step_height_main = player.STEP_HEIGHT_IN_AIR_DEFAULT
-		player.step_incremental_check_height = player.STEP_HEIGHT_IN_AIR_DEFAULT / player.STEP_CHECK_COUNT
-		
-	if player.gravity_direction.y >= 0:
-		for i in range(player.STEP_CHECK_COUNT):
-			var test_motion_result: PhysicsTestMotionResult3D = PhysicsTestMotionResult3D.new()
-			
-			var step_height: Vector3 = player.step_height_main - i * player.step_incremental_check_height
-			var transform3d: Transform3D = player.global_transform
-			var motion: Vector3 = step_height
-			var test_motion_params: PhysicsTestMotionParameters3D = PhysicsTestMotionParameters3D.new()
-			test_motion_params.from = transform3d
-			test_motion_params.motion = motion
-			
-			var is_player_collided: bool = PhysicsServer3D.body_test_motion(player.get_rid(), test_motion_params, test_motion_result)
-			if is_player_collided and test_motion_result.get_collision_normal().y < 0:
-				continue
-
-			transform3d.origin += step_height
-			motion = player.main_velocity * delta
-			test_motion_params.from = transform3d
-			test_motion_params.motion = motion
-			
-			is_player_collided = PhysicsServer3D.body_test_motion(player.get_rid(), test_motion_params, test_motion_result)
-			
-			if not is_player_collided:
-				transform3d.origin += motion
-				motion = -step_height
-				test_motion_params.from = transform3d
-				test_motion_params.motion = motion
-				
-				is_player_collided = PhysicsServer3D.body_test_motion(player.get_rid(), test_motion_params, test_motion_result)
-				
-				if is_player_collided:
-					if test_motion_result.get_collision_normal().angle_to(Vector3.UP) <= deg_to_rad(player.STEP_MAX_SLOPE_DEGREE):
-						is_step = true
-						step_result.is_step_up = true
-						step_result.diff_position = -test_motion_result.get_remainder()
-						step_result.normal = test_motion_result.get_collision_normal()
-						break
-			else:
-				var wall_collision_normal: Vector3 = test_motion_result.get_collision_normal()
-				transform3d.origin += wall_collision_normal * player.WALL_MARGIN
-				motion = (player.main_velocity * delta).slide(wall_collision_normal)
-				test_motion_params.from = transform3d
-				test_motion_params.motion = motion
-				
-				is_player_collided = PhysicsServer3D.body_test_motion(player.get_rid(), test_motion_params, test_motion_result)
-				
-				if not is_player_collided:
-					transform3d.origin += motion
-					motion = -step_height
-					test_motion_params.from = transform3d
-					test_motion_params.motion = motion
-					
-					is_player_collided = PhysicsServer3D.body_test_motion(player.get_rid(), test_motion_params, test_motion_result)
-					
-					if is_player_collided:
-						if test_motion_result.get_collision_normal().angle_to(Vector3.UP) <= deg_to_rad(player.STEP_MAX_SLOPE_DEGREE):
-							is_step = true
-							step_result.is_step_up = true
-							step_result.diff_position = -test_motion_result.get_remainder()
-							step_result.normal = test_motion_result.get_collision_normal()
-							break
-
-	if not is_jumping_ and not is_step and player.is_on_floor():
-		step_result.is_step_up = false
-		var test_motion_result: PhysicsTestMotionResult3D = PhysicsTestMotionResult3D.new()
-		var transform3d: Transform3D = player.global_transform
-		var motion: Vector3 = player.main_velocity * delta
-		var test_motion_params: PhysicsTestMotionParameters3D = PhysicsTestMotionParameters3D.new()
-		test_motion_params.from = transform3d
-		test_motion_params.motion = motion
-		test_motion_params.recovery_as_collision = true
-
-		var is_player_collided: bool = PhysicsServer3D.body_test_motion(player.get_rid(), test_motion_params, test_motion_result)
-			
-		if not is_player_collided:
-			transform3d.origin += motion
-			motion = -player.step_height_main
-			test_motion_params.from = transform3d
-			test_motion_params.motion = motion
-			
-			is_player_collided = PhysicsServer3D.body_test_motion(player.get_rid(), test_motion_params, test_motion_result)
-			
-			if is_player_collided and test_motion_result.get_travel().y < -player.STEP_DOWN_MARGIN:
-				if test_motion_result.get_collision_normal().angle_to(Vector3.UP) <= deg_to_rad(player.STEP_MAX_SLOPE_DEGREE):
-					is_step = true
-					step_result.diff_position = test_motion_result.get_travel()
-					step_result.normal = test_motion_result.get_collision_normal()
-		elif is_zero_approx(test_motion_result.get_collision_normal().y):
-			var wall_collision_normal: Vector3 = test_motion_result.get_collision_normal()
-			transform3d.origin += wall_collision_normal * player.WALL_MARGIN
-			motion = (player.main_velocity * delta).slide(wall_collision_normal)
-			test_motion_params.from = transform3d
-			test_motion_params.motion = motion
-			
-			is_player_collided = PhysicsServer3D.body_test_motion(player.get_rid(), test_motion_params, test_motion_result)
-			
-			if not is_player_collided:
-				transform3d.origin += motion
-				motion = -player.step_height_main
-				test_motion_params.from = transform3d
-				test_motion_params.motion = motion
-				
-				is_player_collided = PhysicsServer3D.body_test_motion(player.get_rid(), test_motion_params, test_motion_result)
-				
-				if is_player_collided and test_motion_result.get_travel().y < -player.STEP_DOWN_MARGIN:
-					if test_motion_result.get_collision_normal().angle_to(Vector3.UP) <= deg_to_rad(player.STEP_MAX_SLOPE_DEGREE):
-						is_step = true	
-						step_result.diff_position = test_motion_result.get_travel()
-						step_result.normal = test_motion_result.get_collision_normal()
-
-	return is_step
-#endregion
