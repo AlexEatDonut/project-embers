@@ -52,6 +52,6 @@ The next 3 sounds have been combined into one sound effect.
 <hr>
 
 <sub><sup>Copyright Rémi "AlexEatDonut" Peautre - 2025  
-Concept art by Wip_tent
+Concept art by Wip_tent  
 Hammer editor, software by Valve corporation  
 Hammer ++, software extension by Ficool2</sup></sub>
