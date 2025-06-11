@@ -1,4 +1,3 @@
-#extends StateMachine
 extends CharacterBody3D
 
 @onready var stats = $EnemyStats
