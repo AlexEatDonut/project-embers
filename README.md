@@ -33,6 +33,8 @@ This project's goal is to get me to make something closer to an actual product. 
 
 <a href="https://freesound.org/people/morganpurkis/sounds/385811/"> Single Pistol Gunshot 3 by morganpurkis</a>
 
+<a href="https://freesound.org/people/Bunny_Clark/sounds/377549/">Pistol Reload.wav</a> by <a href="https://freesound.org/people/Bunny_Clark/">Bunny_Clark</a> | License: <a href="http://creativecommons.org/licenses/by/3.0/">Attribution 3.0</a>
+
 The next 3 sounds have been combined into one sound effect.
 
 <a href="https://freesound.org/people/fastson/sounds/399116/">DryFire_01.wav</a> by <a href="https://freesound.org/people/fastson/">fastson</a> | License: <a href="http://creativecommons.org/licenses/by/3.0/">Attribution 3.0</a>
