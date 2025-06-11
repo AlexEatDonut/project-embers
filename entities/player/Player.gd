@@ -1,3 +1,4 @@
+class_name Player
 extends CharacterBody3D
 
 @onready var body = $Body
@@ -131,7 +132,9 @@ enum {
 	STUNNED,
 	DYING
 }
-
+#these are the states for the weapon.
+#this is here to switch it, despite the state variable being in it's own script.
+#TODO : Make it functions instead of switching it directly with its enums
 enum wp_states{
 	WP_IDLE,
 	WP_SHOOTING,
@@ -238,8 +241,6 @@ func attempt_player_escape_cover():
 #TODO
 #TODO in order to actually make the game consistent in it's state changes, it might be a good idea to make a state machine
 #TODO kind of function in order to handle getting out of a state and not defaulting to NORMAL
-func state_exiter_handler(state_from):
-	pass
 
 #func reloading_weapon():
 	#Playerinfo.state = RELOADING
@@ -262,12 +263,13 @@ func hud_update_hp():
 	#Playerinfo.prevent_movement_input = false
 
 func _input(event):
+	pass
 	#	SLIDING CODE
 		#I press space > Is in a state that allows it ? > Is on the floor ? >  Is the CD over ?
 		#if yes to all, toggle the slide on.StepResult
-		if event.is_action_pressed("dodge_slide"):
-			if Playerinfo.state != SLIDING:
-				toggle_dodge_slide()
+		#if event.is_action_pressed("dodge_slide"):
+			#if Playerinfo.state != SLIDING:
+				#toggle_dodge_slide()
 
 func _behind_cover():
 	animation_player.play("dev_cover")
@@ -281,14 +283,14 @@ func _dodge_slide_handler():
 	animation_player.play("dev_slide")
 	is_player_sliding = true
 
-func toggle_dodge_slide():
-	match is_player_sliding:
-		#the player IS sliding : stop it
-		true:
-			dodge_slide_end()
-		#the player ISN'T sliding : start it
-		false:
-			dodge_slide_start()
+#func toggle_dodge_slide():
+	#match is_player_sliding:
+		##the player IS sliding : stop it
+		#true:
+			#dodge_slide_end()
+		##the player ISN'T sliding : start it
+		#false:
+			#dodge_slide_start()
 
 func dodge_slide_end():
 	Playerinfo.state = NORMAL
@@ -336,104 +338,100 @@ func ScreenPointToRay():
 	return previous_look_direction
 
 func _physics_process(delta):
-	var is_step: bool = false
-	if Playerinfo.prevent_movement_input == false :
-		var input = Input.get_vector("move_left", "move_right", "move_up", "move_down")
-		direction = Vector3(input.x, 0, input.y).normalized()
-		if input != Vector2(0,0):
-			last_known_direction = direction
-
-	if is_on_floor():
-		is_jumping = false
-		is_in_air = false
-		acceleration = ACCELERATION_DEFAULT
-		gravity_direction = Vector3.ZERO
-	else:
-		is_in_air = true
-		acceleration = ACCELERATION_AIR
-		gravity_direction += Vector3.DOWN * gravity * delta
-
-#Disabled jumping code.
-	#if Input.is_action_just_pressed("jump") and is_on_floor():
-		#is_jumping = true
+	pass
+	#var is_step: bool = false
+	#if Playerinfo.prevent_movement_input == false :
+		#var input = Input.get_vector("move_left", "move_right", "move_up", "move_down")
+		#direction = Vector3(input.x, 0, input.y).normalized()
+		#if input != Vector2(0,0):
+			#last_known_direction = direction
+#
+	#if is_on_floor():
+		#is_jumping = false
 		#is_in_air = false
-		#gravity_direction = Vector3.UP * jump
-	
-#SLIDING ELIGIBILITY
-	#every frame, we check of the player is allowed to dodge-slide
-	#is_slide_allowed is state dependant. "Is slide allowed by the current state" is its full name, basically
-	if is_on_floor() and is_slide_allowed == true and is_slide_on_cooldown == false:
-		slide_elligibility = true
-	else:
-		slide_elligibility = false
-	
-	var step_result : StepResult = StepResult.new()
-	
-	is_step = step_check(delta, is_jumping, step_result)
-	
-	if is_step:
-		var is_enabled_stair_stepping: bool = true
-		if step_result.is_step_up and is_in_air and not is_enabled_stair_stepping_in_air:
-			is_enabled_stair_stepping = false
-
-		if is_enabled_stair_stepping:
-			global_transform.origin += step_result.diff_position
-			head_offset = step_result.diff_position
-			speed = SPEED_ON_STAIRS
-	else:
-		head_offset = head_offset.lerp(Vector3.ZERO, delta * speed * STAIRS_FEELING_COEFFICIENT)
-		
-		if abs(head_offset.y) <= 0.01:
-			speed = SPEED_DEFAULT
-
-
-	match Playerinfo.state :
-		SLIDING :
-			slide_velocity = main_velocity.lerp(last_known_direction * (SLIDE_ACCELARATION - SLIDE_DECELARATION), acceleration * delta)
-		NORMAL :
-			main_velocity = main_velocity.lerp(direction * speed, acceleration * delta)
-		RELOADING : 
-			main_velocity = main_velocity.lerp(direction * speed, acceleration * delta)
-		SHOOTING : 
-			main_velocity = main_velocity.lerp(direction * speed_shooting, acceleration * delta)
-		COVER :
-			main_velocity = main_velocity.lerp(direction * speed_cover, acceleration * delta)
-		COVERSHOOTING :
-			main_velocity = main_velocity.lerp(direction * speed_covershooting, acceleration * delta)
-		
-	#For every state, the player moves at a different speed. 
-	#Due to sliding having it's own velocity, every other state NEEDS to have 
-	#"movement = main_velocity + gravity_direction"
-	#This if is a workaround to avoid typing the thing many times
-	#This is sure to bite me in the ass when i need to filter out more than the SLIDING state
-	
-	if Playerinfo.state == SLIDING :
-		SLIDE_ACCELARATION -= SLIDE_DECELARATION
-		movement = slide_velocity + gravity_direction
-	else :
-		movement = main_velocity + gravity_direction
-	
-	if Playerinfo.movement_prevented != true:
-		set_velocity(movement)
-		set_max_slides(6)
-		move_and_slide()
-	else:
-		movement = Vector3.ZERO
-		set_velocity(movement)
-		set_max_slides(6)
-		move_and_slide()
-	
-	if is_step and step_result.is_step_up and is_enabled_stair_stepping_in_air:
-		if is_in_air or direction.dot(step_result.normal) > 0:
-			main_velocity *= SPEED_CLAMP_AFTER_JUMP_COEFFICIENT
-			gravity_direction *= SPEED_CLAMP_AFTER_JUMP_COEFFICIENT
-
-	if is_jumping:
-		is_jumping = false
-		is_in_air = true
+		#acceleration = ACCELERATION_DEFAULT
+		#gravity_direction = Vector3.ZERO
+	#else:
+		#is_in_air = true
+		#acceleration = ACCELERATION_AIR
+		#gravity_direction += Vector3.DOWN * gravity * delta
+#
+##SLIDING ELIGIBILITY
+	##every frame, we check of the player is allowed to dodge-slide
+	##is_slide_allowed is state dependant. "Is slide allowed by the current state" is its full name, basically
+	#if is_on_floor() and is_slide_allowed == true and is_slide_on_cooldown == false:
+		#slide_elligibility = true
+	#else:
+		#slide_elligibility = false
+	#
+	#var step_result : StepResult = StepResult.new()
+	#
+	#is_step = step_check(delta, is_jumping, step_result)
+	#
+	#if is_step:
+		#var is_enabled_stair_stepping: bool = true
+		#if step_result.is_step_up and is_in_air and not is_enabled_stair_stepping_in_air:
+			#is_enabled_stair_stepping = false
+#
+		#if is_enabled_stair_stepping:
+			#global_transform.origin += step_result.diff_position
+			#head_offset = step_result.diff_position
+			#speed = SPEED_ON_STAIRS
+	#else:
+		#head_offset = head_offset.lerp(Vector3.ZERO, delta * speed * STAIRS_FEELING_COEFFICIENT)
+		#
+		#if abs(head_offset.y) <= 0.01:
+			#speed = SPEED_DEFAULT
+#
+#
+	#match Playerinfo.state :
+		#SLIDING :
+			#slide_velocity = main_velocity.lerp(last_known_direction * (SLIDE_ACCELARATION - SLIDE_DECELARATION), acceleration * delta)
+		#NORMAL :
+			#main_velocity = main_velocity.lerp(direction * speed, acceleration * delta)
+		#RELOADING : 
+			#main_velocity = main_velocity.lerp(direction * speed, acceleration * delta)
+		#SHOOTING : 
+			#main_velocity = main_velocity.lerp(direction * speed_shooting, acceleration * delta)
+		#COVER :
+			#main_velocity = main_velocity.lerp(direction * speed_cover, acceleration * delta)
+		#COVERSHOOTING :
+			#main_velocity = main_velocity.lerp(direction * speed_covershooting, acceleration * delta)
+		#
+	##For every state, the player moves at a different speed. 
+	##Due to sliding having it's own velocity, every other state NEEDS to have 
+	##"movement = main_velocity + gravity_direction"
+	##This if is a workaround to avoid typing the thing many times
+	##This is sure to bite me in the ass when i need to filter out more than the SLIDING state
+	#
+	#if Playerinfo.state == SLIDING :
+		#SLIDE_ACCELARATION -= SLIDE_DECELARATION
+		#movement = slide_velocity + gravity_direction
+	#else :
+		#movement = main_velocity + gravity_direction
+	#
+	#if Playerinfo.movement_prevented != true:
+		#set_velocity(movement)
+		#set_max_slides(6)
+		#move_and_slide()
+	#else:
+		#movement = Vector3.ZERO
+		#set_velocity(movement)
+		#set_max_slides(6)
+		#move_and_slide()
+	#
+	#if is_step and step_result.is_step_up and is_enabled_stair_stepping_in_air:
+		#if is_in_air or direction.dot(step_result.normal) > 0:
+			#main_velocity *= SPEED_CLAMP_AFTER_JUMP_COEFFICIENT
+			#gravity_direction *= SPEED_CLAMP_AFTER_JUMP_COEFFICIENT
+#
+	#if is_jumping:
+		#is_jumping = false
+		#is_in_air = true
 
 func _on_sliding_timer_timeout() -> void:
-	toggle_dodge_slide()
+	#toggle_dodge_slide()
+	dodge_slide_end()
 
 func _on_cover_cooldown_timeout() -> void:
 	Playerinfo.movement_prevented = false
