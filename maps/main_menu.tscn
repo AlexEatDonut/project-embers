@@ -202,7 +202,7 @@ theme_override_constants/separation = 15
 [node name="StartGame" type="Button" parent="CanvasLayer/VBoxContainer"]
 layout_mode = 2
 disabled = true
-text = "Start Games"
+text = "Start Game"
 
 [node name="Dev map" type="Button" parent="CanvasLayer/VBoxContainer"]
 layout_mode = 2

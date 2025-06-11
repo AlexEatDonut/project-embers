@@ -35,7 +35,9 @@ enum{
 	WP_READY,
 	WP_RELOADING
 }
-
+#these are the states for the player.
+#this is here to switch it, despite the state variable being in it's own script.
+#TODO : Make it functions instead of switching it directly with its enums
 #region Playerinfo States
 enum {
 	NORMAL,
