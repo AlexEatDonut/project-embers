@@ -14,8 +14,8 @@ config/name="project-embers"
 run/main_scene="uid://bjy067xrqbd7c"
 config/features=PackedStringArray("4.4", "Forward Plus")
 run/max_fps=144
-config/icon="uid://wwth5dq3gqjk"
-config/windows_native_icon="res://embericon.ico"
+config/icon="uid://bu2222pkq5ul4"
+config/windows_native_icon="res://icon-win.ico"
 
 [autoload]
 
