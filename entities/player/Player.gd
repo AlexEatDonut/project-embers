@@ -114,10 +114,12 @@ var slide_velocity: Vector3 = Vector3.ZERO
 var default_slide_velocity : Vector3 = Vector3.ZERO
 #SLIDE RULE VARIABLES
 #is a mix of factors, tells if you are allowed to slide from a mix of reasons
-var slide_elligibility :bool = false
-var is_slide_allowed : bool = true
-var is_slide_button_on : bool = false
-var is_player_sliding : bool = false
+#var slide_elligibility :bool = false 
+# slide eligibility was removed due to the new stat system already allowing to filter out is not on floor through lack of code
+# and the only var left to care about was is_slide_on_cooldown
+#var is_slide_allowed : bool = true
+#var is_slide_button_on : bool = false
+#var is_player_sliding : bool = false
 var is_slide_on_cooldown : bool = false
 var last_known_direction = Vector3(1, 0, 1).normalized()
 #endregion
@@ -136,13 +138,13 @@ var last_known_direction = Vector3(1, 0, 1).normalized()
 #these are the states for the weapon.
 #this is here to switch it, despite the state variable being in it's own script.
 #TODO : Make it functions instead of switching it directly with its enums
-enum wp_states{
-	WP_IDLE,
-	WP_SHOOTING,
-	WP_FIRESTANCE,
-	WP_READY,
-	WP_RELOADING
-}
+#enum wp_states{
+	#WP_IDLE,
+	#WP_SHOOTING,
+	#WP_FIRESTANCE,
+	#WP_READY,
+	#WP_RELOADING
+#}
 
 func _ready():
 	default_slide_velocity = main_velocity
@@ -150,70 +152,36 @@ func _ready():
 	#Playerinfo.connect("request_player_cover_walk_in", function here)
 	Playerinfo.connect("request_player_cover_teleported", attempt_player_cover_teleported)
 	Playerinfo.connect("request_player_cover_snapped", attempt_player_cover_snapped)
-	Playerinfo.connect("request_dodge_slide_end", dodge_slide_end)
+
 	Playerinfo.connect("request_player_out_of_cover", attempt_player_escape_cover)
 	Playerinfo.connect("health_decreased", hud_update)
 	#weapon.connect("shot_fired", hud_update)
 	#weapon.connect("start_reloading", reloading_weapon)
 	#weapon.connect("request_hud_update", hud_update)
-	slide_direction_3D.position = Vector3(0,0,5) 
+	slide_direction_3D.position = Vector3(5,0,5) 
 	
 	hud_update()
 	
 func _process(delta: float) -> void:
 	#reminder : this is the "every frame, do thing" functions
-	#match Playerinfo.state:
-		#NORMAL:
-			#is_slide_allowed = true
-			#wp_is_reloading = false
-			#animation_player.play("default")
-		#SHOOTING:
-			#is_slide_allowed = true
-			#wp_is_reloading = false
-		#RELOADING:
-			#is_slide_allowed = true
-			#wp_is_reloading = true
-			#animation_player.play("dev_reload")
-		#COVER:
-			#is_slide_allowed = true
-			#wp_is_reloading = false
-			#_behind_cover()
-		#COVERSHOOTING:
-			#is_slide_allowed = true
-			#wp_is_reloading = false
-			#_behind_cover()
-		#SLIDING:
-			#is_slide_allowed = false
-			#_dodge_slide_handler()
-		#STUNNED:
-			#is_slide_allowed = false
-			#wp_is_reloading = false
-		#DYING:
-			#is_slide_allowed = false
-			#wp_is_reloading = false
-	#
-	#if Playerinfo.state == SLIDING:
-		#Playerinfo.intangible = true
+	#if wp_current_ammo == 0 :
+		#wp_dry_fire = true
 	#else:
-		#Playerinfo.intangible = false
-	#
+		#wp_dry_fire = false
+
+#	Is time_in_air ever something that is used ? Why would i use that, even for fall damage ?
 	if is_on_floor():
 		time_in_air = 0.0
 	else:
 		time_in_air += delta
-	
+
 	enemy_detector.global_position = ScreenPointToRay()
 	Playerinfo.playerLocation = global_position
 	
-	if wp_current_ammo == 0 :
-		wp_dry_fire = true
-	else:
-		wp_dry_fire = false
-	
+
 
 func attempt_player_cover_teleported(destination):
 	move_player(destination.global_position, 0.1)
-	dodge_slide_end()
 	prevent_all_movement()
 	await get_tree().create_timer(0.1).timeout
 	Playerinfo.is_behind_cover = true
@@ -229,21 +197,6 @@ func move_player(destination, duration):
 
 func attempt_player_escape_cover():
 	pass
-		#match Playerinfo.state :
-			#COVER:
-				#Playerinfo.state = NORMAL
-			#COVERSHOOTING:
-				#Playerinfo.state = SHOOTING
-
-#TODO
-#TODO in order to actually make the game consistent in it's state changes, it might be a good idea to make a state machine
-#TODO kind of function in order to handle getting out of a state and not defaulting to NORMAL
-
-#func reloading_weapon():
-	#Playerinfo.state = RELOADING
-	#
-#func stop_reloading_weapon():
-	#Playerinfo.state = NORMAL
 
 func hud_update():
 	hud_label_health.text = str(Playerinfo.health / 10)
@@ -261,12 +214,6 @@ func hud_update_hp():
 
 func _input(event):
 	pass
-	#	SLIDING CODE
-		#I press space > Is in a state that allows it ? > Is on the floor ? >  Is the CD over ?
-		#if yes to all, toggle the slide on.StepResult
-		#if event.is_action_pressed("dodge_slide"):
-			#if Playerinfo.state != SLIDING:
-				#toggle_dodge_slide()
 
 func _behind_cover():
 	animation_player.play("dev_cover")
@@ -275,36 +222,8 @@ func _behind_cover():
 			#pass
 		#COVERSHOOTING:
 			#pass
-
-func _dodge_slide_handler():
-	animation_player.play("dev_slide")
-	is_player_sliding = true
-
-#func toggle_dodge_slide():
-	#match is_player_sliding:
-		##the player IS sliding : stop it
-		#true:
-			#dodge_slide_end()
-		##the player ISN'T sliding : start it
-		#false:
-			#dodge_slide_start()
-
-func dodge_slide_end():
-	#Playerinfo.state = NORMAL
-	sliding_timer.stop()
-	is_player_sliding = false
-	Playerinfo.snap_into_cover = false
-
-func dodge_slide_start():
-	#if slide_elligibility== true:
-	SLIDE_ACCELARATION = SPEED_SLIDING_DEFAULT
-	slide_velocity = default_slide_velocity
-	is_slide_on_cooldown = true
-	sliding_timer.start()
-	slide_cooldown.start()
-	is_player_sliding = true
-	Playerinfo.snap_into_cover = true
-
+	
+	
 func prevent_all_movement():
 	Playerinfo.movement_prevented = true
 
@@ -347,14 +266,7 @@ func _physics_process(delta):
 		#acceleration = ACCELERATION_AIR
 		#gravity_direction += Vector3.DOWN * gravity * delta
 #
-##SLIDING ELIGIBILITY
-	##every frame, we check of the player is allowed to dodge-slide
-	##is_slide_allowed is state dependant. "Is slide allowed by the current state" is its full name, basically
-	#if is_on_floor() and is_slide_allowed == true and is_slide_on_cooldown == false:
-		#slide_elligibility = true
-	#else:
-		#slide_elligibility = false
-	#
+
 	#var step_result : StepResult = StepResult.new()
 	#
 	#is_step = step_check(delta, is_jumping, step_result)
@@ -419,10 +331,6 @@ func _physics_process(delta):
 	#if is_jumping:
 		#is_jumping = false
 		#is_in_air = true
-
-func _on_sliding_timer_timeout() -> void:
-	#toggle_dodge_slide()
-	dodge_slide_end()
 
 func _on_cover_cooldown_timeout() -> void:
 	Playerinfo.movement_prevented = false
