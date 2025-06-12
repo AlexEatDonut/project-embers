@@ -2,7 +2,6 @@ extends PlayerState
 
 func enter(previous_state_path: String, data := {}) -> void:
 	player.animation_player.play("dev_fall")
-	player.is_slide_allowed = false
 
 func physics_update(delta: float) -> void:
 	
@@ -24,11 +23,6 @@ func physics_update(delta: float) -> void:
 		player.is_in_air = true
 		player.acceleration = player.ACCELERATION_AIR
 		player.gravity_direction += Vector3.DOWN * player.gravity * delta
-
-	if player.is_on_floor() and player.is_slide_allowed == true and player.is_slide_on_cooldown == false:
-		player.slide_elligibility = true
-	else:
-		player.slide_elligibility = false
 	
 	var step_result = player.create_step_result()
 	is_step = player.create_step_check(delta, player.is_jumping, step_result)
@@ -68,6 +62,3 @@ func physics_update(delta: float) -> void:
 	if player.is_jumping:
 		player.is_jumping = false
 		player.is_in_air = true
-
-	if Input.is_action_just_pressed("dodge_slide"):
-		finished.emit(SLIDING)

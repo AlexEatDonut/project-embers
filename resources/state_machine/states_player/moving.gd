@@ -23,11 +23,6 @@ func physics_update(delta: float) -> void:
 		player.gravity_direction = Vector3.ZERO
 	elif not player.is_on_floor():
 		finished.emit(FALLING)
-
-	if player.is_on_floor() and player.is_slide_on_cooldown == false:
-		player.slide_elligibility = true
-	else:
-		player.slide_elligibility = false
 	
 	var step_result = player.create_step_result()
 	is_step = player.create_step_check(delta, player.is_jumping, step_result)
@@ -68,6 +63,6 @@ func physics_update(delta: float) -> void:
 	if player.is_jumping:
 		player.is_jumping = false
 		player.is_in_air = true
-
-	if Input.is_action_just_pressed("dodge_slide") and player.slide_elligibility == true:
+	
+	if Input.is_action_just_pressed("dodge_slide") and player.is_slide_on_cooldown == false:
 		finished.emit(SLIDING)
