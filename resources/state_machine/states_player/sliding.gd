@@ -2,34 +2,40 @@ extends PlayerState
 
 var exiter_timer: float
 var slide_direction
+var input
 
 func enter(previous_state_path: String, data := {}) -> void:
-	player.dodge_slide_start()
+	on_dodge_slide_start()
+	input = Vector2(0,0)
 	exiter_timer = 15
 	player.animation_player.play("dev_slide")
 	slide_direction = player.slide_direction_3D.position
 	player.body.look_at(player.transform.origin + slide_direction, Vector3.UP)
 
-func physics_update(delta: float) -> void:
-	
-	#if player.slide_direction != Vector3(0,0,0) :
-			#if !player.global_transform.origin.is_equal_approx(player.slide_direction) :
-				#player.body.look_at(player.transform.origin + player.slide_direction, Vector3.UP)
-	
-	var input = Input.get_vector("move_left", "move_right", "move_up", "move_down")
-#	on timeout -> ask "is player moving or nah"
-#	how tf do you find the timeout
-	if exiter_timer >0 :
-		exiter_timer -= 1
-	elif exiter_timer == 0:
-		if player.is_player_sliding == false:
-			player.dodge_slide_end()
+func on_dodge_slide_start():
+	player.SLIDE_ACCELARATION = player.SPEED_SLIDING_DEFAULT
+	player.slide_velocity = player.default_slide_velocity
+	player.is_slide_on_cooldown = true
+	## how long the slide is (0.7s)
+	player.sliding_timer.start() 
+	## how long before can do another slide (1s)
+	player.slide_cooldown.start()
+	#Playerinfo.snap_into_cover = true
+
+func on_dodge_slide_end():
+		Playerinfo.intangible = false
 		if input != Vector2(0,0):
 			finished.emit(IDLE)
 		else:
 			finished.emit(MOVING)
 
-
+func physics_update(delta: float) -> void:
+	Playerinfo.intangible = true
+	#if player.slide_direction != Vector3(0,0,0) :
+			#if !player.global_transform.origin.is_equal_approx(player.slide_direction) :
+				#player.body.look_at(player.transform.origin + player.slide_direction, Vector3.UP)
+	
+	input = Input.get_vector("move_left", "move_right", "move_up", "move_down")
 
 	var is_step: bool = false
 
@@ -81,3 +87,7 @@ func physics_update(delta: float) -> void:
 	if player.is_jumping:
 		player.is_jumping = false
 		player.is_in_air = true
+
+
+func _on_sliding_timer_timeout() -> void:
+	on_dodge_slide_end()

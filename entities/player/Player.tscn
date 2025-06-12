@@ -559,7 +559,7 @@ script = ExtResource("15_2a181")
 [node name="Falling" type="Node" parent="StateMachine"]
 script = ExtResource("16_aubru")
 
-[connection signal="timeout" from="SlidingTimer" to="." method="_on_sliding_timer_timeout"]
+[connection signal="timeout" from="SlidingTimer" to="StateMachine/Sliding" method="_on_sliding_timer_timeout"]
 [connection signal="timeout" from="SlideCooldown" to="." method="_on_slide_cooldown_timeout"]
 [connection signal="timeout" from="CoverCooldown" to="." method="_on_cover_cooldown_timeout"]
 
