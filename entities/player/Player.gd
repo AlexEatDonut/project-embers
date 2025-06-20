@@ -249,44 +249,11 @@ func ScreenPointToRay():
 
 func _physics_process(delta):
 	pass
-	#var is_step: bool = false
-	#if Playerinfo.prevent_movement_input == false :
-		#var input = Input.get_vector("move_left", "move_right", "move_up", "move_down")
-		#direction = Vector3(input.x, 0, input.y).normalized()
-		#if input != Vector2(0,0):
-			#last_known_direction = direction
-#
-	#if is_on_floor():
-		#is_jumping = false
-		#is_in_air = false
-		#acceleration = ACCELERATION_DEFAULT
-		#gravity_direction = Vector3.ZERO
-	#else:
-		#is_in_air = true
-		#acceleration = ACCELERATION_AIR
-		#gravity_direction += Vector3.DOWN * gravity * delta
-#
-
-	#var step_result : StepResult = StepResult.new()
-	#
-	#is_step = step_check(delta, is_jumping, step_result)
-	#
-	#if is_step:
-		#var is_enabled_stair_stepping: bool = true
-		#if step_result.is_step_up and is_in_air and not is_enabled_stair_stepping_in_air:
-			#is_enabled_stair_stepping = false
-#
-		#if is_enabled_stair_stepping:
-			#global_transform.origin += step_result.diff_position
-			#head_offset = step_result.diff_position
-			#speed = SPEED_ON_STAIRS
-	#else:
-		#head_offset = head_offset.lerp(Vector3.ZERO, delta * speed * STAIRS_FEELING_COEFFICIENT)
-		#
-		#if abs(head_offset.y) <= 0.01:
-			#speed = SPEED_DEFAULT
-#
-#
+	##For every state, the player moves at a different speed. 
+	##Due to sliding having it's own velocity, every other state NEEDS to have 
+	#"movement = main_velocity + gravity_direction"
+	##This if is a workaround to avoid typing the thing many times
+	##This is sure to bite me in the ass when i need to filter out more than the SLIDING state
 	#match Playerinfo.state :
 		#SLIDING :
 			#slide_velocity = main_velocity.lerp(last_known_direction * (SLIDE_ACCELARATION - SLIDE_DECELARATION), acceleration * delta)
@@ -300,43 +267,27 @@ func _physics_process(delta):
 			#main_velocity = main_velocity.lerp(direction * speed_cover, acceleration * delta)
 		#COVERSHOOTING :
 			#main_velocity = main_velocity.lerp(direction * speed_covershooting, acceleration * delta)
-		#
-	##For every state, the player moves at a different speed. 
-	##Due to sliding having it's own velocity, every other state NEEDS to have 
-	##"movement = main_velocity + gravity_direction"
-	##This if is a workaround to avoid typing the thing many times
-	##This is sure to bite me in the ass when i need to filter out more than the SLIDING state
-	#
-	#if Playerinfo.state == SLIDING :
-		#SLIDE_ACCELARATION -= SLIDE_DECELARATION
-		#movement = slide_velocity + gravity_direction
-	#else :
-		#movement = main_velocity + gravity_direction
-	#
-	#if Playerinfo.movement_prevented != true:
-		#set_velocity(movement)
-		#set_max_slides(6)
-		#move_and_slide()
-	#else:
-		#movement = Vector3.ZERO
-		#set_velocity(movement)
-		#set_max_slides(6)
-		#move_and_slide()
-	#
-	#if is_step and step_result.is_step_up and is_enabled_stair_stepping_in_air:
-		#if is_in_air or direction.dot(step_result.normal) > 0:
-			#main_velocity *= SPEED_CLAMP_AFTER_JUMP_COEFFICIENT
-			#gravity_direction *= SPEED_CLAMP_AFTER_JUMP_COEFFICIENT
-#
-	#if is_jumping:
-		#is_jumping = false
-		#is_in_air = true
 
 func _on_cover_cooldown_timeout() -> void:
 	Playerinfo.movement_prevented = false
 
 func _on_slide_cooldown_timeout() -> void:
 	is_slide_on_cooldown = false
+
+func _on_hitbox_area_entered(area: Area3D) -> void:
+	#print(area.get_parent())
+	## We get the parent of the area3D in order to find out if it is a cover system trigger.
+	## Then, we act upon this information
+	## The goal is to communicate to the state machine for it to actually do what is right
+	## 
+	#var coverEntity = area.get_parent()
+	#if coverEntity.is_in_group("CoverArea"):
+		#print(coverEntity)
+	pass
+	
+func _on_hitbox_area_exited(area: Area3D) -> void:
+	pass # Replace with function body.
+
 
 #region Step Check Function Code
 func create_step_result():
