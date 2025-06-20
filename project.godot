@@ -54,6 +54,7 @@ Client="The player/user/client. Used as filter for triggers and damage."
 NPC="Generic NPC. Used as filter for triggers and damage."
 Hostile1="Generic Hostile Group. Used as filter for triggers, damage, and affiliation."
 CameraFacingWall="A wall that faces the camera. Ignored by the raycast that checks for where the player is looking"
+CoverArea="A cover area entity. Used to filter code in the player.gd."
 
 [input]
 
