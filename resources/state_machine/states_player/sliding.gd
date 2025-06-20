@@ -1,13 +1,11 @@
 extends PlayerState
 
-var exiter_timer: float
 var slide_direction
 var input
 
 func enter(previous_state_path: String, data := {}) -> void:
 	on_dodge_slide_start()
 	input = Vector2(0,0)
-	exiter_timer = 15
 	player.animation_player.play("dev_slide")
 	slide_direction = player.slide_direction_3D.position
 	player.body.look_at(player.transform.origin + slide_direction, Vector3.UP)
@@ -91,3 +89,10 @@ func physics_update(delta: float) -> void:
 
 func _on_sliding_timer_timeout() -> void:
 	on_dodge_slide_end()
+
+
+func _on_hitbox_area_entered(area: Area3D) -> void:
+	var coverEntity = area.get_parent()
+	if coverEntity.is_in_group("CoverArea"):
+		print(coverEntity)
+		print("i should be in sliding rnd")

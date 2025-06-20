@@ -126,7 +126,6 @@ func cover_snapper(teleport_location:Marker3D):
 			#hitting large hitbox with snapping on.
 			#We do the thing : we snap the player into place and put him into the cover state. 
 			#We stop the shooting, we stop the sliding and give the player back controls after a cooldown
-			emit_signal("request_dodge_slide_end")
 			emit_signal("request_player_cover_snapped", teleport_location)
 		false:
 			pass
