@@ -43,11 +43,17 @@ The next 3 sounds have been combined into one sound effect.
 
 <a href="https://freesound.org/people/ser%C3%B8t%C5%8Dnin/sounds/725402/">A rifle being dry fired once</a> by <a href="https://freesound.org/people/ser%C3%B8t%C5%8Dnin/">serøtōnin</a> | License: <a href="http://creativecommons.org/publicdomain/zero/1.0/">Creative Commons 0</a>
 
+<a href="https://freesound.org/people/kanaizo/sounds/811838/">Spacey Ambience 4</a> by <a href="https://freesound.org/people/kanaizo/">kanaizo</a> | License: <a href="http://creativecommons.org/publicdomain/zero/1.0/">Creative Commons 0</a>
+
+<a href="https://freesound.org/people/nfsmaster821/sounds/697867/">player_death_ui_show.wav</a> by <a href="https://freesound.org/people/nfsmaster821/">nfsmaster821</a> | License: <a href="http://creativecommons.org/publicdomain/zero/1.0/">Creative Commons 0</a>
+
 # Textures
 
 <a href="https://www.kenney.nl/assets/prototype-textures"> Prototype Textures by Kenney, Creative Commons CC0 </a>
 
 <a href="https://www.pngkit.com/bigpic/u2q8w7w7o0y3q8r5/"> "Cities Skylines City Landscape - Buildings At Night Landscape" at pngkit. Unknown copyright. Go see this website first in case you are the owner of the image.</a>
+
+<a href="https://thoseawesomeguys.com/prompts/"> Xelu's free controller and keyboard prompts - Creative Commons 0 (CC0) </a> 
 
 <hr>
 
