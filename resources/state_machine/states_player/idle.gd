@@ -65,7 +65,7 @@ func physics_update(delta: float) -> void:
 		player.is_jumping = false
 		player.is_in_air = true
 
-	if Input.is_action_just_pressed("dodge_slide") and player.is_slide_on_cooldown == true:
+	if Input.is_action_just_pressed("dodge_slide") and player.is_slide_on_cooldown == false:
 		finished.emit(SLIDING)
 	
 	if not player.is_on_floor():
