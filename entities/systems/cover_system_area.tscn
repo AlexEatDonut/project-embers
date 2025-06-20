@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://cyl7rov26tlcj" path="res://entities/systems/cover_system_area.gd" id="1_h0m7l"]
 
-[node name="CoverSystemArea" type="Node3D"]
+[node name="CoverSystemArea" type="Node3D" groups=["CoverArea"]]
 script = ExtResource("1_h0m7l")
 
 [node name="CoverMarker3D" type="Marker3D" parent="."]
