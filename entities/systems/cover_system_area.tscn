@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://cyl7rov26tlcj" path="res://entities/systems/cover_system_area.gd" id="1_h0m7l"]
 
-[node name="CoverSystemArea" type="Node3D" groups=["CoverArea"]]
+[node name="CoverSystemArea" type="Node3D"]
 script = ExtResource("1_h0m7l")
 
 [node name="CoverMarker3D" type="Marker3D" parent="."]
@@ -13,7 +13,7 @@ collision_layer = 4096
 [node name="CollisionShape3D" type="CollisionShape3D" parent="CoverArea"]
 debug_color = Color(0.858824, 0, 0.341176, 1)
 
-[node name="SnapArea" type="Area3D" parent="."]
+[node name="SnapArea" type="Area3D" parent="." groups=["CoverArea"]]
 collision_layer = 4096
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="SnapArea"]

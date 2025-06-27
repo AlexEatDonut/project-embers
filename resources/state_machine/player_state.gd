@@ -4,6 +4,7 @@ const IDLE = "Idle"
 const MOVING = "Moving"
 const SLIDING = "Sliding"
 const FALLING = "Falling"
+const COVER = "Cover"
 #TODO add the missing states
 
 var player: Player

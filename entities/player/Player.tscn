@@ -564,7 +564,6 @@ script = ExtResource("16_aubru")
 script = ExtResource("19_npcl8")
 
 [connection signal="area_entered" from="Hitbox" to="." method="_on_hitbox_area_entered"]
-[connection signal="area_entered" from="Hitbox" to="StateMachine/Sliding" method="_on_hitbox_area_entered"]
 [connection signal="area_exited" from="Hitbox" to="." method="_on_hitbox_area_exited"]
 [connection signal="timeout" from="SlidingTimer" to="StateMachine/Sliding" method="_on_sliding_timer_timeout"]
 [connection signal="timeout" from="SlideCooldown" to="." method="_on_slide_cooldown_timeout"]

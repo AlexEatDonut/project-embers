@@ -36,11 +36,9 @@ var wp_is_reloading : bool = false
 var wp_current_ammo : int = wp_current.max_mag 
 
 const WEAPON_01_TEST = preload("res://resources/weapons/weapon01_test.tres")
-
-
-
 #endregion
 
+@onready var movement_state_machine = $StateMachine
 
 #region Movement Related Variables
 @export var ACCELERATION_DEFAULT: float = 10.0
@@ -124,6 +122,13 @@ var is_slide_on_cooldown : bool = false
 var last_known_direction = Vector3(1, 0, 1).normalized()
 #endregion
 
+#region Variables used by state machine
+###Used by COVER state  
+##Variable to see how many cover areas you are touching. Used to keep the player in COVER state to avoid cases where the player exits one cover area that was overlapping with another.
+var cover_collisions:float = 0
+##allows the player to see what cover to prefer when inputting "get into cover" when already in a cover area. 
+var last_cover_touched : Area3D
+#endregion
 #enum {
 	#NORMAL,
 	#SHOOTING,
@@ -159,6 +164,7 @@ func _ready():
 	#weapon.connect("start_reloading", reloading_weapon)
 	#weapon.connect("request_hud_update", hud_update)
 	slide_direction_3D.position = Vector3(5,0,5) 
+	
 	
 	hud_update()
 	
@@ -275,6 +281,7 @@ func _on_slide_cooldown_timeout() -> void:
 	is_slide_on_cooldown = false
 
 func _on_hitbox_area_entered(area: Area3D) -> void:
+
 	#print(area.get_parent())
 	## We get the parent of the area3D in order to find out if it is a cover system trigger.
 	## Then, we act upon this information
@@ -283,10 +290,16 @@ func _on_hitbox_area_entered(area: Area3D) -> void:
 	#var coverEntity = area.get_parent()
 	#if coverEntity.is_in_group("CoverArea"):
 		#print(coverEntity)
-	pass
+	var coverEntity = area.get_parent()
+	if coverEntity.is_in_group("CoverArea"):
+		cover_collisions += 1
+		print(cover_collisions)
 	
 func _on_hitbox_area_exited(area: Area3D) -> void:
-	pass # Replace with function body.
+	var coverEntity = area.get_parent()
+	if coverEntity.is_in_group("CoverArea") :
+		cover_collisions -= 1
+		print(cover_collisions)
 
 
 #region Step Check Function Code

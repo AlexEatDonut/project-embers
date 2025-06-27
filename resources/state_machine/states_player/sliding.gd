@@ -3,6 +3,7 @@ extends PlayerState
 var slide_direction
 var input
 
+
 func enter(previous_state_path: String, data := {}) -> void:
 	on_dodge_slide_start()
 	input = Vector2(0,0)
@@ -90,9 +91,9 @@ func physics_update(delta: float) -> void:
 func _on_sliding_timer_timeout() -> void:
 	on_dodge_slide_end()
 
-
-func _on_hitbox_area_entered(area: Area3D) -> void:
+#this was a signal connector
+func _on_cover_area_entered(area: Area3D) -> void:
 	var coverEntity = area.get_parent()
 	if coverEntity.is_in_group("CoverArea"):
 		print(coverEntity)
-		print("i should be in sliding rnd")
+		print("i should be in sliding rn")
