@@ -29,7 +29,7 @@ window/size/viewport_height=720
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/GPUTrail/plugin.cfg", "res://addons/godotvmf/plugin.cfg")
+enabled=PackedStringArray("res://addons/GPUTrail/plugin.cfg", "res://addons/IgnoreFolders/plugin.cfg", "res://addons/godotvmf/plugin.cfg")
 
 [file_customization]
 
