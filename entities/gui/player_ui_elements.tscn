@@ -1,8 +1,9 @@
-[gd_scene load_steps=8 format=3 uid="uid://4lmtef3aw73d"]
+[gd_scene load_steps=10 format=3 uid="uid://4lmtef3aw73d"]
 
-[ext_resource type="Texture2D" uid="uid://dt05b5sdq5iaw" path="res://materials/dev/ember_placeholder_prototype.png" id="1_jwhsd"]
+[ext_resource type="Texture2D" uid="uid://wjul2wft543" path="res://materials/dev/protag_placeholder_prototype.png" id="1_6qadn"]
 [ext_resource type="FontFile" uid="uid://bjcccyc20uwb3" path="res://fonts/Quantum.otf" id="2_6qadn"]
 [ext_resource type="Texture2D" uid="uid://3ntkx7qrqn2m" path="res://materials/dev/pistol-gun.svg" id="3_6bgx0"]
+[ext_resource type="FontFile" uid="uid://qgopeagijns8" path="res://fonts/monofonto rg.otf" id="4_6qadn"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ak4un"]
 bg_color = Color(0, 0, 0, 0.254902)
@@ -27,6 +28,11 @@ border_width_top = 1
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2rv2u"]
 bg_color = Color(0, 0, 0, 0.254902)
 border_color = Color(0, 0, 0, 0.501961)
+
+[sub_resource type="LabelSettings" id="LabelSettings_6bgx0"]
+font = ExtResource("4_6qadn")
+font_size = 12
+shadow_color = Color(0, 0, 0, 1)
 
 [node name="UI_elements" type="CanvasLayer"]
 
@@ -125,7 +131,7 @@ offset_right = 38.0
 offset_bottom = 38.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = ExtResource("1_jwhsd")
+texture = ExtResource("1_6qadn")
 expand_mode = 1
 
 [node name="Label_health" type="Label" parent="HUD/PlayerInfoPanel"]
@@ -234,6 +240,23 @@ offset_top = 32.0
 offset_right = 184.0
 offset_bottom = 56.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_mq27t")
+
+[node name="ReloadTimer" type="Label" parent="HUD/WeaponInfoPanel/Ammo_frame"]
+layout_direction = 1
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.741667
+anchor_top = 0.0416667
+anchor_right = 1.0
+anchor_bottom = 0.958333
+grow_horizontal = 0
+grow_vertical = 2
+theme_override_font_sizes/font_size = 15
+text = "0.00"
+label_settings = SubResource("LabelSettings_6bgx0")
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
 
 [node name="Ammocount" type="Label" parent="HUD/WeaponInfoPanel/Ammo_frame"]
 layout_mode = 1
