@@ -6,6 +6,8 @@ extends CharacterBody3D
 @onready var head_position: Vector3 = head.position
 @onready var base_camera: Camera3D = $CameraPivot/CameraMarker3D/BaseCamera
 @onready var enemy_detector: Area3D = $EnemyDetector
+@onready var weapon: Node3D = $Body/Weapon
+
 
 @onready var slide_direction_3D: Marker3D = $SlideDirection
 
@@ -25,6 +27,8 @@ extends CharacterBody3D
 @onready var hud_label_health: Label = $"UI_elements/HUD/PlayerInfoPanel/Health&Armor/Health"
 @onready var hud_label_armor: Label = $"UI_elements/HUD/PlayerInfoPanel/Health&Armor/Armor"
 @onready var hud_label_ammo: Label = $UI_elements/HUD/WeaponInfoPanel/Ammo_frame/Ammocount
+
+@onready var hud_label_reloadtimer: Label = $UI_elements/HUD/WeaponInfoPanel/Ammo_frame/ReloadTimer
 #endregion
 
 #region Weapons Variables
@@ -184,6 +188,7 @@ func _process(delta: float) -> void:
 	enemy_detector.global_position = ScreenPointToRay()
 	Playerinfo.playerLocation = global_position
 	
+	hud_label_reloadtimer.text = str(snapped($Body/Weapon/Reload_timer.time_left, 0.01))
 
 
 func attempt_player_cover_teleported(destination):
