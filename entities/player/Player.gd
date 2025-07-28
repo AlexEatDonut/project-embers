@@ -29,6 +29,21 @@ extends CharacterBody3D
 @onready var hud_label_ammo: Label = $UI_elements/HUD/WeaponInfoPanel/Ammo_frame/Ammocount
 
 @onready var hud_label_reloadtimer: Label = $UI_elements/HUD/WeaponInfoPanel/Ammo_frame/ReloadTimer
+@onready var hud_label_state: Label = $UI_elements/HUD/dev_info_box/State
+#endregion
+
+#region Cover Raycasts
+@onready var n_high: RayCast3D = $CoverRaycasts/NHigh
+@onready var s_high: RayCast3D = $CoverRaycasts/SHigh
+@onready var e_high: RayCast3D = $CoverRaycasts/EHigh
+@onready var w_high: RayCast3D = $CoverRaycasts/WHigh
+var cover_surrounding : bool = true
+var cover_directions : Array = [false, false, false, false]
+
+#endregion
+
+#region GODETTE_TEST_ANIMS
+@onready var godette_model_anims = $Body/godetteModel/AnimationPlayer
 #endregion
 
 #region Weapons Variables
@@ -189,7 +204,7 @@ func _process(delta: float) -> void:
 	Playerinfo.playerLocation = global_position
 	
 	hud_label_reloadtimer.text = str(snapped($Body/Weapon/Reload_timer.time_left, 0.01))
-
+	hud_label_state.text = str($StateMachine.state)
 
 func attempt_player_cover_teleported(destination):
 	move_player(destination.global_position, 0.1)
@@ -223,6 +238,14 @@ func hud_update_hp():
 	#is_slide_button_on = false
 	#Playerinfo.prevent_movement_input = false
 
+func detect_cover():
+	cover_directions = [n_high.is_colliding(), e_high.is_colliding(), s_high.is_colliding(),w_high.is_colliding()]
+	if n_high.is_colliding() || e_high.is_colliding() || s_high.is_colliding() || w_high.is_colliding():
+		cover_surrounding = true
+	else:
+		cover_surrounding = false
+	return(cover_surrounding)
+	
 func _input(event):
 	pass
 

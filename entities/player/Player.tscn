@@ -393,6 +393,7 @@ debug_color = Color(0.938242, 1.45355e-05, 0.624536, 0.42)
 
 [node name="CollisionShape3D1" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+visible = false
 shape = SubResource("6")
 disabled = true
 
@@ -402,51 +403,27 @@ shape = ExtResource("2_ak4un")
 
 [node name="CoverRaycasts" type="Node3D" parent="."]
 
-[node name="ZnLow" type="RayCast3D" parent="CoverRaycasts"]
-transform = Transform3D(0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 0, 0.5, 0)
-target_position = Vector3(0, 0, -1.5)
-collision_mask = 32769
-debug_shape_custom_color = Color(1, 0.627451, 1, 1)
-
-[node name="ZnHigh" type="RayCast3D" parent="CoverRaycasts"]
+[node name="NHigh" type="RayCast3D" parent="CoverRaycasts"]
 transform = Transform3D(0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 0, 1.5, 0)
-target_position = Vector3(0, 0, -1.5)
+target_position = Vector3(0, 0, -1)
 collision_mask = 32769
 debug_shape_custom_color = Color(1, 0.627451, 1, 1)
 
-[node name="ZLow" type="RayCast3D" parent="CoverRaycasts"]
-transform = Transform3D(0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 0, 0.5, 0)
-target_position = Vector3(0, 0, 1.5)
-collision_mask = 32769
-debug_shape_custom_color = Color(1, 0.627451, 1, 1)
-
-[node name="ZHigh" type="RayCast3D" parent="CoverRaycasts"]
+[node name="SHigh" type="RayCast3D" parent="CoverRaycasts"]
 transform = Transform3D(0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 0, 1.5, 0)
-target_position = Vector3(0, 0, 1.5)
+target_position = Vector3(0, 0, 1)
 collision_mask = 32769
 debug_shape_custom_color = Color(1, 0.627451, 1, 1)
 
-[node name="XLow" type="RayCast3D" parent="CoverRaycasts"]
-transform = Transform3D(0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 0, 0.5, 0)
-target_position = Vector3(1.5, 0, 0)
-collision_mask = 32769
-debug_shape_custom_color = Color(1, 0.627451, 1, 1)
-
-[node name="XHigh" type="RayCast3D" parent="CoverRaycasts"]
+[node name="EHigh" type="RayCast3D" parent="CoverRaycasts"]
 transform = Transform3D(0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 0, 1.5, 0)
-target_position = Vector3(1.5, 0, 0)
+target_position = Vector3(1, 0, 0)
 collision_mask = 32769
 debug_shape_custom_color = Color(1, 0.627451, 1, 1)
 
-[node name="XnLow" type="RayCast3D" parent="CoverRaycasts"]
-transform = Transform3D(0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 0, 0.5, 0)
-target_position = Vector3(-1.5, 0, 0)
-collision_mask = 32769
-debug_shape_custom_color = Color(1, 0.627451, 1, 1)
-
-[node name="XnHigh" type="RayCast3D" parent="CoverRaycasts"]
+[node name="WHigh" type="RayCast3D" parent="CoverRaycasts"]
 transform = Transform3D(0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 0, 1.5, 0)
-target_position = Vector3(-1.5, 0, 0)
+target_position = Vector3(-1, 0, 0)
 collision_mask = 32769
 debug_shape_custom_color = Color(1, 0.627451, 1, 1)
 
@@ -454,6 +431,69 @@ debug_shape_custom_color = Color(1, 0.627451, 1, 1)
 
 [node name="godetteModel" parent="Body" instance=ExtResource("3_npcl8")]
 transform = Transform3D(1.2, 0, 0, 0, 1.2, 0, 0, 0, 1.2, 0, 0, 0)
+
+[node name="Skeleton3D" parent="Body/godetteModel/Sketchfab_model/root/GLTF_SceneRootNode/Armature_Tpose_60/GLTF_created_0" index="0"]
+bones/2/rotation = Quaternion(0.0725291, 3.36832e-22, 6.00344e-21, 0.997366)
+bones/3/rotation = Quaternion(-0.0522872, 7.63603e-20, 7.88018e-19, 0.998632)
+bones/4/rotation = Quaternion(-0.112191, 1.16334e-19, 8.6847e-19, 0.993687)
+bones/5/rotation = Quaternion(0.154401, -4.36295e-18, -7.58758e-18, 0.988008)
+bones/6/rotation = Quaternion(-0.0807266, 5.5228e-18, 3.76887e-18, 0.996736)
+bones/8/rotation = Quaternion(0.999822, 6.13921e-09, -3.25784e-07, -0.0188411)
+bones/9/rotation = Quaternion(0.999822, -6.13921e-09, 3.25784e-07, -0.0188411)
+bones/12/rotation = Quaternion(-0.00731903, 0.00193528, -0.144654, 0.989453)
+bones/13/rotation = Quaternion(0.00366687, 4.46252e-05, -0.0668787, 0.997754)
+bones/14/rotation = Quaternion(-0.00391757, 0.015635, 0.0608812, 0.998015)
+bones/16/rotation = Quaternion(-0.106709, -0.15013, 0.00275474, 0.982887)
+bones/17/rotation = Quaternion(-8.19564e-07, -3.69549e-06, -1.66893e-06, 1)
+bones/18/position = Vector3(0.0286253, 0.0804385, -0.00315102)
+bones/18/rotation = Quaternion(-0.0301973, 0.0498112, -0.0015066, 0.998301)
+bones/19/rotation = Quaternion(-0.0308549, -2.31768e-06, -0.00308669, 0.999519)
+bones/20/position = Vector3(0.00803407, 0.0823459, -0.00141352)
+bones/20/rotation = Quaternion(-0.0302359, -2.24574e-07, 7.8487e-08, 0.999543)
+bones/21/rotation = Quaternion(-0.0281632, -2.62241e-06, 1.54885e-07, 0.999603)
+bones/22/rotation = Quaternion(-0.0301687, -0.0667581, 0.00201953, 0.997311)
+bones/23/rotation = Quaternion(-0.0310742, -4.85772e-06, 0.00417895, 0.999508)
+bones/24/position = Vector3(-0.0301519, 0.0743593, -0.0089096)
+bones/24/rotation = Quaternion(-0.0299431, -0.138937, 0.00420313, 0.98984)
+bones/25/rotation = Quaternion(-0.0397311, -1.01882e-05, 0.0113781, 0.999146)
+bones/26/rotation = Quaternion(-5.30388e-07, 0.012718, -3.4081e-08, 0.999919)
+bones/27/rotation = Quaternion(0.00125935, -0.0238114, 0.0278714, 0.999327)
+bones/29/rotation = Quaternion(-0.00731915, -0.00193491, 0.144645, 0.989455)
+bones/30/rotation = Quaternion(0.00366691, -4.41139e-05, 0.066896, 0.997753)
+bones/31/rotation = Quaternion(-0.00391771, -0.015636, -0.0608897, 0.998014)
+bones/32/rotation = Quaternion(0.113964, -0.581762, 0.343025, 0.728628)
+bones/33/rotation = Quaternion(-0.106709, 0.150133, -0.00275328, 0.982886)
+bones/34/rotation = Quaternion(-1.08033e-07, 4.88013e-07, -4.47035e-08, 1)
+bones/35/position = Vector3(-0.0286253, 0.0804387, -0.00315102)
+bones/35/rotation = Quaternion(-0.0301973, -0.0498112, 0.00150658, 0.998301)
+bones/36/rotation = Quaternion(-0.0308532, 2.38441e-06, 0.00308646, 0.999519)
+bones/37/position = Vector3(-0.00803406, 0.0823461, -0.00141376)
+bones/37/rotation = Quaternion(-0.0302358, 2.63316e-07, -1.30869e-07, 0.999543)
+bones/38/rotation = Quaternion(-0.0281632, 2.6127e-06, -1.21777e-07, 0.999603)
+bones/39/rotation = Quaternion(-0.0301686, 0.0667581, -0.00201961, 0.997311)
+bones/40/rotation = Quaternion(-0.0310741, 4.86628e-06, -0.00417892, 0.999508)
+bones/41/position = Vector3(0.030152, 0.0743595, -0.00890973)
+bones/41/rotation = Quaternion(-0.029943, 0.138937, -0.0042032, 0.98984)
+bones/42/rotation = Quaternion(-0.039731, 1.02156e-05, -0.0113779, 0.999146)
+bones/43/rotation = Quaternion(-2.59899e-07, -0.0127259, 4.28816e-09, 0.999919)
+bones/44/rotation = Quaternion(0.00125941, 0.0238133, -0.0278713, 0.999327)
+bones/46/rotation = Quaternion(0.997496, 8.43085e-09, -1.18911e-07, -0.070723)
+bones/47/rotation = Quaternion(0.696922, 0.0618463, 0.709352, 0.0854121)
+bones/47/scale = Vector3(0.999999, 1, 0.999983)
+bones/48/rotation = Quaternion(0.0248483, -0.00136397, 0.0938903, 0.995272)
+bones/49/rotation = Quaternion(-0.00383558, -0.0101687, -0.542601, 0.83992)
+bones/50/rotation = Quaternion(0.258907, 0.965902, -7.66916e-05, 0.000290467)
+bones/51/rotation = Quaternion(-3.25077e-08, -0.00861304, -7.05832e-08, 0.999963)
+bones/52/rotation = Quaternion(0.535996, -0.465178, 0.52387, -0.471039)
+bones/52/scale = Vector3(0.999972, 1, 0.999972)
+bones/53/rotation = Quaternion(-0.696922, 0.0618463, 0.709352, -0.0854121)
+bones/53/scale = Vector3(0.999999, 1, 0.999983)
+bones/54/rotation = Quaternion(0.0248483, 0.00136409, -0.0938903, 0.995272)
+bones/55/rotation = Quaternion(-0.00383566, 0.0101685, 0.542601, 0.83992)
+bones/56/rotation = Quaternion(-0.258907, 0.965902, -7.66939e-05, -0.000290467)
+bones/57/rotation = Quaternion(-1.36319e-08, 0.00860908, 7.49664e-08, 0.999963)
+bones/58/rotation = Quaternion(0.535996, 0.465178, -0.52387, -0.471039)
+bones/58/scale = Vector3(0.999972, 1, 0.999972)
 
 [node name="Weapon" parent="Body" node_paths=PackedStringArray("parent") instance=ExtResource("5_g3lhm")]
 parent = NodePath("../..")
@@ -596,6 +636,13 @@ shape = SubResource("BoxShape3D_1ms0h")
 
 [node name="UI_elements" parent="." instance=ExtResource("11_1ms0h")]
 
+[node name="dev_info_box" parent="UI_elements/HUD" index="3"]
+layout_mode = 0
+offset_left = 739.0
+offset_top = 31.0
+offset_right = 1059.0
+offset_bottom = 127.0
+
 [node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("initial_state")]
 script = ExtResource("12_2rv2u")
 initial_state = NodePath("Idle")
@@ -621,5 +668,6 @@ script = ExtResource("19_npcl8")
 [connection signal="timeout" from="SlideCooldown" to="." method="_on_slide_cooldown_timeout"]
 [connection signal="timeout" from="CoverCooldown" to="." method="_on_cover_cooldown_timeout"]
 
+[editable path="Body/godetteModel"]
 [editable path="Body/Weapon"]
 [editable path="UI_elements"]
