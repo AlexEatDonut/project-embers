@@ -43,6 +43,8 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
 
 [node name="ObjectivesPanel" type="Panel" parent="HUD"]
 layout_mode = 1
@@ -267,5 +269,43 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_font_sizes/font_size = 15
 text = "10"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="dev_info_box" type="Panel" parent="HUD"]
+offset_left = 758.0
+offset_top = 32.0
+offset_right = 1078.0
+offset_bottom = 128.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_ak4un")
+
+[node name="Label_state" type="Label" parent="HUD/dev_info_box"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -108.0
+offset_right = 108.0
+offset_bottom = 24.0
+grow_horizontal = 2
+theme_override_fonts/font = ExtResource("4_6qadn")
+theme_override_font_sizes/font_size = 16
+text = "Current state :"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="State" type="Label" parent="HUD/dev_info_box"]
+layout_mode = 1
+anchors_preset = 14
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_top = -10.0
+offset_bottom = 10.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("4_6qadn")
+theme_override_font_sizes/font_size = 24
+text = "default text"
 horizontal_alignment = 1
 vertical_alignment = 1
