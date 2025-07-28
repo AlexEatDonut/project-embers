@@ -1,9 +1,13 @@
 extends PlayerState
 
 func enter(previous_state_path: String, data := {}) -> void:
-	player.animation_player.play("dev_move")
-
+	#player.animation_player.play("dev_move")
+	player.godette_model_anims.play("run")
+	player.godette_model_anims.speed_scale = 2
 func physics_update(delta: float) -> void:
+	
+	if player.detect_cover() == true:
+		finished.emit(COVER)
 	
 	player.body.look_at(player.ScreenPointToRay(), Vector3.UP)
 	

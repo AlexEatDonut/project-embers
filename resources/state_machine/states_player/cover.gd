@@ -1,7 +1,8 @@
 extends PlayerState
 
 func enter(previous_state_path: String, data := {}) -> void:
-	player.animation_player.play("dev_cover")
+	#player.animation_player.play("dev_cover")
+	player.godette_model_anims.play("land")
 
 func physics_update(delta: float) -> void:
 	
@@ -13,8 +14,12 @@ func physics_update(delta: float) -> void:
 	if input != Vector2(0,0):
 		player.slide_direction_3D.position = Vector3((input.x*5), 0, (input.y*5))
 		player.last_known_direction = player.direction
-	elif input == Vector2(0,0):
-		finished.emit(IDLE)
+
+	if player.detect_cover() == false:
+		if input == Vector2(0,0):
+			finished.emit(IDLE)
+		elif input != Vector2(0,0):
+			finished.emit(MOVING)
 
 	if player.is_on_floor():
 		player.is_jumping = false

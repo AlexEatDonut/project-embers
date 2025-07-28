@@ -7,7 +7,8 @@ var input
 func enter(previous_state_path: String, data := {}) -> void:
 	on_dodge_slide_start()
 	input = Vector2(0,0)
-	player.animation_player.play("dev_slide")
+	#player.animation_player.play("dev_slide")
+	player.godette_model_anims.play("sit")
 	slide_direction = player.slide_direction_3D.position
 	player.body.look_at(player.transform.origin + slide_direction, Vector3.UP)
 
@@ -22,6 +23,7 @@ func on_dodge_slide_start():
 	#Playerinfo.snap_into_cover = true
 
 func on_dodge_slide_end():
+
 		Playerinfo.intangible = false
 		if input != Vector2(0,0):
 			finished.emit(IDLE)

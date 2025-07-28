@@ -5,7 +5,8 @@ func enter(previous_state_path: String, data := {}) -> void:
 	player.is_in_air = false
 	player.acceleration = player.ACCELERATION_DEFAULT
 	player.gravity_direction = Vector3.ZERO
-	player.animation_player.play("default")
+	#player.animation_player.play("default")
+	player.godette_model_anims.play("stand")
 
 func physics_update(delta: float) -> void:
 	

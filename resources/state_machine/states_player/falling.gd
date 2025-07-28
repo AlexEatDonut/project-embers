@@ -1,7 +1,8 @@
 extends PlayerState
 
 func enter(previous_state_path: String, data := {}) -> void:
-	player.animation_player.play("dev_fall")
+	#player.animation_player.play("dev_fall")
+	player.godette_model_anims.play("fall")
 
 func physics_update(delta: float) -> void:
 	
