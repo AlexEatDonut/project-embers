@@ -321,7 +321,7 @@ collision_layer = 4096
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="SightRange"]
 shape = SubResource("SphereShape3D_6svnj")
-debug_color = Color(5.10186e-06, 0.616042, 0.596089, 0.42)
+debug_color = Color(0.619608, 0.352941, 1, 1)
 
 [node name="AnimationTree" type="AnimationTree" parent="."]
 tree_root = SubResource("AnimationRootNode_jogsh")

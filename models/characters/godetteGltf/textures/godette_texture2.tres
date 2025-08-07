@@ -1,0 +1,21 @@
+[gd_resource type="StandardMaterial3D" load_steps=5 format=3 uid="uid://b26guqp6xf8qi"]
+
+[ext_resource type="Texture2D" uid="uid://b2k4cl0f7ar1p" path="res://models/characters/godetteGltf/textures/material_baseColor.png" id="1_eqk6s"]
+[ext_resource type="Texture2D" uid="uid://s1llah7orrps" path="res://models/characters/godetteGltf/textures/material_specularf0.png" id="2_7pt1l"]
+[ext_resource type="Texture2D" uid="uid://0ytjw4pbjhxy" path="res://models/characters/godetteGltf/textures/material_normal.png" id="3_l8vae"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_qv3y1"]
+render_priority = 1
+transparency = 4
+albedo_texture = ExtResource("1_eqk6s")
+metallic = 1.0
+metallic_texture = ExtResource("2_7pt1l")
+normal_enabled = true
+normal_texture = ExtResource("3_l8vae")
+
+[resource]
+next_pass = SubResource("StandardMaterial3D_qv3y1")
+transparency = 1
+no_depth_test = true
+shading_mode = 0
+albedo_color = Color(0.376471, 0.376471, 0.376471, 0.752941)

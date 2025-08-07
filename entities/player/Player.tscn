@@ -1,16 +1,24 @@
-[gd_scene load_steps=28 format=3 uid="uid://x3l0v6tbskoe"]
+[gd_scene load_steps=39 format=3 uid="uid://x3l0v6tbskoe"]
 
 [ext_resource type="Script" uid="uid://bqa6ywaj1f0ha" path="res://entities/player/Player.gd" id="1"]
 [ext_resource type="Material" uid="uid://cnq7n26g77h12" path="res://materials/tools/direction_indicator.tres" id="2_3c3w1"]
 [ext_resource type="Shape3D" uid="uid://d10y7rjr1mkol" path="res://entities/player/dev_collisionShape_collider.tres" id="2_ak4un"]
 [ext_resource type="CapsuleMesh" uid="uid://cfupwld60yqhv" path="res://entities/player/dev_meshinstance3D_bean.tres" id="3_1ms0h"]
+[ext_resource type="PackedScene" uid="uid://br2xacdpx6eb1" path="res://models/characters/godetteGltf/godetteModel.tscn" id="3_npcl8"]
 [ext_resource type="Script" uid="uid://b6s34d6fdekfn" path="res://entities/player/camera_rig.gd" id="3_wnvi2"]
 [ext_resource type="Shader" uid="uid://tqasmi738v3e" path="res://shaders/forground_shader.gdshader" id="4_83hs8"]
 [ext_resource type="PackedScene" uid="uid://78vc80y3pt41" path="res://entities/weapons/weapon.tscn" id="5_g3lhm"]
 [ext_resource type="Resource" uid="uid://bf0kek81jvd6u" path="res://resources/weapons/weapon01_test.tres" id="6_4pwj0"]
 [ext_resource type="PackedScene" uid="uid://g1elpx8h7qgu" path="res://entities/systems/enemy_detector.tscn" id="7_fmb3c"]
 [ext_resource type="PackedScene" uid="uid://cpml3unngt286" path="res://entities/systems/critical_hit_zone.tscn" id="7_rl6fg"]
+[ext_resource type="Material" uid="uid://cyg8rtd0p220l" path="res://materials/tools/danger_indicator.tres" id="10_j531f"]
 [ext_resource type="PackedScene" uid="uid://4lmtef3aw73d" path="res://entities/gui/player_ui_elements.tscn" id="11_1ms0h"]
+[ext_resource type="Script" uid="uid://c8rrd3ehyg428" path="res://resources/state_machine/state_machine.gd" id="12_2rv2u"]
+[ext_resource type="Script" uid="uid://b63nxji74xuo7" path="res://resources/state_machine/states_player/idle.gd" id="13_mq27t"]
+[ext_resource type="Script" uid="uid://clavgybhh50q6" path="res://resources/state_machine/states_player/moving.gd" id="14_kwk8g"]
+[ext_resource type="Script" uid="uid://dyiw8r4k1x7fy" path="res://resources/state_machine/states_player/sliding.gd" id="15_2a181"]
+[ext_resource type="Script" uid="uid://cl726icth6yce" path="res://resources/state_machine/states_player/falling.gd" id="16_aubru"]
+[ext_resource type="Script" uid="uid://r8p0nnvm8y6n" path="res://resources/state_machine/states_player/cover.gd" id="19_npcl8"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_sl4o1"]
 radius = 0.3
@@ -38,17 +46,22 @@ pixel_size = 0.028
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_83hs8"]
 shader = ExtResource("4_83hs8")
-shader_parameter/MULTIPLIER = 0.56
-shader_parameter/SCALE = 0.25
-shader_parameter/SOFTNESS = 0.25
-shader_parameter/BASE_OPACITY = 1.0
+shader_parameter/MULTIPLIER = 0.4
+shader_parameter/SCALE = 0.3
+shader_parameter/SOFTNESS = 0.4
+shader_parameter/BASE_OPACITY = 0.7
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_x8kxw"]
 shader = ExtResource("4_83hs8")
-shader_parameter/MULTIPLIER = 0.56
-shader_parameter/SCALE = 0.25
-shader_parameter/SOFTNESS = 0.25
-shader_parameter/BASE_OPACITY = 0.75
+shader_parameter/MULTIPLIER = 0.4
+shader_parameter/SCALE = 0.3
+shader_parameter/SOFTNESS = 0.4
+shader_parameter/BASE_OPACITY = 0.7
+
+[sub_resource type="SphereMesh" id="SphereMesh_j531f"]
+material = ExtResource("10_j531f")
+radius = 0.2
+height = 0.4
 
 [sub_resource type="AnimationRootNode" id="AnimationRootNode_83hs8"]
 
@@ -138,6 +151,18 @@ tracks/6/keys = {
 "update": 0,
 "values": [Vector3(1, 1, 1)]
 }
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("Body/Head/MeshInstance3D:rotation")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
 
 [sub_resource type="Animation" id="Animation_83hs8"]
 resource_name = "default"
@@ -208,12 +233,56 @@ tracks/2/keys = {
 "values": [Vector3(0, 1.085, 0)]
 }
 
+[sub_resource type="Animation" id="Animation_2a181"]
+resource_name = "dev_fall"
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Body/Head/MeshInstance3D:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(-0.314159, 0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Body/MeshInstance3D:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0.122173, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_mq27t"]
+resource_name = "dev_move"
+length = 3.0
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Body/Head/MeshInstance3D:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.6, 1.5, 2.16667, 3),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0, 0, 0.314159), Vector3(0, 0, 0), Vector3(0, 0, -0.314159), Vector3(0, 0, 0)]
+}
+
 [sub_resource type="Animation" id="Animation_rl6fg"]
 resource_name = "dev_reload"
 
 [sub_resource type="Animation" id="Animation_aqcbf"]
 resource_name = "dev_slide"
-length = 0.1
 loop_mode = 1
 tracks/0/type = "value"
 tracks/0/imported = false
@@ -293,6 +362,8 @@ _data = {
 &"RESET": SubResource("Animation_x8kxw"),
 &"default": SubResource("Animation_83hs8"),
 &"dev_cover": SubResource("Animation_q57vx"),
+&"dev_fall": SubResource("Animation_2a181"),
+&"dev_move": SubResource("Animation_mq27t"),
 &"dev_reload": SubResource("Animation_rl6fg"),
 &"dev_slide": SubResource("Animation_aqcbf")
 }
@@ -312,7 +383,7 @@ SPEED_SHOOTING_DEFAULT = 4.0
 
 [node name="Hitbox" type="Area3D" parent="."]
 collision_layer = 8
-collision_mask = 64
+collision_mask = 4160
 priority = 10
 
 [node name="ShapeHitbox" type="CollisionShape3D" parent="Hitbox"]
@@ -322,6 +393,7 @@ debug_color = Color(0.938242, 1.45355e-05, 0.624536, 0.42)
 
 [node name="CollisionShape3D1" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+visible = false
 shape = SubResource("6")
 disabled = true
 
@@ -329,7 +401,44 @@ disabled = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 shape = ExtResource("2_ak4un")
 
+[node name="CoverRaycasts" type="Node3D" parent="."]
+
+[node name="NHigh" type="RayCast3D" parent="CoverRaycasts"]
+transform = Transform3D(0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 0, 1.5, 0)
+target_position = Vector3(0, 0, -1)
+collision_mask = 32769
+debug_shape_custom_color = Color(1, 0.627451, 1, 1)
+
+[node name="SHigh" type="RayCast3D" parent="CoverRaycasts"]
+transform = Transform3D(0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 0, 1.5, 0)
+target_position = Vector3(0, 0, 1)
+collision_mask = 32769
+debug_shape_custom_color = Color(1, 0.627451, 1, 1)
+
+[node name="EHigh" type="RayCast3D" parent="CoverRaycasts"]
+transform = Transform3D(0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 0, 1.5, 0)
+target_position = Vector3(1, 0, 0)
+collision_mask = 32769
+debug_shape_custom_color = Color(1, 0.627451, 1, 1)
+
+[node name="WHigh" type="RayCast3D" parent="CoverRaycasts"]
+transform = Transform3D(0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 0, 1.5, 0)
+target_position = Vector3(-1, 0, 0)
+collision_mask = 32769
+debug_shape_custom_color = Color(1, 0.627451, 1, 1)
+
 [node name="Body" type="Node3D" parent="."]
+
+[node name="godetteModel" parent="Body" instance=ExtResource("3_npcl8")]
+transform = Transform3D(1.2, 0, 0, 0, 1.2, 0, 0, 0, 1.2, 0, 0, 0)
+
+[node name="Skeleton3D" parent="Body/godetteModel/Sketchfab_model/root/GLTF_SceneRootNode/Armature_Tpose_60/GLTF_created_0" index="0"]
+bones/8/rotation = Quaternion(0.999822, 6.13921e-09, -3.25784e-07, -0.0188411)
+bones/9/rotation = Quaternion(0.999822, -6.13921e-09, 3.25784e-07, -0.0188411)
+bones/23/rotation = Quaternion(-0.0310742, -4.85772e-06, 0.00417895, 0.999508)
+bones/24/rotation = Quaternion(-0.0299431, -0.138937, 0.00420313, 0.98984)
+bones/42/rotation = Quaternion(-0.039731, 1.02156e-05, -0.0113779, 0.999146)
+bones/46/rotation = Quaternion(0.997496, 8.43085e-09, -1.18911e-07, -0.070723)
 
 [node name="Weapon" parent="Body" node_paths=PackedStringArray("parent") instance=ExtResource("5_g3lhm")]
 parent = NodePath("../..")
@@ -337,6 +446,7 @@ WEAPON_INFO = ExtResource("6_4pwj0")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Body"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+visible = false
 mesh = ExtResource("3_1ms0h")
 skeleton = NodePath("../..")
 
@@ -358,6 +468,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.7, 0)
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Body/Head"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.423752)
+visible = false
 mesh = SubResource("TextMesh_3c3w1")
 
 [node name="CameraPivot" type="Node3D" parent="."]
@@ -365,11 +476,11 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 script = ExtResource("3_wnvi2")
 
 [node name="CameraMarker3D" type="Marker3D" parent="CameraPivot"]
-transform = Transform3D(1, 0, 0, 0, 0.707107, 0.707107, 0, -0.707107, 0.707107, 0, 40, 40)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 20)
 
 [node name="BaseCamera" type="Camera3D" parent="CameraPivot/CameraMarker3D"]
 projection = 1
-size = 20.0
+size = 18.0
 
 [node name="BackgroundViewportContainer" type="SubViewportContainer" parent="CameraPivot/CameraMarker3D/BaseCamera"]
 anchors_preset = 15
@@ -386,7 +497,7 @@ render_target_update_mode = 4
 [node name="BackgroundCamera" type="Camera3D" parent="CameraPivot/CameraMarker3D/BaseCamera/BackgroundViewportContainer/BackgroundViewport"]
 cull_mask = 1047553
 projection = 1
-size = 20.0
+size = 18.0
 
 [node name="DetailsViewportContainer" type="SubViewportContainer" parent="CameraPivot/CameraMarker3D/BaseCamera"]
 material = SubResource("ShaderMaterial_83hs8")
@@ -404,7 +515,7 @@ render_target_update_mode = 4
 [node name="DetailsCamera" type="Camera3D" parent="CameraPivot/CameraMarker3D/BaseCamera/DetailsViewportContainer/DetailsViewport"]
 cull_mask = 1047554
 projection = 1
-size = 20.0
+size = 18.0
 
 [node name="ForegroundViewportContainer" type="SubViewportContainer" parent="CameraPivot/CameraMarker3D/BaseCamera"]
 material = SubResource("ShaderMaterial_x8kxw")
@@ -422,10 +533,17 @@ render_target_update_mode = 4
 [node name="ForegroundCamera" type="Camera3D" parent="CameraPivot/CameraMarker3D/BaseCamera/ForegroundViewportContainer/ForegroundViewport"]
 cull_mask = 1047556
 projection = 1
-size = 20.0
+size = 18.0
 
 [node name="CriticalHitZone" parent="." instance=ExtResource("7_rl6fg")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+
+[node name="SlideDirection" type="Marker3D" parent="."]
+visible = false
+gizmo_extents = 0.0
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="SlideDirection"]
+mesh = SubResource("SphereMesh_j531f")
 
 [node name="AnimationTree" type="AnimationTree" parent="."]
 tree_root = SubResource("AnimationRootNode_83hs8")
@@ -435,7 +553,7 @@ anim_player = NodePath("../AnimationPlayer")
 libraries = {
 &"": SubResource("AnimationLibrary_gskgj")
 }
-autoplay = "dev_slide"
+autoplay = "default"
 
 [node name="EnemyDetector" parent="." instance=ExtResource("7_fmb3c")]
 top_level = true
@@ -464,8 +582,34 @@ shape = SubResource("BoxShape3D_1ms0h")
 
 [node name="UI_elements" parent="." instance=ExtResource("11_1ms0h")]
 
-[connection signal="timeout" from="SlidingTimer" to="." method="_on_sliding_timer_timeout"]
+[node name="Label_canreload" parent="UI_elements/HUD/dev_info_box" index="4"]
+text = "Can reload  ?"
+
+[node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("initial_state")]
+script = ExtResource("12_2rv2u")
+initial_state = NodePath("Idle")
+
+[node name="Idle" type="Node" parent="StateMachine"]
+script = ExtResource("13_mq27t")
+
+[node name="Moving" type="Node" parent="StateMachine"]
+script = ExtResource("14_kwk8g")
+
+[node name="Sliding" type="Node" parent="StateMachine"]
+script = ExtResource("15_2a181")
+
+[node name="Falling" type="Node" parent="StateMachine"]
+script = ExtResource("16_aubru")
+
+[node name="Cover" type="Node" parent="StateMachine"]
+script = ExtResource("19_npcl8")
+
+[connection signal="area_entered" from="Hitbox" to="." method="_on_hitbox_area_entered"]
+[connection signal="area_exited" from="Hitbox" to="." method="_on_hitbox_area_exited"]
+[connection signal="timeout" from="SlidingTimer" to="StateMachine/Sliding" method="_on_sliding_timer_timeout"]
 [connection signal="timeout" from="SlideCooldown" to="." method="_on_slide_cooldown_timeout"]
 [connection signal="timeout" from="CoverCooldown" to="." method="_on_cover_cooldown_timeout"]
 
+[editable path="Body/godetteModel"]
+[editable path="Body/Weapon"]
 [editable path="UI_elements"]

@@ -1,0 +1,5 @@
+[gd_scene load_steps=2 format=3 uid="uid://br2xacdpx6eb1"]
+
+[ext_resource type="PackedScene" uid="uid://bw2sv6ye23rb5" path="res://models/characters/godetteGltf/scene.gltf" id="1_ndeyy"]
+
+[node name="godetteModel" instance=ExtResource("1_ndeyy")]

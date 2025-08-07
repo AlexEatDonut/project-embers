@@ -14,8 +14,8 @@ config/name="project-embers"
 run/main_scene="uid://bjy067xrqbd7c"
 config/features=PackedStringArray("4.4", "Forward Plus")
 run/max_fps=144
-config/icon="uid://wwth5dq3gqjk"
-config/windows_native_icon="res://embericon.ico"
+config/icon="uid://bu2222pkq5ul4"
+config/windows_native_icon="res://icon-win.ico"
 
 [autoload]
 
@@ -29,7 +29,7 @@ window/size/viewport_height=720
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/GPUTrail/plugin.cfg", "res://addons/godotvmf/plugin.cfg")
+enabled=PackedStringArray("res://addons/GPUTrail/plugin.cfg", "res://addons/IgnoreFolders/plugin.cfg", "res://addons/godotvmf/plugin.cfg")
 
 [file_customization]
 
@@ -54,6 +54,7 @@ Client="The player/user/client. Used as filter for triggers and damage."
 NPC="Generic NPC. Used as filter for triggers and damage."
 Hostile1="Generic Hostile Group. Used as filter for triggers, damage, and affiliation."
 CameraFacingWall="A wall that faces the camera. Ignored by the raycast that checks for where the player is looking"
+CoverArea="A cover area entity. Used to filter code in the player.gd."
 
 [input]
 
