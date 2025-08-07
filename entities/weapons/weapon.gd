@@ -103,9 +103,10 @@ func wp_reload_handler(isManual : bool):
 		wp_state = WP_RELOADING
 		firing_stance_timer.stop()
 		fire_rate_timer.stop()
+		parent.wp_is_reloading = true
 		wp_reload()
 	else:
-		pass
+		return
 
 
 func wp_reload():
@@ -205,6 +206,7 @@ func _on_reload_timer_timeout() -> void:
 	parent.wp_current_ammo = wp_current.max_mag
 	parent.hud_update()
 	parent.wp_can_fire = true
+	parent.wp_is_reloading = false
 	wp_state = WP_READY
 	firing_stance_timer.start()
 
