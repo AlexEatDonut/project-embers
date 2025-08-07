@@ -523,6 +523,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.7, 0)
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Body/Head"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.423752)
+visible = false
 mesh = SubResource("TextMesh_3c3w1")
 
 [node name="CameraPivot" type="Node3D" parent="."]
@@ -530,7 +531,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 script = ExtResource("3_wnvi2")
 
 [node name="CameraMarker3D" type="Marker3D" parent="CameraPivot"]
-transform = Transform3D(1, 0, 0, 0, 0.707107, 0.707107, 0, -0.707107, 0.707107, 0, 20, 20)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 20)
 
 [node name="BaseCamera" type="Camera3D" parent="CameraPivot/CameraMarker3D"]
 projection = 1
@@ -636,12 +637,8 @@ shape = SubResource("BoxShape3D_1ms0h")
 
 [node name="UI_elements" parent="." instance=ExtResource("11_1ms0h")]
 
-[node name="dev_info_box" parent="UI_elements/HUD" index="3"]
-layout_mode = 0
-offset_left = 739.0
-offset_top = 31.0
-offset_right = 1059.0
-offset_bottom = 127.0
+[node name="Label_canreload" parent="UI_elements/HUD/dev_info_box" index="4"]
+text = "Can reload  ?"
 
 [node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("initial_state")]
 script = ExtResource("12_2rv2u")
