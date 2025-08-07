@@ -17,6 +17,9 @@ func physics_update(delta: float) -> void:
 	if input != Vector2(0,0):
 			finished.emit(MOVING)
 
+	if player.detect_cover() == true:
+		finished.emit(COVER)
+
 	if player.is_on_floor():
 		player.is_jumping = false
 		player.is_in_air = false
