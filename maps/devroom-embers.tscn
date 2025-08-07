@@ -1,6 +1,7 @@
-[gd_scene load_steps=23 format=4 uid="uid://7sn7h46ed61m"]
+[gd_scene load_steps=24 format=4 uid="uid://7sn7h46ed61m"]
 
 [ext_resource type="Script" uid="uid://clvri6xpl7374" path="res://addons/godotvmf/src/VMFNode.gd" id="1_64br5"]
+[ext_resource type="PackedScene" uid="uid://das7yjx2h1ne8" path="res://entities/items/pickups/item_medkit_small.tscn" id="1_hdbnb"]
 [ext_resource type="ArrayMesh" uid="uid://q2tld5lpspia" path="res://godotvmfcontent/geometry/embers-devroom_vmf_import.mesh" id="2_m6f2d"]
 [ext_resource type="Shape3D" uid="uid://chxk6e0k34al3" path="res://godotvmfcontent/geometry/embers-devroom_vmf_collision_surface_prop_default.res" id="3_x15jt"]
 [ext_resource type="PackedScene" uid="uid://cwxttgf1xbejo" path="res://godotvmfcontent/entities/light_environment.tscn" id="6_eg8j8"]
@@ -154,6 +155,9 @@ sky = SubResource("Sky_5dcyu")
 
 [node name="Level" type="Node3D" parent="."]
 transform = Transform3D(0.707107, 0, -0.707107, 0, 1, 0, 0.707107, 0, 0.707107, 0, 0, 0)
+
+[node name="item_medkit_small" parent="Level" instance=ExtResource("1_hdbnb")]
+transform = Transform3D(0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 18.135, 0, 6.8219)
 
 [node name="DevRoomBase" type="Node3D" parent="Level"]
 script = ExtResource("1_64br5")
