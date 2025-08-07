@@ -192,6 +192,7 @@ func _ready():
 
 	Playerinfo.connect("request_player_out_of_cover", attempt_player_escape_cover)
 	Playerinfo.connect("health_decreased", hud_update)
+	Playerinfo.connect("health_increased", hud_update)
 	#weapon.connect("shot_fired", hud_update)
 	#weapon.connect("start_reloading", reloading_weapon)
 	#weapon.connect("request_hud_update", hud_update)
