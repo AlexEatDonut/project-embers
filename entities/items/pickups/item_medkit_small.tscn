@@ -1,30 +1,28 @@
-[gd_scene load_steps=6 format=3 uid="uid://das7yjx2h1ne8"]
+[gd_scene load_steps=8 format=3 uid="uid://das7yjx2h1ne8"]
 
-[ext_resource type="Script" path="res://entities/items/pickups/item_medkit_small.gd" id="1_o11i4"]
-[ext_resource type="FontFile" uid="uid://xukm84lst3g5" path="res://ZTGatha/ZTGatha-SemiBold.otf" id="2_2s645"]
-[ext_resource type="PackedScene" uid="uid://evy8l6341evn" path="res://tscns/generic_hit-hurt_box/entity_collision_hull.tscn" id="2_bp0w0"]
-[ext_resource type="Texture2D" uid="uid://bo8ofofvh0gvm" path="res://placeholders/Smallhealth.png" id="3_wqd2f"]
+[ext_resource type="Script" uid="uid://pmn8y2yh2jqx" path="res://entities/items/pickups/item_medkit_small.gd" id="1_o11i4"]
+[ext_resource type="Texture2D" uid="uid://dt05b5sdq5iaw" path="res://materials/dev/ember_placeholder_prototype.png" id="2_dvpqo"]
+[ext_resource type="FontFile" uid="uid://qgopeagijns8" path="res://fonts/monofonto rg.otf" id="3_4yc1t"]
+[ext_resource type="PackedScene" uid="uid://cy04v26532ytx" path="res://sounds/sound_repeatable.tscn" id="4_4yc1t"]
+[ext_resource type="AudioStream" uid="uid://c2at5xbkbv4kc" path="res://sounds/ui/kenney-ui-audio-pack/switch14.ogg" id="5_eccqr"]
+[ext_resource type="AudioStream" uid="uid://v4t2oqsy2gs3" path="res://sounds/ui/kenney-ui-audio-pack/rollover3.ogg" id="6_1axjf"]
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_v0q68"]
-size = Vector3(0.9, 0.9, 0.9)
+[sub_resource type="BoxShape3D" id="BoxShape3D_dvpqo"]
 
-[node name="item_medkit_medium" type="Node3D"]
+[node name="item_medkit_small" type="Node3D"]
 script = ExtResource("1_o11i4")
-healthRatio = 0.2
 
-[node name="entityCollisionHull" parent="." instance=ExtResource("2_bp0w0")]
-healthRatio = 50
-entityType = 1
+[node name="entityCollisionHull" type="Area3D" parent="."]
 
-[node name="CollisionShape3D" parent="entityCollisionHull" index="0"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.45, 0)
-shape = SubResource("BoxShape3D_v0q68")
+[node name="CollisionShape3D" type="CollisionShape3D" parent="entityCollisionHull"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+shape = SubResource("BoxShape3D_dvpqo")
 
 [node name="healthkit_Sprite" type="Sprite3D" parent="."]
 transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0, 0.5, 0)
 pixel_size = 0.025
 billboard = 1
-texture = ExtResource("3_wqd2f")
+texture = ExtResource("2_dvpqo")
 
 [node name="dev_entity_name" type="Label3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4, 0)
@@ -32,10 +30,20 @@ pixel_size = 0.01
 billboard = 2
 text = "item_medkit_small
 (WIP)"
-font = ExtResource("2_2s645")
+font = ExtResource("3_4yc1t")
+
+[node name="kit_respawn_timer" type="Timer" parent="."]
+wait_time = 8.0
+
+[node name="item_respawn_sfx" parent="." instance=ExtResource("4_4yc1t")]
+stream = ExtResource("5_eccqr")
+pitch_custom_lowest = 0.9
+pitch_custom_highest = 1.1
+
+[node name="item_pickup_sfx" parent="." instance=ExtResource("4_4yc1t")]
+stream = ExtResource("6_1axjf")
+pitch_custom_lowest = 0.9
+pitch_custom_highest = 1.1
 
 [connection signal="body_entered" from="entityCollisionHull" to="." method="_on_entity_collision_hull_body_entered"]
-[connection signal="pickup_RespawnEnd" from="entityCollisionHull" to="." method="_on_entity_collision_hull_pickup_respawn_end"]
-[connection signal="pickup_RespawnStart" from="entityCollisionHull" to="." method="_on_entity_collision_hull_pickup_respawn_start"]
-
-[editable path="entityCollisionHull"]
+[connection signal="timeout" from="kit_respawn_timer" to="." method="_on_kit_respawn_timer_timeout"]
