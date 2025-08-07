@@ -3,6 +3,8 @@
 Second Godot project.
 This project is private. You aren't supposed to see this.
 
+<img src="./non-godot-files/concept_art/protag_sketch_wiptent.png" alt="concept art by WIP_tent"/>
+
 ## Goal of the project
 
 This project's goal is to get me to make something closer to an actual product. I was rejected when trying to enter a video game school, so I might as well work to make my chances better next year.
