@@ -273,10 +273,11 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="dev_info_box" type="Panel" parent="HUD"]
-offset_left = 758.0
+layout_mode = 0
+offset_left = 1058.0
 offset_top = 32.0
-offset_right = 1078.0
-offset_bottom = 128.0
+offset_right = 1268.0
+offset_bottom = 676.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_ak4un")
 
 [node name="Label_state" type="Label" parent="HUD/dev_info_box"]
@@ -296,16 +297,80 @@ vertical_alignment = 1
 
 [node name="State" type="Label" parent="HUD/dev_info_box"]
 layout_mode = 1
-anchors_preset = 14
-anchor_top = 0.5
-anchor_right = 1.0
-anchor_bottom = 0.5
-offset_top = -10.0
-offset_bottom = 10.0
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -72.0
+offset_top = 29.0
+offset_right = 72.0
+offset_bottom = 59.0
 grow_horizontal = 2
-grow_vertical = 2
 theme_override_fonts/font = ExtResource("4_6qadn")
-theme_override_font_sizes/font_size = 24
+theme_override_font_sizes/font_size = 16
+text = "default text"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label_canshoot" type="Label" parent="HUD/dev_info_box"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -108.0
+offset_top = 73.0
+offset_right = 108.0
+offset_bottom = 97.0
+grow_horizontal = 2
+theme_override_fonts/font = ExtResource("4_6qadn")
+theme_override_font_sizes/font_size = 16
+text = "Can shoot ?"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Canshoot" type="Label" parent="HUD/dev_info_box"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -72.0
+offset_top = 102.0
+offset_right = 72.0
+offset_bottom = 132.0
+grow_horizontal = 2
+theme_override_fonts/font = ExtResource("4_6qadn")
+theme_override_font_sizes/font_size = 16
+text = "default text"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label_canreload" type="Label" parent="HUD/dev_info_box"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -108.0
+offset_top = 148.0
+offset_right = 108.0
+offset_bottom = 172.0
+grow_horizontal = 2
+theme_override_fonts/font = ExtResource("4_6qadn")
+theme_override_font_sizes/font_size = 16
+text = "Can shoot ?"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Canreload" type="Label" parent="HUD/dev_info_box"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -72.0
+offset_top = 177.0
+offset_right = 72.0
+offset_bottom = 207.0
+grow_horizontal = 2
+theme_override_fonts/font = ExtResource("4_6qadn")
+theme_override_font_sizes/font_size = 16
 text = "default text"
 horizontal_alignment = 1
 vertical_alignment = 1

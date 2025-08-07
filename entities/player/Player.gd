@@ -4,7 +4,7 @@ extends CharacterBody3D
 @onready var body = $Body
 @onready var head = $Body/Head
 @onready var head_position: Vector3 = head.position
-@onready var base_camera: Camera3D = $CameraPivot/CameraMarker3D/BaseCamera
+
 @onready var enemy_detector: Area3D = $EnemyDetector
 @onready var weapon: Node3D = $Body/Weapon
 
@@ -30,6 +30,9 @@ extends CharacterBody3D
 
 @onready var hud_label_reloadtimer: Label = $UI_elements/HUD/WeaponInfoPanel/Ammo_frame/ReloadTimer
 @onready var hud_label_state: Label = $UI_elements/HUD/dev_info_box/State
+@onready var hud_label_canshoot: Label = $UI_elements/HUD/dev_info_box/Canshoot
+@onready var hud_label_canreload: Label = $UI_elements/HUD/dev_info_box/Canreload
+
 #endregion
 
 #region Cover Raycasts
@@ -105,14 +108,24 @@ var step_incremental_check_height: Vector3
 var is_enabled_stair_stepping_in_air: bool = true
 #endregion
 
+#region Camera related code
+@onready var base_camera: Camera3D = $CameraPivot/CameraMarker3D/BaseCamera
+@onready var background_camera: Camera3D = $CameraPivot/CameraMarker3D/BaseCamera/BackgroundViewportContainer/BackgroundViewport/BackgroundCamera
+@onready var details_camera: Camera3D = $CameraPivot/CameraMarker3D/BaseCamera/DetailsViewportContainer/DetailsViewport/DetailsCamera
+@onready var camera_marker_3d: Marker3D = $CameraPivot/CameraMarker3D
+var camera_distance : float = 20
+var camera_dead_zone_radius : float = 1
+var camera_speed_factor : float = speed / camera_dead_zone_radius
+#endregion
+
 #region Remnant Code from Godot Stairs
 var head_offset: Vector3 = Vector3.ZERO
-var camera_target_position : Vector3 = Vector3.ZERO
-var camera_lerp_coefficient: float = 1.0
+#var camera_target_position : Vector3 = Vector3.ZERO
+#var camera_lerp_coefficient: float = 1.0
 var time_in_air: float = 0.0
-var update_camera = false
-var camera_gt_previous : Transform3D
-var camera_gt_current : Transform3D
+#var update_camera = false
+#var camera_gt_previous : Transform3D
+#var camera_gt_current : Transform3D
 #endregion
 
 #region Godot Stairs Class
@@ -184,7 +197,7 @@ func _ready():
 	#weapon.connect("request_hud_update", hud_update)
 	slide_direction_3D.position = Vector3(5,0,5) 
 	
-	
+	camera_setter()
 	hud_update()
 	
 func _process(delta: float) -> void:
@@ -193,7 +206,6 @@ func _process(delta: float) -> void:
 		#wp_dry_fire = true
 	#else:
 		#wp_dry_fire = false
-
 #	Is time_in_air ever something that is used ? Why would i use that, even for fall damage ?
 	if is_on_floor():
 		time_in_air = 0.0
@@ -205,6 +217,9 @@ func _process(delta: float) -> void:
 	
 	hud_label_reloadtimer.text = str(snapped($Body/Weapon/Reload_timer.time_left, 0.01))
 	hud_label_state.text = str($StateMachine.state)
+	
+	hud_label_canshoot.text = str(wp_can_fire)
+	hud_label_canreload.text = str(wp_can_reload)
 
 func attempt_player_cover_teleported(destination):
 	move_player(destination.global_position, 0.1)
@@ -223,6 +238,9 @@ func move_player(destination, duration):
 
 func attempt_player_escape_cover():
 	pass
+
+func camera_setter() :
+	camera_marker_3d.look_at_from_position((Vector3.UP + (Vector3.BACK * sqrt(2))) * camera_distance, get_parent().position, Vector3.UP)
 
 func hud_update():
 	hud_label_health.text = str(Playerinfo.health / 10)
