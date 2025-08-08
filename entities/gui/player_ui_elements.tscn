@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://4lmtef3aw73d"]
+[gd_scene load_steps=11 format=3 uid="uid://4lmtef3aw73d"]
 
 [ext_resource type="Texture2D" uid="uid://wjul2wft543" path="res://materials/dev/protag_placeholder_prototype.png" id="1_6qadn"]
 [ext_resource type="FontFile" uid="uid://bjcccyc20uwb3" path="res://fonts/Quantum.otf" id="2_6qadn"]
@@ -33,6 +33,14 @@ border_color = Color(0, 0, 0, 0.501961)
 font = ExtResource("4_6qadn")
 font_size = 12
 shadow_color = Color(0, 0, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6qadn"]
+content_margin_left = 5.0
+content_margin_top = 5.0
+content_margin_right = 5.0
+content_margin_bottom = 5.0
+bg_color = Color(0, 0, 0, 0.254902)
+border_color = Color(0, 0, 0, 0.501961)
 
 [node name="UI_elements" type="CanvasLayer"]
 
@@ -274,103 +282,82 @@ vertical_alignment = 1
 
 [node name="dev_info_box" type="Panel" parent="HUD"]
 layout_mode = 0
-offset_left = 1058.0
+offset_left = 1134.0
 offset_top = 32.0
-offset_right = 1268.0
+offset_right = 1263.0
 offset_bottom = 676.0
-theme_override_styles/panel = SubResource("StyleBoxFlat_ak4un")
+theme_override_styles/panel = SubResource("StyleBoxFlat_6qadn")
 
-[node name="Label_state" type="Label" parent="HUD/dev_info_box"]
+[node name="dev_info_box_Vbox" type="VBoxContainer" parent="HUD/dev_info_box"]
 layout_mode = 1
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -108.0
-offset_right = 108.0
-offset_bottom = 24.0
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
 grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxState" type="VBoxContainer" parent="HUD/dev_info_box/dev_info_box_Vbox"]
+layout_mode = 2
+alignment = 1
+
+[node name="Label_canshoot" type="Label" parent="HUD/dev_info_box/dev_info_box_Vbox/VBoxState"]
+layout_mode = 2
+size_flags_vertical = 0
 theme_override_fonts/font = ExtResource("4_6qadn")
 theme_override_font_sizes/font_size = 16
-text = "Current state :"
+text = "State"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="State" type="Label" parent="HUD/dev_info_box"]
-layout_mode = 1
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -72.0
-offset_top = 29.0
-offset_right = 72.0
-offset_bottom = 59.0
-grow_horizontal = 2
+[node name="Idle" type="CheckBox" parent="HUD/dev_info_box/dev_info_box_Vbox/VBoxState"]
+layout_mode = 2
+theme_override_constants/outline_size = 8
+button_mask = 0
+text = "Idle"
+
+[node name="Moving" type="CheckBox" parent="HUD/dev_info_box/dev_info_box_Vbox/VBoxState"]
+layout_mode = 2
+theme_override_constants/outline_size = 8
+button_mask = 0
+text = "Moving"
+
+[node name="Sliding" type="CheckBox" parent="HUD/dev_info_box/dev_info_box_Vbox/VBoxState"]
+layout_mode = 2
+theme_override_constants/outline_size = 8
+button_mask = 0
+text = "Sliding"
+
+[node name="Falling" type="CheckBox" parent="HUD/dev_info_box/dev_info_box_Vbox/VBoxState"]
+layout_mode = 2
+theme_override_constants/outline_size = 8
+button_mask = 0
+text = "Falling"
+
+[node name="Cover" type="CheckBox" parent="HUD/dev_info_box/dev_info_box_Vbox/VBoxState"]
+layout_mode = 2
+theme_override_constants/outline_size = 8
+button_mask = 0
+text = "Cover"
+
+[node name="VboxWpdata" type="VBoxContainer" parent="HUD/dev_info_box/dev_info_box_Vbox"]
+layout_mode = 2
+
+[node name="Label_canshoot2" type="Label" parent="HUD/dev_info_box/dev_info_box_Vbox/VboxWpdata"]
+layout_mode = 2
 theme_override_fonts/font = ExtResource("4_6qadn")
 theme_override_font_sizes/font_size = 16
-text = "default text"
+text = "Weapon data"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Label_canshoot" type="Label" parent="HUD/dev_info_box"]
-layout_mode = 1
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -108.0
-offset_top = 73.0
-offset_right = 108.0
-offset_bottom = 97.0
-grow_horizontal = 2
-theme_override_fonts/font = ExtResource("4_6qadn")
-theme_override_font_sizes/font_size = 16
-text = "Can shoot ?"
-horizontal_alignment = 1
-vertical_alignment = 1
+[node name="Canshoot" type="CheckBox" parent="HUD/dev_info_box/dev_info_box_Vbox/VboxWpdata"]
+layout_mode = 2
+theme_override_constants/outline_size = 8
+button_mask = 0
+text = "Can shoot"
 
-[node name="Canshoot" type="Label" parent="HUD/dev_info_box"]
-layout_mode = 1
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -72.0
-offset_top = 102.0
-offset_right = 72.0
-offset_bottom = 132.0
-grow_horizontal = 2
-theme_override_fonts/font = ExtResource("4_6qadn")
-theme_override_font_sizes/font_size = 16
-text = "default text"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="Label_canreload" type="Label" parent="HUD/dev_info_box"]
-layout_mode = 1
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -108.0
-offset_top = 148.0
-offset_right = 108.0
-offset_bottom = 172.0
-grow_horizontal = 2
-theme_override_fonts/font = ExtResource("4_6qadn")
-theme_override_font_sizes/font_size = 16
-text = "Can shoot ?"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="Canreload" type="Label" parent="HUD/dev_info_box"]
-layout_mode = 1
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -72.0
-offset_top = 177.0
-offset_right = 72.0
-offset_bottom = 207.0
-grow_horizontal = 2
-theme_override_fonts/font = ExtResource("4_6qadn")
-theme_override_font_sizes/font_size = 16
-text = "default text"
-horizontal_alignment = 1
-vertical_alignment = 1
+[node name="Canreload" type="CheckBox" parent="HUD/dev_info_box/dev_info_box_Vbox/VboxWpdata"]
+layout_mode = 2
+theme_override_constants/outline_size = 8
+button_mask = 0
+text = "Can Reload"

@@ -1,6 +1,7 @@
 extends PlayerState
 
 func enter(previous_state_path: String, data := {}) -> void:
+	player.debug_tick_cover()
 	#player.animation_player.play("dev_cover")
 	player.godette_model_anims.play("land")
 

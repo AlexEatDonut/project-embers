@@ -1,6 +1,7 @@
 extends PlayerState
 
 func enter(previous_state_path: String, data := {}) -> void:
+	player.debug_tick_moving()
 	#player.animation_player.play("dev_move")
 	player.godette_model_anims.play("run")
 	player.godette_model_anims.speed_scale = 2

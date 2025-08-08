@@ -6,6 +6,7 @@ var input
 
 func enter(previous_state_path: String, data := {}) -> void:
 	on_dodge_slide_start()
+	player.debug_tick_sliding()
 	input = Vector2(0,0)
 	#player.animation_player.play("dev_slide")
 	player.godette_model_anims.play("sit")

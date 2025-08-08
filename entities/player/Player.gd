@@ -28,10 +28,20 @@ extends CharacterBody3D
 @onready var hud_label_armor: Label = $"UI_elements/HUD/PlayerInfoPanel/Health&Armor/Armor"
 @onready var hud_label_ammo: Label = $UI_elements/HUD/WeaponInfoPanel/Ammo_frame/Ammocount
 
+# nodes for debug menu
 @onready var hud_label_reloadtimer: Label = $UI_elements/HUD/WeaponInfoPanel/Ammo_frame/ReloadTimer
-@onready var hud_label_state: Label = $UI_elements/HUD/dev_info_box/State
-@onready var hud_label_canshoot: Label = $UI_elements/HUD/dev_info_box/Canshoot
-@onready var hud_label_canreload: Label = $UI_elements/HUD/dev_info_box/Canreload
+
+#@onready var hud_label_state: Label = $UI_elements/HUD/dev_info_box/State
+#@onready var hud_label_canshoot: Label = $UI_elements/HUD/dev_info_box/Canshoot
+#@onready var hud_label_canreload: Label = $UI_elements/HUD/dev_info_box/Canreload
+@onready var tickbox_idle: CheckBox = $UI_elements/HUD/dev_info_box/dev_info_box_Vbox/VBoxState/Idle
+@onready var tickbox_moving: CheckBox = $UI_elements/HUD/dev_info_box/dev_info_box_Vbox/VBoxState/Moving
+@onready var tickbox_sliding : CheckBox = $UI_elements/HUD/dev_info_box/dev_info_box_Vbox/VBoxState/Sliding
+@onready var tickbox_falling: CheckBox = $UI_elements/HUD/dev_info_box/dev_info_box_Vbox/VBoxState/Falling
+@onready var tickbox_cover: CheckBox = $UI_elements/HUD/dev_info_box/dev_info_box_Vbox/VBoxState/Cover
+
+@onready var tickbox_canshoot: CheckBox = $UI_elements/HUD/dev_info_box/dev_info_box_Vbox/VboxWpdata/Canshoot
+@onready var tickbox_canreload: CheckBox = $UI_elements/HUD/dev_info_box/dev_info_box_Vbox/VboxWpdata/Canreload
 
 #endregion
 
@@ -217,10 +227,17 @@ func _process(delta: float) -> void:
 	Playerinfo.playerLocation = global_position
 	
 	hud_label_reloadtimer.text = str(snapped($Body/Weapon/Reload_timer.time_left, 0.01))
-	hud_label_state.text = str($StateMachine.state)
+	#hud_label_state.text = str($StateMachine.state)
 	
-	hud_label_canshoot.text = str(wp_can_fire)
-	hud_label_canreload.text = str(wp_can_reload)
+	
+	if wp_can_fire == true:
+		tickbox_canshoot.button_pressed = true
+	else :
+		tickbox_canshoot.button_pressed = false
+	if wp_can_reload == true:
+		tickbox_canreload.button_pressed = true
+	else :
+		tickbox_canreload.button_pressed = false
 
 func attempt_player_cover_teleported(destination):
 	move_player(destination.global_position, 0.1)
@@ -479,3 +496,35 @@ func step_check(delta: float, is_jumping_: bool, step_result: StepResult):
 
 	return is_step
 #endregion
+
+
+func debug_tick_idle():
+	tickbox_idle.button_pressed = true
+	tickbox_moving.button_pressed = false
+	tickbox_sliding.button_pressed = false
+	tickbox_falling.button_pressed = false
+	tickbox_cover.button_pressed = false
+func debug_tick_moving():
+	tickbox_idle.button_pressed = false
+	tickbox_moving.button_pressed = true
+	tickbox_sliding.button_pressed = false
+	tickbox_falling.button_pressed = false
+	tickbox_cover.button_pressed = false
+func debug_tick_sliding():
+	tickbox_idle.button_pressed = false
+	tickbox_moving.button_pressed = false
+	tickbox_sliding.button_pressed = true
+	tickbox_falling.button_pressed = false
+	tickbox_cover.button_pressed = false
+func debug_tick_falling():
+	tickbox_idle.button_pressed = false
+	tickbox_moving.button_pressed = false
+	tickbox_sliding.button_pressed = false
+	tickbox_falling.button_pressed = true
+	tickbox_cover.button_pressed = false
+func debug_tick_cover():
+	tickbox_idle.button_pressed = false
+	tickbox_moving.button_pressed = false
+	tickbox_sliding.button_pressed = false
+	tickbox_falling.button_pressed = false
+	tickbox_cover.button_pressed = true

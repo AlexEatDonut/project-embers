@@ -1,6 +1,7 @@
 extends PlayerState
 
 func enter(previous_state_path: String, data := {}) -> void:
+	player.debug_tick_idle()
 	player.is_jumping = false
 	player.is_in_air = false
 	player.acceleration = player.ACCELERATION_DEFAULT
