@@ -34,6 +34,7 @@ func _on_pickup_respawn_start() -> void:
 func _on_pickup_respawn_end() -> void:
 	kitSprite.visible = true
 	canInteract = true
+	kit_respawn_timer.stop()
 	item_respawn_sfx.play()
 
 func _on_kit_respawn_timer_timeout() -> void:

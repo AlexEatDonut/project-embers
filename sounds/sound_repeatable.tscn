@@ -3,7 +3,6 @@
 [ext_resource type="Script" uid="uid://di4jldqo0eapc" path="res://sounds/sound_repeatable.gd" id="1_0f328"]
 
 [node name="sound_repeatable" type="AudioStreamPlayer"]
-autoplay = true
 script = ExtResource("1_0f328")
 
 [connection signal="finished" from="." to="." method="_on_finished"]
