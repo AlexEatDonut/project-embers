@@ -50,8 +50,14 @@ extends CharacterBody3D
 @onready var s_high: RayCast3D = $CoverRaycasts/SHigh
 @onready var e_high: RayCast3D = $CoverRaycasts/EHigh
 @onready var w_high: RayCast3D = $CoverRaycasts/WHigh
+@onready var n_low: RayCast3D = $CoverRaycasts/NLow
+@onready var s_low: RayCast3D = $CoverRaycasts/SLow
+@onready var e_low: RayCast3D = $CoverRaycasts/ELow
+@onready var w_low: RayCast3D = $CoverRaycasts/WLow
+
 var cover_surrounding : bool = true
-var cover_directions : Array = [false, false, false, false]
+var cover_high_directions : Array = [false, false, false, false]
+var cover_low_directions : Array = [false, false, false, false]
 
 #endregion
 
@@ -275,8 +281,10 @@ func hud_update_hp():
 	#Playerinfo.prevent_movement_input = false
 
 func detect_cover():
-	cover_directions = [n_high.is_colliding(), e_high.is_colliding(), s_high.is_colliding(),w_high.is_colliding()]
-	if n_high.is_colliding() || e_high.is_colliding() || s_high.is_colliding() || w_high.is_colliding():
+	cover_high_directions = [n_high.is_colliding(), e_high.is_colliding(), s_high.is_colliding(),w_high.is_colliding()]
+	cover_low_directions = [n_low.is_colliding(), e_low.is_colliding(), s_low.is_colliding(),w_low.is_colliding()]
+
+	if n_high.is_colliding() || e_high.is_colliding() || s_high.is_colliding() || w_high.is_colliding() || n_low.is_colliding() || e_low.is_colliding() || s_low.is_colliding() || w_low.is_colliding():
 		cover_surrounding = true
 	else:
 		cover_surrounding = false
