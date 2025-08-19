@@ -1,13 +1,11 @@
-[gd_scene load_steps=26 format=4 uid="uid://7sn7h46ed61m"]
+[gd_scene load_steps=24 format=4 uid="uid://7sn7h46ed61m"]
 
 [ext_resource type="Script" uid="uid://clvri6xpl7374" path="res://addons/godotvmf/src/VMFNode.gd" id="1_64br5"]
 [ext_resource type="PackedScene" uid="uid://das7yjx2h1ne8" path="res://entities/items/pickups/item_medkit_small.tscn" id="1_hdbnb"]
 [ext_resource type="ArrayMesh" uid="uid://q2tld5lpspia" path="res://godotvmfcontent/geometry/embers-devroom_vmf_import.mesh" id="2_m6f2d"]
 [ext_resource type="Shape3D" uid="uid://chxk6e0k34al3" path="res://godotvmfcontent/geometry/embers-devroom_vmf_collision_surface_prop_default.res" id="3_x15jt"]
-[ext_resource type="Script" uid="uid://b4sh2fq2c6eav" path="res://godotvmfcontent/entities/light_environment.gd" id="5_titx5"]
 [ext_resource type="PackedScene" uid="uid://cwxttgf1xbejo" path="res://godotvmfcontent/entities/light_environment.tscn" id="6_eg8j8"]
 [ext_resource type="PackedScene" uid="uid://cx3saydh4cxhk" path="res://godotvmfcontent/entities/func_brush.tscn" id="6_hdbnb"]
-[ext_resource type="Script" uid="uid://bpwdn1wgd8lmq" path="res://godotvmfcontent/entities/func_detail.gd" id="7_7dbhb"]
 [ext_resource type="Material" uid="uid://71efdht7u8lb" path="res://godotvmfcontent/materials/devkenney/kenney-light-texture12.vmt" id="8_titx5"]
 [ext_resource type="PackedScene" uid="uid://x3l0v6tbskoe" path="res://entities/player/Player.tscn" id="8_uejvj"]
 [ext_resource type="Material" uid="uid://disa5gsdu1ciy" path="res://godotvmfcontent/materials/devkenney/kenney-light-texture01.vmt" id="9_7dbhb"]
@@ -165,7 +163,6 @@ shape = ExtResource("3_x15jt")
 
 [node name="light_environment" parent="Level/DevRoomBase/Entities/lights" instance=ExtResource("6_eg8j8")]
 transform = Transform3D(-0.0105577, -0.751118, 0.660084, 0.495134, 0.569587, 0.656059, -0.868752, 0.333756, 0.36589, 0, 6.4, 0)
-script = ExtResource("5_titx5")
 entity = {
 "SunSpreadAngle": 0,
 "_AmbientScaleHDR": 1,
@@ -191,17 +188,11 @@ entity = {
 [node name="DirectionalLight3D" parent="Level/DevRoomBase/Entities/lights/light_environment" index="0"]
 layers = 7
 light_energy = 0.784314
-shadow_enabled = true
-shadow_bias = 0.001
-shadow_reverse_cull_face = true
-shadow_blur = 3.0
-sky_mode = 1
 
 [node name="funcs" type="Node3D" parent="Level/DevRoomBase/Entities"]
 
 [node name="func_brush_1626" parent="Level/DevRoomBase/Entities/funcs" instance=ExtResource("6_hdbnb")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 22.08, 1.92, -1.28)
-script = ExtResource("7_7dbhb")
 entity = {
 "InputFilter": 0,
 "Solidity": 0,
@@ -418,7 +409,6 @@ shape = SubResource("ConcavePolygonShape3D_7dbhb")
 
 [node name="func_brush_2978" parent="Level/DevRoomBase/Entities/funcs" instance=ExtResource("6_hdbnb")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 40.96, 5.12, -16.32)
-script = ExtResource("7_7dbhb")
 entity = {
 "InputFilter": 0,
 "Solidity": 0,
@@ -2571,7 +2561,6 @@ shape = SubResource("ConcavePolygonShape3D_j4xeg")
 
 [node name="func_brush_3399" parent="Level/DevRoomBase/Entities/funcs" instance=ExtResource("6_hdbnb")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 36.64, 5.12, -14.08)
-script = ExtResource("7_7dbhb")
 entity = {
 "InputFilter": 0,
 "Solidity": 0,
@@ -4372,7 +4361,6 @@ shape = SubResource("ConcavePolygonShape3D_ocvi7")
 
 [node name="func_brush_3414" parent="Level/DevRoomBase/Entities/funcs" instance=ExtResource("6_hdbnb")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 39.36, 0.48, -9.92)
-script = ExtResource("7_7dbhb")
 entity = {
 "InputFilter": 0,
 "Solidity": 0,
