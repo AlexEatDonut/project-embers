@@ -455,6 +455,7 @@ debug_shape_custom_color = Color(1, 0.627451, 1, 1)
 
 [node name="godetteModel" parent="Body" instance=ExtResource("3_npcl8")]
 transform = Transform3D(1.2, 0, 0, 0, 1.2, 0, 0, 0, 1.2, 0, 0, 0)
+visible = false
 
 [node name="Skeleton3D" parent="Body/godetteModel/Sketchfab_model/root/GLTF_SceneRootNode/Armature_Tpose_60/GLTF_created_0" index="0"]
 bones/8/rotation = Quaternion(0.999822, 6.13921e-09, -3.25784e-07, -0.0188411)
@@ -470,7 +471,6 @@ WEAPON_INFO = ExtResource("6_4pwj0")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Body"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
-visible = false
 mesh = ExtResource("3_1ms0h")
 skeleton = NodePath("../..")
 
