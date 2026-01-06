@@ -1,7 +1,7 @@
 # Project-embers
 
 Second Godot project.
-This project was private. It was just set as public as of 2026-01-06.
+This project was private. It was just set as a public archive as of 2026-01-06.
 
 ## What was the goal of the project ?
 
