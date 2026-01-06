@@ -5,7 +5,7 @@ This project was private. It was just set as a public archive as of 2026-01-06.
 
 ## What was the goal of the project ?
 
-This project's goal is to get me to make something closer to an actual product by trying to adapt NOT A HERO into a 3D environnement.
+This project's goal was to get me to make something closer to an actual product by trying to adapt NOT A HERO into a 3D environnement.
 The project ceased due to a large technical debt and overscoping for a solo developper. No prototype has been completed.
 
 ## Documents of the project
