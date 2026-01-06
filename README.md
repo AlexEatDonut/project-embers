@@ -7,6 +7,14 @@ This project is private. You aren't supposed to see this.
 
 This project's goal is to get me to make something closer to an actual product by trying to adapt NOT A HERO into a 3D environnement. The project ceased due to a large technical debt.
 
+## Documents of the project
+
+In order to figure out what the game would have been about, I would have had to figure out (or rather remember) the growing pains of NOT A HERO. I wrote a page "<a href="https://github.com/AlexEatDonut/project-embers/blob/main/non-godot-files/documents/Project%20Embers%201%20-%20Criticism%20of%20NOT%20A%20HERO.pdf">Criticism of NOT A HERO</a>" to figure it out.
+
+I then went on to write a "<a href="https://github.com/AlexEatDonut/project-embers/blob/main/non-godot-files/documents/Project%20Embers%202%20-%20Design%20ideas%20Document.pdf">Game design and ideas document</a>". It isn't a formal game design documents, it's closer to a collection of ideas and concepts that went throught my head as I was building the story.
+
+I also created a <a href="https://github.com/AlexEatDonut/project-embers/blob/main/non-godot-files/documents/Project%20Embers%203%20-%20Weapon%20concepts%20and%20stats.pdf">sheet of all weapons</a> I had in mind.
+
 ## Gallery
 
 ### Character concept art by WIP_Tent
