@@ -3,29 +3,41 @@
 Second Godot project.
 This project is private. You aren't supposed to see this.
 
-<img src="./non-godot-files/concept_art/protag_sketch_wiptent.png" alt="concept art by WIP_tent"/>
-
 ## Goal of the project
 
-This project's goal is to get me to make something closer to an actual product. I was rejected when trying to enter a video game school, so I might as well work to make my chances better next year.
+This project's goal is to get me to make something closer to an actual product by trying to adapt NOT A HERO into a 3D environnement. The project ceased due to a large technical debt.
 
-# Google docs shortcuts
+## Gallery
+
+### Character concept art by WIP_Tent
+
+<img src="./non-godot-files/concept_art/protag_sketch_wiptent.png" alt="concept art by WIP_tent." height="480px"/>
+
+### Main Menu
+
+<img src="./readme-assets/img/main-menu.png.png" alt="The rough main menu." height="480px"/>
+
+### Devroom
+
+<img src="./readme-assets/img/ingame.png" alt="The dev room of the game." height="480px"/>
+
+## Google docs shortcuts
 
 <a href="https://docs.google.com/document/d/1ehckeOd7FcM8pX0o_mMymLkGV7jSlRu1jx0TWHj192A/edit?tab=t.oxkog0wxw6bp#heading=h.tfetfo43hhgl">Game design document</a>
 
 <a href="https://docs.google.com/spreadsheets/d/1r9fc0aU5FDrsmv94trxCwgW6VRNe8uf_DeKATRTJoFI/edit?gid=0#gid=0">Google spreadsheet of items and gear</a>
 
-# Addons
+## Addons
 
 <a href="https://github.com/H2xDev/GodotVMF">GodotVMF</a>
 
 <a href="https://github.com/celyk/GPUTrail">GPUTrail</a>
 
-# Project content taken
+## Project content taken
 
 <a href="https://github.com/mrezai/GodotStairs">GodotStairs</a>
 
-# 3D Models
+## 3D Models
 
 <a href="https://poly.pizza/m/3To2e7sKmO">Pistol by Zsky [CC-BY] via Poly Pizza</a>
 
@@ -33,13 +45,13 @@ This project's goal is to get me to make something closer to an actual product. 
 
 <a href="https://sketchfab.com/3d-models/godette-cec6355231284bacba59ccde16a7a729">Godette model by relink - CC BY 4.0 Attribution </a>
 
-# Fonts
+## Fonts
 
 <a href="https://www.dafont.com/quantum-4.font?l[]=10&l[]=1">Quantum by Sesohq</a>
 
 <a href="https://www.dafont.com/monofonto.font">Monofonto by Typodermic Fonts </a>
 
-# Sound Effects
+## Sound Effects
 
 <a href="https://freesound.org/people/morganpurkis/sounds/385811/"> Single Pistol Gunshot 3 by morganpurkis</a>
 
@@ -61,7 +73,7 @@ The next 3 sounds have been combined into one sound effect.
 
 <a href="https://kenney.nl/assets/ui-audio">Kenney's UI Audio - 2012 - Creative Commons 0 (CC0)</a>
 
-# Textures
+## Textures
 
 <a href="https://www.kenney.nl/assets/prototype-textures"> Prototype Textures by Kenney, Creative Commons CC0 </a>
 
