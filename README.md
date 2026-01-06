@@ -15,17 +15,11 @@ This project's goal is to get me to make something closer to an actual product b
 
 ### Main Menu
 
-<img src="./readme-assets/img/main-menu.png.png" alt="The rough main menu." height="480px"/>
+<img src="./readme-assets/img/main-menu.png" alt="The rough main menu." height="480px"/>
 
 ### Devroom
 
 <img src="./readme-assets/img/ingame.png" alt="The dev room of the game." height="480px"/>
-
-## Google docs shortcuts
-
-<a href="https://docs.google.com/document/d/1ehckeOd7FcM8pX0o_mMymLkGV7jSlRu1jx0TWHj192A/edit?tab=t.oxkog0wxw6bp#heading=h.tfetfo43hhgl">Game design document</a>
-
-<a href="https://docs.google.com/spreadsheets/d/1r9fc0aU5FDrsmv94trxCwgW6VRNe8uf_DeKATRTJoFI/edit?gid=0#gid=0">Google spreadsheet of items and gear</a>
 
 ## Addons
 
